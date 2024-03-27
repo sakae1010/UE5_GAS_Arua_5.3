@@ -40,10 +40,10 @@ void AAuraCharacter::OnRep_PlayerState()
 
 void AAuraCharacter::InitAbilityActorInfo()
 {
-	AAuraPlayerState* PlayerState = GetPlayerState<AAuraPlayerState>();
-	check(PlayerState);
-	AbilitySystemComponent = PlayerState->GetAbilitySystemComponent();
-	AbilitySystemComponent->InitAbilityActorInfo(PlayerState, this);
-	AttributeSet = PlayerState->GetAttributeSet();
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(AuraPlayerState);
+	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
+	AbilitySystemComponent->InitAbilityActorInfo(AuraPlayerState, this);
+	AttributeSet = AuraPlayerState->GetAttributeSet();
 }
 
