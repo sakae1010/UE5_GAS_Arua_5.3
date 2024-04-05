@@ -13,5 +13,8 @@ UCLASS()
 class AURA_API UAuraAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
-	
+public:
+	void AbilityActorInfoInit();
+protected:
+	void OnGameplayEffectAppliedCallback(UAbilitySystemComponent* AbilitySystemComponent ,  const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle);
 };
