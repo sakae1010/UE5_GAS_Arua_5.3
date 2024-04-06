@@ -13,11 +13,14 @@ void UAuraAbilitySystemComponent::OnGameplayEffectAppliedCallback(UAbilitySystem
 {
 	FGameplayTagContainer TagContainer;
 	Spec.GetAllAssetTags(TagContainer);
-	for ( const FGameplayTag& Tag : TagContainer)
-	{
-		//TODO 廣播 tag 給 Widget Controller 知道
-		const FString TagString =FString::Printf(TEXT("Tag: %s"), *Tag.ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TagString);
-		UE_LOG(LogTemp, Warning, TEXT("Tag: %s"), *Tag.ToString());
-	}
+	
+	EffectAssetTags.Broadcast(TagContainer);
+	
+	// for ( const FGameplayTag& Tag : TagContainer)
+	// {
+	// 	//TODO 廣播 tag 給 Widget Controller 知道
+	// 	const FString TagString =FString::Printf(TEXT("Tag: %s"), *Tag.ToString());
+	// 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TagString);
+	// 	UE_LOG(LogTemp, Warning, TEXT("Tag: %s"), *Tag.ToString());
+	// }
 }
