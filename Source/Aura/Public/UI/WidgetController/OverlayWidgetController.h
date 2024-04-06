@@ -3,19 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UI/Widget/AuraUserWidget.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
-
-
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChanged,float, NewMaxHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChanged, float, NewMana);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FonmaxManaChanged, float, NewMaxMana);
-
-// DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChanged, float, NewMana);
-
 USTRUCT(BlueprintType)
 struct FUIWidgetRow : public FTableRowBase
 {
@@ -28,11 +17,22 @@ struct FUIWidgetRow : public FTableRowBase
 	FText Message = FText();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
-	TSubclassOf<UAuraUserWidget> MessageWidget;
+	TSubclassOf<class UAuraUserWidget> MessageWidget;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
 	UTexture2D* Image = nullptr;
 }; 
+
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChanged, float, NewHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChanged,float, NewMaxHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChanged, float, NewMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FonMaxManaChanged, float, NewMaxMana);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, row);
+
+
+
 
 /**
  * 
@@ -55,8 +55,10 @@ public:
 	FOnManaChanged OnManaChanged;
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|AttributeSet")
-	FonmaxManaChanged OnMaxManaChanged;
+	FonMaxManaChanged OnMaxManaChanged;
 
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
+	FMessageWidgetRowSignature MessageWidgetRowDelegate;
 	
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
@@ -66,7 +68,7 @@ protected:
 	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
 	void ManaChanged(const FOnAttributeChangeData& Data) const;
 	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
-
+	
 	template< typename T>
 	T* GetDataTable(UDataTable* DataTable , const FGameplayTag& Tag) ;
 
@@ -75,6 +77,6 @@ protected:
 template <typename T>
 T* UOverlayWidgetController::GetDataTable(UDataTable* DataTable, const FGameplayTag& Tag)
 {
-	return DataTable->FindRow<T>(Tag.GetTagName());
+	return DataTable->FindRow<T>(Tag.GetTagName() , TEXT(""));
 }
 
