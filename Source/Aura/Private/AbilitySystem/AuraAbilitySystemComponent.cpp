@@ -8,13 +8,10 @@
 void UAuraAbilitySystemComponent::AbilityActorInfoInit()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::OnGameplayEffectAppliedCallback);
-
-	 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("AbilityActorInfoInit  %s" ),*FAuraGameplayTags::Get().Armor.ToString()));
 }
 
 void UAuraAbilitySystemComponent::OnGameplayEffectAppliedCallback(UAbilitySystemComponent* AbilitySystemComponent,
-                                                                  const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle)
+                                                                  const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle) const
 {
 	FGameplayTagContainer TagContainer;
 	Spec.GetAllAssetTags(TagContainer);

@@ -19,5 +19,5 @@ public:
 
 	FEffectAssetTags EffectAssetTags;
 protected:
-	void OnGameplayEffectAppliedCallback(UAbilitySystemComponent* AbilitySystemComponent ,  const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle);
+	void OnGameplayEffectAppliedCallback(UAbilitySystemComponent* AbilitySystemComponent ,  const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle) const;
 };
