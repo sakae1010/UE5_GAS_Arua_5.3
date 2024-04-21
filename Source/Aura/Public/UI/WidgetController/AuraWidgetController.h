@@ -51,8 +51,11 @@ class AURA_API UAuraWidgetController : public UObject
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable, Category = "WidgetController")
-	void SetWidgetControllerParams(const FWidgetControllerParams& InParams);
+	void SetWidgetControllerParams(const FWidgetControllerParams& InParams);\
+	
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitValues() ;
+	
 	virtual void BindCallBacksToDependencies();
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")

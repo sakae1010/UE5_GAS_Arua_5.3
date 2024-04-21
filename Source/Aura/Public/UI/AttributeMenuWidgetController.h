@@ -3,9 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystem/Data/AttributeInfo.h"
 #include "WidgetController/AuraWidgetController.h"
 #include "AttributeMenuWidgetController.generated.h"
-
+struct FAuraAttributeInfo;
+class UAttributeInfo;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfosSingnture,const  FAuraAttributeInfo, Info);
 /**
  * 
  */
@@ -14,6 +17,14 @@ class AURA_API UAttributeMenuWidgetController : public UAuraWidgetController
 {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitValues() override;
 	virtual void BindCallBacksToDependencies() override;
+
+	UPROPERTY(BlueprintAssignable, Category = "AttributeMenuWidgetController")
+	FAttributeInfosSingnture AttributeInfoDelegate;
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UAttributeInfo> AttributeInfo;
 };
