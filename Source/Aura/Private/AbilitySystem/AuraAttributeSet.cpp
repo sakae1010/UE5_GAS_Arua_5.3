@@ -9,10 +9,23 @@
 UAuraAttributeSet::UAuraAttributeSet()
 {
 	const FAuraGameplayTags& AuraTags = FAuraGameplayTags::Get();
+	/* Primary Attributes */
 	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Primary_Strength, GetStrengthAttribute);
 	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Primary_Vigor, GetVigorAttribute);
 	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Primary_Intelligence, GetIntelligenceAttribute);
 	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Primary_Resilience, GetResilienceAttribute);
+	/* Secondary Attributes */
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Secondary_Armor, GetArmorAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Secondary_ArmorPenetration, GetArmorPenetrationAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Secondary_BlockChance, GetBlockChanceAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Secondary_CriticalHitChance, GetCriticalHitChanceAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Secondary_CriticalHitDamage, GetCriticalHitDamageAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Secondary_CriticalHitResistance, GetCriticalHitResistanceAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Secondary_HealthRegeneration, GetHealthRegenerationAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Secondary_ManaRegeneration, GetManaRegenerationAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Secondary_MaxHealth, GetMaxHealthAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Secondary_MaxMana, GetMaxManaAttribute);
+	
 	
 	
 }
