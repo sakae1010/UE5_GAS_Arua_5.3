@@ -8,7 +8,7 @@
 #include "AttributeMenuWidgetController.generated.h"
 struct FAuraAttributeInfo;
 class UAttributeInfo;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfosSingnture,const  FAuraAttributeInfo, Info);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAttributeInfoSingnture,const  FAuraAttributeInfo, Info);
 /**
  * 
  */
@@ -22,7 +22,7 @@ public:
 	virtual void BindCallBacksToDependencies() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "AttributeMenuWidgetController")
-	FAttributeInfosSingnture AttributeInfoDelegate;
+	FAttributeInfoSingnture AttributeInfoDelegate;
 
 protected:
 	UPROPERTY(EditDefaultsOnly)

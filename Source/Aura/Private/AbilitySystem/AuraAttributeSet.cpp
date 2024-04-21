@@ -4,10 +4,17 @@
 #include "Net/UnrealNetwork.h"
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
+#include "AuraGameplayTag.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-
+	const FAuraGameplayTags& AuraTags = FAuraGameplayTags::Get();
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Primary_Strength, GetStrengthAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Primary_Vigor, GetVigorAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Primary_Intelligence, GetIntelligenceAttribute);
+	TagsToAttributeMap.Add(AuraTags.AuraAttribute_Primary_Resilience, GetResilienceAttribute);
+	
+	
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

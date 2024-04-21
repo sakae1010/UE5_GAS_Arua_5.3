@@ -13,7 +13,6 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
-
 USTRUCT()
 struct FEffectProperties
 {
@@ -45,6 +44,12 @@ struct FEffectProperties
 };
 
 
+// Typedef for attribute getter function pointer but TStaticFuncPtr is generic to any signature chose
+// 屬性獲取函數指標的 typedef，但 TStaticFuncPtr 是通用的，可以選擇任何簽名
+// typedef TBaseStaticDelegateInstance<FGameplayAttribute(),FDefaultDelegateUserPolicy>::FFuncPtr  FAttributeGetFuncPtr;
+template<class T>
+using TStaticFuncPtr = TBaseStaticDelegateInstance<T,FDefaultDelegateUserPolicy>::FFuncPtr;
+
 /**
  * 
  */
@@ -60,6 +65,7 @@ public:
 	
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributeMap;
 
 	/*
 	 * 次要RPG屬性
