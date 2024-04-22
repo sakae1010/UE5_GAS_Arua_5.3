@@ -30,6 +30,7 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 
 	// Init ability info for the Server
 	InitAbilityActorInfo();
+	AddCharacterAbilities();
 }
 
 void AAuraCharacter::OnRep_PlayerState()
@@ -37,6 +38,7 @@ void AAuraCharacter::OnRep_PlayerState()
 	Super::OnRep_PlayerState();
 	// Init ability info for the Client
 	InitAbilityActorInfo();
+	AddCharacterAbilities();
 }
 
 int32 AAuraCharacter::GetPlayerLevel()
