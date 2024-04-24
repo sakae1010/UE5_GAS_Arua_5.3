@@ -9,7 +9,7 @@
 
 void UAuraAbilitySystemComponent::AbilityActorInfoInit()
 {
-	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::OnGameplayEffectAppliedCallback);
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::ClientEffectApplied);
 }
 
 void UAuraAbilitySystemComponent::AddCharacterAbilities(TArray<TSubclassOf<UGameplayAbility>>& InAbilities)
@@ -52,7 +52,7 @@ void UAuraAbilitySystemComponent::AbilityInputReleased(const FGameplayTag& Input
 	}
 }
 
-void UAuraAbilitySystemComponent::OnGameplayEffectAppliedCallback(UAbilitySystemComponent* AbilitySystemComponent,
+void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,
                                                                   const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle) const
 {
 	FGameplayTagContainer TagContainer;

@@ -40,7 +40,7 @@ private:
 	void CursorTrace();
 	IEnemyInterface* LastActor;
 	IEnemyInterface* ThisActor;
-
+	FHitResult CursorHit;
 
 	void InputTagPressed(const FGameplayTag InputTag);
 	void InputTagReleased(const FGameplayTag InputTag);
@@ -67,4 +67,6 @@ private:
 	TObjectPtr<USplineComponent> SplineComponent;
 
 	void AutoRun();
+
+
 };
