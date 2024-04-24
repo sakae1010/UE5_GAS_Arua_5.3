@@ -11,7 +11,6 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
-#include "Input/AuraInputConfig.h"
 #include "Interaction/EnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
@@ -36,7 +35,6 @@ void AAuraPlayerController::BeginPlay()
 	{
 		Subsystem->AddMappingContext(AuraContext,0);
 	}
-
 
 	//設定滑鼠相關
 	bShowMouseCursor = true;
@@ -134,7 +132,6 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::InputTagPressed(const FGameplayTag InputTag)
 {
-	
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		bTargeting = ThisActor ? true : false;
@@ -144,7 +141,7 @@ void AAuraPlayerController::InputTagPressed(const FGameplayTag InputTag)
 
 void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 {
-	if(!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		if(GetAuraAbilitySystemComponent() )
 		{
@@ -152,6 +149,7 @@ void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 		}
 		return;
 	}
+	
 	if(bTargeting)
 	{
 		if(GetAuraAbilitySystemComponent() )
@@ -161,7 +159,8 @@ void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 	}
 	else
 	{
-		if(const APawn* ControllerPawn = GetPawn<APawn>(); FollowTime<= ShortPressThreshold && ControllerPawn)
+		const APawn* ControllerPawn = GetPawn<APawn>();
+		if( FollowTime<= ShortPressThreshold && ControllerPawn)
 		{
 			if(UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(
 				this, ControllerPawn->GetActorLocation(), CachedDestination))
@@ -170,13 +169,14 @@ void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 				for (const FVector& Point : NavPath->PathPoints)
 				{
 					SplineComponent->AddSplinePoint(Point,ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(),Point,10.0f,12,FColor::Green,false,0.5f);
+					DrawDebugSphere(GetWorld(), Point, 8.f, 8, FColor::Green, false, 5.f);
 				}
 			}
 			bAutoRunning = true;
 			
 		}
 	}
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("FollowTime: %f"), FollowTime));
 	FollowTime = 0.0f;
 	bTargeting = false;
 }
@@ -200,10 +200,9 @@ void AAuraPlayerController::InputTagHeld(const FGameplayTag InputTag)
 		}
 	}else
 	{
-		FollowTime = GetWorld()->GetTimeSeconds();
-
+		FollowTime += GetWorld()->GetDeltaSeconds();
 		FHitResult Hit;
-	;
+	
 	    if(	GetHitResultUnderCursor(ECC_Visibility,false,Hit))
 		{
 			CachedDestination = Hit.ImpactPoint;
@@ -222,7 +221,7 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraAbilitySystemComponen
 {
 	if(AuraAbilitySystemComponent == nullptr)
 	{
-		 AuraAbilitySystemComponent =  Cast<UAuraAbilitySystemComponent>( UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+		AuraAbilitySystemComponent =  Cast<UAuraAbilitySystemComponent>( UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
 	}
 	return AuraAbilitySystemComponent;
 }
