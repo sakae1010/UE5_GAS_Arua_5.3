@@ -23,6 +23,25 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	CursorTrace();
+	AutoRun();
+
+	
+}
+
+void AAuraPlayerController::AutoRun()
+{
+	if(!bAutoRunning) return;
+	if(APawn* ControllerPawn = GetPawn<APawn>())
+    {
+    	const FVector LocationOnSpline = SplineComponent->FindLocationClosestToWorldLocation(ControllerPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+    	const FVector Direction = SplineComponent->FindDirectionClosestToWorldLocation(LocationOnSpline, ESplineCoordinateSpace::World);
+    	ControllerPawn->AddMovementInput(Direction);
+    	const float DistanceToDestination = (LocationOnSpline-CachedDestination).Length();
+    	if( DistanceToDestination < AutoRunAcceptanceRadius)
+    	{
+    		bAutoRunning = false;
+    	}
+    }
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -74,6 +93,7 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 	}
 	
 }
+
 
 void AAuraPlayerController::CursorTrace()
 {
@@ -165,18 +185,22 @@ void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 			if(UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(
 				this, ControllerPawn->GetActorLocation(), CachedDestination))
 			{
+				auto Paths = NavPath->PathPoints;
 				SplineComponent ->ClearSplinePoints();
-				for (const FVector& Point : NavPath->PathPoints)
+				for (const FVector& Point : Paths)
 				{
 					SplineComponent->AddSplinePoint(Point,ESplineCoordinateSpace::World);
 					DrawDebugSphere(GetWorld(), Point, 8.f, 8, FColor::Green, false, 5.f);
 				}
+				CachedDestination = Paths.Last();
+				bAutoRunning = true;
 			}
-			bAutoRunning = true;
+		
+		
 			
 		}
 	}
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("FollowTime: %f"), FollowTime));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("FollowTime: %f"), FollowTime));
 	FollowTime = 0.0f;
 	bTargeting = false;
 }
