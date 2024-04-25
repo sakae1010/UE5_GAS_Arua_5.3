@@ -12,8 +12,16 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	const bool bIServer = HasAuthority(&ActivationInfo);
 
+
+
+
+}
+
+void UAuraProjectileSpell::SpawnProjectile()
+{
+	const bool bIServer = GetAvatarActorFromActorInfo()->HasAuthority();
+	if(!bIServer)return;
 	if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
 		FTransform SpawnTransform ;
@@ -21,8 +29,6 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 		SpawnTransform.SetLocation(SpawnLocation);
 		//TODO 設定 Projectile 的旋轉方向
 
-
-		
 		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass ,
 		SpawnTransform,GetOwningActorFromActorInfo() ,
 		Cast<APawn>(GetOwningActorFromActorInfo()),
@@ -31,5 +37,4 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 		//TODO 建立 Gameplay Effect Spec 作為傷害標記
 		Projectile->FinishSpawning(SpawnTransform);
 	}
-
 }

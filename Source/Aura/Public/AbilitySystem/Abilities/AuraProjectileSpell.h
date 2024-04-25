@@ -19,4 +19,8 @@ protected:
 
 	UPROPERTY(EditAnywhere , BlueprintReadOnly ,Category = "Projectile")
 	UClass* ProjectileClass;
+	
+	UFUNCTION(BlueprintCallable , Category = "Projectile")
+	void SpawnProjectile();
+
 };
