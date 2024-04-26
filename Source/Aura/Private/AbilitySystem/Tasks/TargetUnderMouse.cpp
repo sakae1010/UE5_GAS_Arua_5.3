@@ -17,13 +17,21 @@ UTargetUnderMouse* UTargetUnderMouse::CreateTargetUnderMouse(UGameplayAbility* O
 
 void UTargetUnderMouse::Activate()
 {
-const bool bIsLocalPlayerController = Ability->GetCurrentActorInfo()->IsLocallyControlled();
+	const bool bIsLocalPlayerController = Ability->GetCurrentActorInfo()->IsLocallyControlled();
 	if(bIsLocalPlayerController)
 	{
 		SendMouseCursorData();
 	}else
 	{
-		//TODO We ar on the server, we need to ask the client to send us the mouse cursor data
+		const FGameplayAbilitySpecHandle SpecHandle = GetAbilitySpecHandle();
+		const FPredictionKey ActivationPredictionKey = GetActivationPredictionKey();
+		AbilitySystemComponent.Get()->AbilityTargetDataSetDelegate(GetAbilitySpecHandle(), ActivationPredictionKey).AddUObject(this , &UTargetUnderMouse::OnTargetDataReplicatedCallback);
+		const bool bCalledDelegate = AbilitySystemComponent.Get()->CallReplicatedTargetDataDelegatesIfSet(SpecHandle, ActivationPredictionKey);
+		if(!bCalledDelegate)
+		{
+			SetWaitingOnRemotePlayerData();
+			// AbilitySystemComponent.Get()->CallServerSetReplicatedTargetData(SpecHandle, ActivationPredictionKey, FGameplayAbilityTargetDataHandle(), FGameplayTag(), AbilitySystemComponent.Get()->ScopedPredictionKey);
+		}
 	}
 
 }
@@ -54,4 +62,14 @@ void UTargetUnderMouse::SendMouseCursorData()
 		ValidData.Broadcast(Handle);
 	}
 
+}
+
+
+void UTargetUnderMouse::OnTargetDataReplicatedCallback(const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivationTag)
+{
+	AbilitySystemComponent->ConsumeClientReplicatedTargetData(GetAbilitySpecHandle(), GetActivationPredictionKey());
+	if (ShouldBroadcastAbilityTaskDelegates())
+	{
+		ValidData.Broadcast(DataHandle);
+	}
 }
