@@ -67,6 +67,8 @@ void AAuraPlayerController::SetupInputComponent()
 
 	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
 	AuraInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AAuraPlayerController::Move);
+	AuraInputComponent->BindAction(ShiftAction,ETriggerEvent::Started,this,&AAuraPlayerController::ShiftPressed);
+	AuraInputComponent->BindAction(ShiftAction,ETriggerEvent::Completed,this,&AAuraPlayerController::ShiftReleased);
 	AuraInputComponent->BindAbilityActions(InputConfig,this,&AAuraPlayerController::InputTagPressed,&AAuraPlayerController::InputTagReleased,&AAuraPlayerController::InputTagHeld);
 	
 }
@@ -126,15 +128,8 @@ void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 		}
 		return;
 	}
-	
-	if(bTargeting)
-	{
-		if(GetAuraAbilitySystemComponent() )
-		{
-			GetAuraAbilitySystemComponent()->AbilityInputHeld(InputTag);
-		}
-	}
-	else
+	GetAuraAbilitySystemComponent()->AbilityInputReleased(InputTag);
+	if(!bTargeting && !bShiftKeyDown)
 	{
 		if(const APawn* ControllerPawn = GetPawn<APawn>(); FollowTime<= ShortPressThreshold && ControllerPawn)
 		{
@@ -168,7 +163,7 @@ void AAuraPlayerController::InputTagHeld(const FGameplayTag InputTag)
 		return;
 	}
 
-	if(bTargeting)
+	if(bTargeting || bShiftKeyDown)
 	{
 		if(GetAuraAbilitySystemComponent() )
 		{
@@ -199,3 +194,4 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraAbilitySystemComponen
 	}
 	return AuraAbilitySystemComponent;
 }
+

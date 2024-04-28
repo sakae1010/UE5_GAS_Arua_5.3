@@ -21,6 +21,6 @@ protected:
 	UClass* ProjectileClass;
 	
 	UFUNCTION(BlueprintCallable , Category = "Projectile")
-	void SpawnProjectile();
+	void SpawnProjectile(const FVector& TargetLocation);// , const FRotator& Rotation);
 
 };

@@ -34,7 +34,9 @@ private:
 	
 	UPROPERTY(EditAnywhere,Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
-
+	
+	UPROPERTY(EditAnywhere,Category="Input")
+	TObjectPtr<UInputAction> ShiftAction;
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();
@@ -45,7 +47,10 @@ private:
 	void InputTagPressed(const FGameplayTag InputTag);
 	void InputTagReleased(const FGameplayTag InputTag);
 	void InputTagHeld(const FGameplayTag InputTag);
-
+	
+	bool bShiftKeyDown = false;
+	void ShiftPressed() {bShiftKeyDown = true;}
+	void ShiftReleased() {bShiftKeyDown = false;}
 	
 	UPROPERTY(EditDefaultsOnly,Category="Input")
 	TObjectPtr<UAuraInputConfig> InputConfig;
@@ -67,6 +72,8 @@ private:
 	TObjectPtr<USplineComponent> SplineComponent;
 
 	void AutoRun();
+
+	
 
 
 };
