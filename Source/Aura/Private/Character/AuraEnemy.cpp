@@ -3,6 +3,7 @@
 
 #include "Character/AuraEnemy.h"
 
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
 
 AAuraEnemy::AAuraEnemy()
@@ -12,7 +13,7 @@ AAuraEnemy::AAuraEnemy()
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
-	AttributeSet = CreateDefaultSubobject<UAttributeSet>(TEXT("AttributeSet"));
+	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>(TEXT("AttributeSet"));
 }
 
 void AAuraEnemy::BeginPlay()
@@ -26,7 +27,9 @@ void AAuraEnemy::InitAbilityActorInfo()
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	UAuraAbilitySystemComponent* AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
 	AuraAbilitySystemComponent->AbilityActorInfoInit();
-
+	
+	InitializeDefaultAttributes();
+	
 }
 
 void AAuraEnemy::HighlightActor()
