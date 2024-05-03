@@ -23,7 +23,7 @@ struct FUIWidgetRow : public FTableRowBase
 	UTexture2D* Image = nullptr;
 }; 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChanged, float, NewHealth);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewHealth);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, row);
 
@@ -42,16 +42,16 @@ public:
 	virtual void BindCallBacksToDependencies() override;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|AttributeSet")
-	FOnAttributeChanged OnHealthChanged;
+	FOnAttributeChangedSignature OnHealthChanged;
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|AttributeSet")
-	FOnAttributeChanged OnMaxHealthChanged;
+	FOnAttributeChangedSignature OnMaxHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|AttributeSet")
-	FOnAttributeChanged OnManaChanged;
+	FOnAttributeChangedSignature OnManaChanged;
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|AttributeSet")
-	FOnAttributeChanged OnMaxManaChanged;
+	FOnAttributeChangedSignature OnMaxManaChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
