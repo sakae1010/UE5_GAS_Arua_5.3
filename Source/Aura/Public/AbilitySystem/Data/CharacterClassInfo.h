@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
 #include "CharacterClassInfo.generated.h"
+class UGameplayEffect;
 class UGameplayAbility;
 
 UENUM(BlueprintType)
@@ -21,7 +22,7 @@ struct FCharacterClassDefaultInfo
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, Category = "CharacterClass")
-	TSubclassOf<UGameplayAbility> PrimaryAttributes;
+	TSubclassOf<UGameplayEffect> PrimaryAttribute;
 };
 
 /**
@@ -36,10 +37,10 @@ class AURA_API UCharacterClassInfo : public UDataAsset
 	TMap<ECharacterClass,FCharacterClassDefaultInfo> CharacterClassInformation;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defaults")
-	TSubclassOf<UGameplayAbility> SeconderAttributes;
+	TSubclassOf<UGameplayEffect> SeconderAttributes;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defaults")
-	TSubclassOf<UGameplayAbility> VitalAttributes;
+	TSubclassOf<UGameplayEffect> VitalAttributes;
 
 
 	FCharacterClassDefaultInfo GetCharacterClassInfo(ECharacterClass CharacterClass);
