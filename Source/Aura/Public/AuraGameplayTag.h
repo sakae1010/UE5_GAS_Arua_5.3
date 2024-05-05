@@ -41,6 +41,10 @@ public:
 	FGameplayTag InputTag_4;
 
 	FGameplayTag Damage;
+	/* 特效通知 */
+	
+	//HitReact 為受擊反應
+	FGameplayTag Effects_HitReact;
 	
  private :
   static FAuraGameplayTags GameplayTags;
