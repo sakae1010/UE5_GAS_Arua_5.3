@@ -41,7 +41,7 @@ void UAuraProjectileSpell::SpawnProjectile( const FVector& TargetLocation )
 		
 		const FGameplayEffectSpecHandle SpecHandle = SourceAbilitySystemComponent->MakeOutgoingSpec(
 			DamageEffectClass, GetAbilityLevel(), SourceAbilitySystemComponent->MakeEffectContext());
-		const float ScaledValue = Damage.GetValueAtLevel(GetAbilityLevel());
+		const float ScaledValue = Damage.GetValueAtLevel(50);//(GetAbilityLevel());
 		FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Damage, ScaledValue);
         Projectile->DamageEffectSpecHandle = SpecHandle;
