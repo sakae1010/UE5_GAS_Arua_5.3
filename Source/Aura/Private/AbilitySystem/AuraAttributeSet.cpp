@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "AuraGameplayTag.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -82,7 +84,6 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
-		UE_LOG(LogTemp, Warning, TEXT("ChangeHealth on %s , Health: %f"),*Props.TargetAvatarActor->GetActorNameOrLabel(), GetHealth());
 	}
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())
 	{
@@ -92,29 +93,37 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		const float LocalIncomingDamage = GetIncomingDamage();
 		SetIncomingDamage(0.f);
-		if(LocalIncomingDamage > 0.f)
+		if(LocalIncomingDamage <= 0.f)return;
+		const float NewHealth = GetHealth() - LocalIncomingDamage;
+		SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+		//Fatal Damage = 致命傷害
+		const float bFatal = NewHealth <= 0.f;
+		if (bFatal)
 		{
-			const float NewHealth = GetHealth() - LocalIncomingDamage;
-			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
-			UE_LOG(LogTemp, Warning, TEXT("Incoming Damage: %f"), LocalIncomingDamage);
-			//Fatal Damage = 致命傷害
-			const float bFatal = NewHealth <= 0.f;
-			
-			if (bFatal)
+			ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
+			if(CombatInterface)
 			{
-				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
-				if(CombatInterface)
-				{
-					CombatInterface->Die();
-				}
+				CombatInterface->Die();
 			}
-			else
-			{
-				FGameplayTagContainer HitReactTagContainer;
-				HitReactTagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
-				Props.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(HitReactTagContainer);
-			}
-			
+		}
+		else
+		{
+			FGameplayTagContainer HitReactTagContainer;
+			HitReactTagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
+			Props.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(HitReactTagContainer);
+		}
+
+		ShowFloatingText(Props, LocalIncomingDamage);
+	}
+}
+
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage) const
+{
+	if(Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
+		{
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
 		}
 	}
 }
@@ -149,6 +158,8 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		Props.TargetAbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
 	}
 }
+
+
 
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
