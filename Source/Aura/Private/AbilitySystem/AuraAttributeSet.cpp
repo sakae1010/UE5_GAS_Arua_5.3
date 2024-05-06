@@ -98,6 +98,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			UE_LOG(LogTemp, Warning, TEXT("Incoming Damage: %f"), LocalIncomingDamage);
 			//Fatal Damage = 致命傷害
 			const float bFatal = NewHealth <= 0.f;
+			if(!bFatal)
+			{
+				FGameplayTagContainer HitReactTagContainer;
+				HitReactTagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
+				Props.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(HitReactTagContainer);
+			}
 			
 		}
 	}
