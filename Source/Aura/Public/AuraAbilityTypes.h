@@ -1,7 +1,5 @@
-﻿// sakae's gas project
-#pragma once
+﻿#pragma once
 
-#include "AuraAbilityTypes.h"
 #include "GameplayEffectTypes.h"
 #include "AuraAbilityTypes.generated.h"
 
@@ -42,6 +40,7 @@ public:
 protected:
 	UPROPERTY()
 	bool bIsCriticalHit = false;
+	
 	UPROPERTY()
 	bool bIsBlockedHit = false;
 };
