@@ -2,6 +2,9 @@
 
 
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
+
+#include <AuraAbilityTypes.h>
+
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystemComponent.h"
 #include "AuraGameplayTag.h"
@@ -81,8 +84,13 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	TargetArmor = FMath::Max<float>(0.f, TargetArmor);
 
 	UCharacterClassInfo* CharacterClassInfo = UAuraAbilitySystemLibrary::GetCharacterClassInfo(SourceActor);
+
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
+
 	
 	const bool bBlocked = FMath::RandRange(1,100) <= TargetBlockChance;
+	UAuraAbilitySystemLibrary::SetBlockedHit( EffectContextHandle, bBlocked);
+	
 	// 如果被格擋 則傷害減半
 	Damage = bBlocked ? Damage * 0.5f : Damage;
 	// 取得 來源穿甲係數 
@@ -117,9 +125,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	
 	const bool bCriticalHit = FMath::RandRange(1,100) <= SourceCriticalHitChance - TargetCriticalHitResistance * CriticalHitResistanceCoefficient ; 
 	Damage = bCriticalHit? Damage * 2.0f + SourceCriticalHitDamage : Damage;
-	
-
-	
+	UAuraAbilitySystemLibrary::SetCriticalHit( EffectContextHandle, bCriticalHit);
 	
 	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);

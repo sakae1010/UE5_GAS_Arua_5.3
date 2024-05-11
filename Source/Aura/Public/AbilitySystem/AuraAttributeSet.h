@@ -19,7 +19,7 @@ struct FEffectProperties
 	GENERATED_BODY()
 	
 	FEffectProperties(){}
-	FGameplayEffectContextHandle EffectContext;
+	FGameplayEffectContextHandle EffectContextHandle;
 	
 	UPROPERTY()
 	UAbilitySystemComponent* SourceAbilitySystemComponent = nullptr;
@@ -232,6 +232,6 @@ private:
 	
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 	
-	void ShowFloatingText( const FEffectProperties& Props , float Damage) const;
+	void ShowFloatingText( const FEffectProperties& Props , float Damage , bool bIsBlockHit , bool bIsCriticalHit) const;
 };
 

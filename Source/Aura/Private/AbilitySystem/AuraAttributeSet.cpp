@@ -5,6 +5,7 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "AuraGameplayTag.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
@@ -113,11 +114,13 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			Props.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(HitReactTagContainer);
 		}
 
-		ShowFloatingText(Props, LocalIncomingDamage);
+		const bool bIsBlockHit = UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);
+		const bool bIsCriticalHit = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
+		ShowFloatingText(Props, LocalIncomingDamage , bIsBlockHit , bIsCriticalHit);
 	}
 }
 
-void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage) const
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage , bool bIsBlockHit , bool bIsCriticalHit) const
 {
 	if(Props.SourceCharacter != Props.TargetCharacter)
 	{
@@ -131,8 +134,8 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data,	FEffectProperties& Props) const
 {
 	// Source = causer of the effect , Target = the target of the effect(owner of the attribute set)
-	Props.EffectContext = Data.EffectSpec.GetContext();
-	Props.SourceAbilitySystemComponent = Props.EffectContext.GetOriginalInstigatorAbilitySystemComponent();
+	Props.EffectContextHandle = Data.EffectSpec.GetContext();
+	Props.SourceAbilitySystemComponent = Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
 
 	if(IsValid(Props.SourceAbilitySystemComponent) && Props.SourceAbilitySystemComponent->AbilityActorInfo.IsValid() && Props.SourceAbilitySystemComponent->AbilityActorInfo->AvatarActor.IsValid())
 	{
