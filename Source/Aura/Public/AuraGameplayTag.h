@@ -41,6 +41,10 @@ public:
 	FGameplayTag InputTag_4;
 
 	FGameplayTag Damage;
+	FGameplayTag Damage_Fire;
+
+
+	TArray<FGameplayTag> DamageTypes;
 	/* 特效通知 */
 	
 	//HitReact 為受擊反應

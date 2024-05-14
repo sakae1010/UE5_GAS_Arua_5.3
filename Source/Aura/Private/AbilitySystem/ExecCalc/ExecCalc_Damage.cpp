@@ -68,7 +68,14 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParameters.TargetTags = TargetTags;
 		
 	// 取得 傷害計算的數值
-	float Damage = Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
+	float Damage = 0.f ;// Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
+	for (FGameplayTag DamageTypeTag : FAuraGameplayTags::Get().DamageTypes)
+	{
+		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageTypeTag);
+		Damage += DamageTypeValue;
+	}
+
+	
 	// 取得 目標 抵抗計算的數值
 	
 	float TargetBlockChance = 0.f;
