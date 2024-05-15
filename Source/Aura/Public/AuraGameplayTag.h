@@ -31,10 +31,10 @@ public:
 	FGameplayTag AuraAttribute_Secondary_ManaRegeneration;
 	FGameplayTag AuraAttribute_Secondary_MaxHealth;
 	FGameplayTag AuraAttribute_Secondary_MaxMana;
-	FGameplayTag Attribute_Resistance_Fire;
-	FGameplayTag Attribute_Resistance_Lighting;
-	FGameplayTag Attribute_Resistance_Arcane;
-	FGameplayTag Attribute_Resistance_Physical;
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Lighting;
+	FGameplayTag Attributes_Resistance_Arcane;
+	FGameplayTag Attributes_Resistance_Physical;
 	
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;

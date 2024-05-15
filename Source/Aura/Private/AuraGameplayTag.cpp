@@ -118,32 +118,32 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 // DamageTypes ^^^^^^^
 
 // DamageType Resistances vvvvvv
-	GameplayTags.Attribute_Resistance_Fire = GameplayTagsManager.AddNativeGameplayTag(
-		FName("Attribute.Resistance.Fire"),
+	GameplayTags.Attributes_Resistance_Fire = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Attributes.Resistance.Fire"),
 		FString("Resistance to Fire Type")
 		);
 
-	GameplayTags.Attribute_Resistance_Lighting = GameplayTagsManager.AddNativeGameplayTag(
-		FName("Attribute.Resistance.Lighting"),
+	GameplayTags.Attributes_Resistance_Lighting = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Attributes.Resistance.Lighting"),
 		FString("Resistance to Lighting  Type")
 		);
 	
-	GameplayTags.Attribute_Resistance_Arcane = GameplayTagsManager.AddNativeGameplayTag(
-		FName("Attribute.Resistance.Arcane"),
+	GameplayTags.Attributes_Resistance_Arcane = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Attributes.Resistance.Arcane"),
 		FString("Resistance to Arcane  Type")
 		);
 	
-	GameplayTags.Attribute_Resistance_Physical = GameplayTagsManager.AddNativeGameplayTag(
-		FName("Attribute.Resistance.Physical"),
+	GameplayTags.Attributes_Resistance_Physical = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Attributes.Resistance.Physical"),
 		FString("Resistance to Physical  Type")
 		);
 // DamageType Resistances ^^^^^^
 	
 	//map to Damage to Resistance
-	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Arcane, GameplayTags.Attribute_Resistance_Arcane);
-	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lighting, GameplayTags.Attribute_Resistance_Lighting);
-	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical, GameplayTags.Attribute_Resistance_Physical);
-	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attribute_Resistance_Fire);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Arcane, GameplayTags.Attributes_Resistance_Arcane);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lighting, GameplayTags.Attributes_Resistance_Lighting);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
 	
 	//HitReact 為受擊反應
 	GameplayTags.Effects_HitReact = GameplayTagsManager.AddNativeGameplayTag(
