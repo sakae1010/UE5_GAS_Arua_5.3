@@ -119,6 +119,16 @@ void AAuraEnemy::UnHighlightActor()
 	Weapon->SetRenderCustomDepth(false);
 }
 
+void AAuraEnemy::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatActor = InCombatTarget;
+}
+
+AActor* AAuraEnemy::GetCombatTarget_Implementation()
+{
+	return CombatActor;
+}
+
 int32 AAuraEnemy::GetPlayerLevel()
 {
 	return Level;
