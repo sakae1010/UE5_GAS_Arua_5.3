@@ -45,5 +45,8 @@ public:
 	static void SetBlockedHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle , bool bInBlockedHit);
 
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|EffectContext")
-	static void SetCriticalHit(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle , bool bInCriticalHit); 
+	static void SetCriticalHit(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle , bool bInCriticalHit);
+
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
+	static void GetLivePlayerWithinRadius(const UObject* WorldContextObject,TArray<AActor*>& OutOverLappingActors, const TArray<AActor*>& ActorsToIgnore , float Radius, const FVector& SphereOrigin);
 };
