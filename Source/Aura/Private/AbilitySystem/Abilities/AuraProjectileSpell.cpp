@@ -21,7 +21,10 @@ void UAuraProjectileSpell::SpawnProjectile( const FVector& TargetLocation )
 	const bool bIServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if(!bIServer)return;
 	FTransform SpawnTransform ;
-	FVector SpawnLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
+	FVector SpawnLocation = ICombatInterface::Execute_GetCombatSocketLocation(
+		GetAvatarActorFromActorInfo(),
+		FAuraGameplayTags::Get().Montage_Attack_Weapon
+		);
 		
 	FRotator Rotation = ( TargetLocation - SpawnLocation).Rotation();
 		
