@@ -3,12 +3,28 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "UObject/Interface.h"
 #include "CombatInterface.generated.h"
 
-
-
+struct FGameplayTag;
 class UAnimMontage;
+
+
+//對應 Tag  與 動畫檔案
+USTRUCT(Blueprintable)
+struct FTaggedMontage
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UAnimMontage* Montage = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag GameplayTag;
+	
+};
+
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI , BlueprintType)
@@ -43,7 +59,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent , BlueprintCallable)
 	AActor* GetAvatar() ;
-	
+
+	UFUNCTION(BlueprintNativeEvent , BlueprintCallable)
+	TArray<FTaggedMontage> GetAttackMontages();
 	
 	virtual void Die() = 0;
 };
