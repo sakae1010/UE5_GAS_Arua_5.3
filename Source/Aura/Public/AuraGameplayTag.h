@@ -48,7 +48,10 @@ public:
 	FGameplayTag Damage_Lighting;
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
-
+	//動畫對應
+	FGameplayTag Montage_Attack_Weapon;
+	FGameplayTag Montage_Attack_RightHand;
+	FGameplayTag Montage_Attack_LeftHand;
 	//攻擊事件tag
 	FGameplayTag Abilities_Attack;
 
