@@ -169,7 +169,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("RightHand"));
 	
 	GameplayTags.Montage_Attack_LeftHand = GameplayTagsManager.AddNativeGameplayTag(
-		FName("Montage.Attack.LeftHand "),
+		FName("Montage.Attack.LeftHand"),
 		FString("Montage_Attack_LeftHand"));
 
 	}
