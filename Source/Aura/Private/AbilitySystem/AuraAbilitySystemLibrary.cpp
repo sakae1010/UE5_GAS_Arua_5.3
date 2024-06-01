@@ -150,8 +150,8 @@ void UAuraAbilitySystemLibrary::GetLivePlayerWithinRadius(
 		World->OverlapMultiByObjectType(Overlaps, SphereOrigin, FQuat::Identity, FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllDynamicObjects), FCollisionShape::MakeSphere(Radius), SphereParams);
 		for (FOverlapResult& OverlapResult : Overlaps)
 		{
-			//&&OverlapResult.GetActor()->ActorHasTag(FName("Player"))
-			if (OverlapResult.GetActor()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(OverlapResult.GetActor() ))
+			// && OverlapResult.GetActor()->ActorHasTag(FName("Player")) 透過BP過濾
+			if (OverlapResult.GetActor()->Implements<UCombatInterface>()&& !ICombatInterface::Execute_IsDead(OverlapResult.GetActor() ))
 			{
 					OutOverLappingActors.AddUnique( ICombatInterface::Execute_GetAvatar(OverlapResult.GetActor()) );
 			}
@@ -160,3 +160,14 @@ void UAuraAbilitySystemLibrary::GetLivePlayerWithinRadius(
 	}
 	
 }
+
+bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstOwner, AActor* SecondTarget)
+{
+	const FName PlayerTag = FName("Player");
+	const bool bBothArePlayer = FirstOwner->ActorHasTag(PlayerTag)  &&  SecondTarget->ActorHasTag(PlayerTag);
+	const FName EnemyTag = FName("Enemy");
+	const bool bBothAreEnemy = FirstOwner->ActorHasTag(EnemyTag)  &&  SecondTarget->ActorHasTag(EnemyTag);
+	const bool bIsFriend = bBothArePlayer || bBothAreEnemy;
+	return !bIsFriend;
+}
+
