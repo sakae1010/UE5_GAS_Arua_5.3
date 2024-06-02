@@ -161,7 +161,7 @@ void UAuraAbilitySystemLibrary::GetLivePlayerWithinRadius(
 	
 }
 
-bool UAuraAbilitySystemLibrary::IsNotFriend(AActor* FirstOwner, AActor* SecondTarget)
+bool UAuraAbilitySystemLibrary::IsNotFriend(const AActor* FirstOwner,const AActor* SecondTarget)
 {
 	const FName PlayerTag = FName("Player");
 	const bool bBothArePlayer = FirstOwner->ActorHasTag(PlayerTag)  &&  SecondTarget->ActorHasTag(PlayerTag);
