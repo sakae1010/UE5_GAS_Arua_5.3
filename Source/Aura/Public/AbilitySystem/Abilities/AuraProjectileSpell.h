@@ -9,6 +9,7 @@
 
 class AAuraProjectile;
 class UGameplayEffect;
+struct FGameplayTag;
 /**
  * 
  */
@@ -23,7 +24,7 @@ protected:
 	UClass* ProjectileClass;
 	
 	UFUNCTION(BlueprintCallable , Category = "Projectile")
-	void SpawnProjectile(const FVector& TargetLocation);// , const FRotator& Rotation);
+	void SpawnProjectile(const FVector& TargetLocation,const FGameplayTag& SocketTag);// , const FRotator& Rotation);
 
 
 };
