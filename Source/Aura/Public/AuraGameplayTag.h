@@ -63,6 +63,7 @@ public:
 	
 	//攻擊事件tag
 	FGameplayTag Abilities_Attack;
+	FGameplayTag Abilities_Summon;
 
 	TMap<FGameplayTag , FGameplayTag> DamageTypesToResistances;
 	/* 特效通知 */
