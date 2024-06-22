@@ -3,8 +3,6 @@
 
 #include "AbilitySystem/Abilities/AuraSummonAbility.h"
 
-#include "Kismet/KismetSystemLibrary.h"
-
 TArray<FVector> UAuraSummonAbility::GetSpawnLocations()
 {
 
@@ -31,4 +29,10 @@ TArray<FVector> UAuraSummonAbility::GetSpawnLocations()
 		SpawnLocations.Add(ChosenSpawnLocation);
 	}
 	return SpawnLocations;
+}
+
+TSubclassOf<APawn> UAuraSummonAbility::GetRandomMinionClass() const
+{
+	const int32 Index = FMath::RandRange(0, MinionClasses.Num()-1);
+	return MinionClasses[Index];
 }
