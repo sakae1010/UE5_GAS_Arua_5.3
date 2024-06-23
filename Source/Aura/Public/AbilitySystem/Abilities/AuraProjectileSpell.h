@@ -24,7 +24,7 @@ protected:
 	UClass* ProjectileClass;
 	
 	UFUNCTION(BlueprintCallable , Category = "Projectile")
-	void SpawnProjectile(const FVector& TargetLocation,const FGameplayTag& SocketTag);// , const FRotator& Rotation);
+	void SpawnProjectile(const FVector& TargetLocation,const FGameplayTag& SocketTag,bool bOverridePitch  , float PitchOverrideValue = 0.f);
 
 
 };
