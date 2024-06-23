@@ -103,11 +103,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		
 	// 取得 傷害計算的數值
 	float Damage = 0.f ;// Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
-	for (const TTuple<FGameplayTag, FGameplayTag>& Pari : FAuraGameplayTags::Get().DamageTypesToResistances)
+	for (const TTuple<FGameplayTag, FGameplayTag>& Pair : FAuraGameplayTags::Get().DamageTypesToResistances)
 	{
-		const FGameplayTag DamageType = Pari.Key;
-		const FGameplayTag ResistanceTag = Pari.Value;
-		float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageType);
+		const FGameplayTag DamageType = Pair.Key;
+		const FGameplayTag ResistanceTag = Pair.Value;
+		float DamageTypeValue = Spec.GetSetByCallerMagnitude(DamageType,false);
 		if(DamageTypeValue==0) continue;
 		checkf(AuraDamageStatics().TagsToCaptureDefs.Contains(ResistanceTag) , TEXT("TagsToCaptureDefs ddoesn't contain Tag [%s] ExecCalc_Damages "), *ResistanceTag.ToString());
 
