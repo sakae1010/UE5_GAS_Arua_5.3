@@ -64,7 +64,7 @@ public:
 	//攻擊事件tag
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
-
+	FGameplayTag Abilities_Fire_FireBolt;
 	TMap<FGameplayTag , FGameplayTag> DamageTypesToResistances;
 	/* 特效通知 */
 	

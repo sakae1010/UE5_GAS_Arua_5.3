@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
+class UAbilityInfo;
+
 USTRUCT(BlueprintType)
 struct FUIWidgetRow : public FTableRowBase
 {
@@ -24,7 +26,6 @@ struct FUIWidgetRow : public FTableRowBase
 }; 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewHealth);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, row);
 
 
@@ -59,7 +60,11 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
-		
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
+	TObjectPtr<UAbilityInfo> AbilityWidgetDataTable;
+
+	
 	template< typename T>
 	T* GetDataTable(UDataTable* DataTable , const FGameplayTag& Tag) ;
 
