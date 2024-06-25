@@ -22,12 +22,10 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(TArray<TSubclassOf<UGame
 		{
 			AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->StartInputTag);
 			GiveAbility(AbilitySpec);
-		}
-	
-		
-		// GiveAbilityAndActivateOnce(AbilitySpec);
-		
+		}		
 	}
+	bStartupAbilitiesGiven = true;
+	AbilitiesGivenDelegate.Broadcast(this);
 }
 
 void UAuraAbilitySystemComponent::AbilityInputHeld(const FGameplayTag& InputTag)

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "OverlayWidgetController.generated.h"
+class UAuraAbilitySystemComponent;
 class UAbilityInfo;
 
 USTRUCT(BlueprintType)
@@ -68,6 +69,8 @@ protected:
 	template< typename T>
 	T* GetDataTable(UDataTable* DataTable , const FGameplayTag& Tag) ;
 
+
+	void OnInitalizeStartupAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent);
 };
 
 template <typename T>

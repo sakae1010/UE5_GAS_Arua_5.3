@@ -50,29 +50,56 @@ void UOverlayWidgetController::BindCallBacksToDependencies()
 		{
 			OnMaxManaChanged.Broadcast(Data.NewValue);
 		});
-
-
-	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
-		[this](const FGameplayTagContainer& AssetTags)->void
+	
+	if(UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		if (AuraASC->bStartupAbilitiesGiven)
 		{
-			for ( const FGameplayTag& Tag : AssetTags)
+			OnInitalizeStartupAbilities(AuraASC);	
+		}else
+		{
+			AuraASC->AbilitiesGivenDelegate.AddUObject(this, &UOverlayWidgetController::OnInitalizeStartupAbilities);
+		}
+	
+		AuraASC->EffectAssetTags.AddLambda(
+			[this](const FGameplayTagContainer& AssetTags)->void
 			{
-				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
-				if(Tag.MatchesTag(MessageTag))
+				for ( const FGameplayTag& Tag : AssetTags)
 				{
-					if(const FUIWidgetRow* Row = GetDataTable<FUIWidgetRow>(MessageWidgetDataTable, Tag))
+					FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
+					if(Tag.MatchesTag(MessageTag))
 					{
-						MessageWidgetRowDelegate.Broadcast(*Row);
-					}
-					else
-					{
-						UE_LOG(LogTemp, Warning, TEXT("No row found for tag %s"), *Tag.ToString());
+						if(const FUIWidgetRow* Row = GetDataTable<FUIWidgetRow>(MessageWidgetDataTable, Tag))
+						{
+							MessageWidgetRowDelegate.Broadcast(*Row);
+						}
+						else
+						{
+							UE_LOG(LogTemp, Warning, TEXT("No row found for tag %s"), *Tag.ToString());
+						}
 					}
 				}
 			}
-		}
-		);
-	
+			);
+	}
+}
+
+void UOverlayWidgetController::OnInitalizeStartupAbilities(UAuraAbilitySystemComponent* AuraAbilitySystemComponent)
+{
+
+	//TODO 取得 所有取得的Ability , look up their Ability Info  透過MessageWidgetRowDelegate 廣播出去
+	if(!AuraAbilitySystemComponent)return;
+	if(!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
+	// for (const FGameplayAbilitySpec& AbilitySpec : AuraAbilitySystemComponent->GetActivatableAbilities())
+	// {
+	// 	if(const UAuraGameAbility* AuraAbility = Cast<UAuraGameAbility>(AbilitySpec.Ability))
+	// 	{
+	// 		if(const FUIWidgetRow* Row = GetDataTable<FUIWidgetRow>(AbilityWidgetDataTable, AuraAbility->StartInputTag))
+	// 		{
+	// 			MessageWidgetRowDelegate.Broadcast(*Row);
+	// 		}
+	// 	}
+	// }
 }
 
 
