@@ -5,6 +5,7 @@
 
 #include "AuraGameplayTag.h"
 #include "AbilitySystem/Abilities/AuraGameAbility.h"
+#include "Aura/AuraLogChannels.h"
 
 
 void UAuraAbilitySystemComponent::AbilityActorInfoInit()
@@ -50,8 +51,56 @@ void UAuraAbilitySystemComponent::AbilityInputReleased(const FGameplayTag& Input
 	}
 }
 
+void UAuraAbilitySystemComponent::ForEachAbility(const FForEachAbility& Delegate)
+{
+	FScopedAbilityListLock AbilityLock(*this);
+	for ( FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if(!Delegate.ExecuteIfBound(AbilitySpec))
+		{
+			UE_LOG(LogAura, Error, TEXT("ForEachAbility Delegate failed [%hs]"), __FUNCTION__ );
+		}
+	}
+}
+
+FGameplayTag UAuraAbilitySystemComponent::GetAbilityFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	if(AbilitySpec.Ability)
+	{
+		for (const FGameplayTag& Tag : AbilitySpec.DynamicAbilityTags)
+		{
+			if(Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilites"))))
+			{
+				return Tag;
+			}
+		
+		}
+		
+	}
+	UE_LOG(LogAura, Error, TEXT("GetAbilityFromSpec failed [%hs]"), __FUNCTION__ );
+	return FGameplayTag::EmptyTag;
+}
+
+FGameplayTag UAuraAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	if(AbilitySpec.Ability)
+	{
+		for (const FGameplayTag& Tag : AbilitySpec.DynamicAbilityTags)
+		{
+			if(Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("InputTag"))))
+			{
+				return Tag;
+			}
+		
+		}
+		
+	}
+	UE_LOG(LogAura, Error, TEXT("GetAbilityFromSpec failed [%hs]"), __FUNCTION__ );
+	return FGameplayTag::EmptyTag;
+}
+
 void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,
-                                                                  const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle) const
+                                                                     const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle) const
 {
 	FGameplayTagContainer TagContainer;
 	Spec.GetAllAssetTags(TagContainer);

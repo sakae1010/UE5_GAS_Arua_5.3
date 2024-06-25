@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void UOverlayWidgetController::BroadcastInitValues()
 {
@@ -90,16 +91,16 @@ void UOverlayWidgetController::OnInitalizeStartupAbilities(UAuraAbilitySystemCom
 	//TODO 取得 所有取得的Ability , look up their Ability Info  透過MessageWidgetRowDelegate 廣播出去
 	if(!AuraAbilitySystemComponent)return;
 	if(!AuraAbilitySystemComponent->bStartupAbilitiesGiven) return;
-	// for (const FGameplayAbilitySpec& AbilitySpec : AuraAbilitySystemComponent->GetActivatableAbilities())
-	// {
-	// 	if(const UAuraGameAbility* AuraAbility = Cast<UAuraGameAbility>(AbilitySpec.Ability))
-	// 	{
-	// 		if(const FUIWidgetRow* Row = GetDataTable<FUIWidgetRow>(AbilityWidgetDataTable, AuraAbility->StartInputTag))
-	// 		{
-	// 			MessageWidgetRowDelegate.Broadcast(*Row);
-	// 		}
-	// 	}
-	// }
+
+	FForEachAbility Delegate;
+	Delegate.BindLambda([this , AuraAbilitySystemComponent](const FGameplayAbilitySpec& AbilitySpec)->void
+	{
+		FAuraAbilityInfo AbilityInfo = AbilityWidgetDataTable->FindAbilityInfForTag(
+			AuraAbilitySystemComponent->GetAbilityFromSpec(AbilitySpec));
+		AbilityInfo.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
+		AbilityInfoDelegate.Broadcast(AbilityInfo);
+	});
+	AuraAbilitySystemComponent->ForEachAbility(Delegate);
 }
 
 
