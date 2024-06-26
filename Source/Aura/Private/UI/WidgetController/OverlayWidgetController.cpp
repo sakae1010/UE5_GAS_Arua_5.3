@@ -95,8 +95,7 @@ void UOverlayWidgetController::OnInitalizeStartupAbilities(UAuraAbilitySystemCom
 	FForEachAbility Delegate;
 	Delegate.BindLambda([this , AuraAbilitySystemComponent](const FGameplayAbilitySpec& AbilitySpec)->void
 	{
-		FAuraAbilityInfo AbilityInfo = AbilityWidgetDataTable->FindAbilityInfForTag(
-			AuraAbilitySystemComponent->GetAbilityFromSpec(AbilitySpec));
+		FAuraAbilityInfo AbilityInfo = AbilityWidgetDataTable->FindAbilityInfForTag(AuraAbilitySystemComponent->GetAbilityFromSpec(AbilitySpec));
 		AbilityInfo.InputTag = AuraAbilitySystemComponent->GetInputTagFromSpec(AbilitySpec);
 		AbilityInfoDelegate.Broadcast(AbilityInfo);
 	});

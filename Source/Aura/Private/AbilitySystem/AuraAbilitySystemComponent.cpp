@@ -67,9 +67,9 @@ FGameplayTag UAuraAbilitySystemComponent::GetAbilityFromSpec(const FGameplayAbil
 {
 	if(AbilitySpec.Ability)
 	{
-		for (const FGameplayTag& Tag : AbilitySpec.DynamicAbilityTags)
+		for (const FGameplayTag Tag : AbilitySpec.Ability.Get()->AbilityTags)
 		{
-			if(Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilites"))))
+			if(Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities"))))
 			{
 				return Tag;
 			}
@@ -83,20 +83,24 @@ FGameplayTag UAuraAbilitySystemComponent::GetAbilityFromSpec(const FGameplayAbil
 
 FGameplayTag UAuraAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
 {
-	if(AbilitySpec.Ability)
+	for (const FGameplayTag Tag : AbilitySpec.DynamicAbilityTags)
 	{
-		for (const FGameplayTag& Tag : AbilitySpec.DynamicAbilityTags)
+		if(Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("InputTag"))))
 		{
-			if(Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("InputTag"))))
-			{
-				return Tag;
-			}
-		
+			return Tag;
 		}
 		
 	}
 	UE_LOG(LogAura, Error, TEXT("GetAbilityFromSpec failed [%hs]"), __FUNCTION__ );
 	return FGameplayTag::EmptyTag;
+}
+
+void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
+{
+	Super::OnRep_ActivateAbilities();
+	if(bStartupAbilitiesGiven)return;
+	bStartupAbilitiesGiven = true;
+	AbilitiesGivenDelegate.Broadcast(this);
 }
 
 void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,
