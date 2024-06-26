@@ -117,7 +117,9 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 // DamageTypes ^^^^^^^
 
-// DamageType Resistances vvvvvv
+	/*
+	* DamageType Resistances vvvvvv
+	*/
 	GameplayTags.Attributes_Resistance_Fire = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Attributes.Resistance.Fire"),
 		FString("Resistance to Fire Type")
@@ -139,13 +141,18 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 // DamageType Resistances ^^^^^^
 	
-	//map to Damage to Resistance
+	//
+	/*
+	 *map to Damage to Resistance 
+	 */
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Arcane, GameplayTags.Attributes_Resistance_Arcane);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Lighting, GameplayTags.Attributes_Resistance_Lighting);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Physical, GameplayTags.Attributes_Resistance_Physical);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Fire, GameplayTags.Attributes_Resistance_Fire);
 	
-	//HitReact 為受擊反應
+	/*
+	 *HitReact 為受擊反應
+	 */
 	GameplayTags.Effects_HitReact = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Effects.HitReact"),
 		FString("Tag Granted when Hit Reacting"));
@@ -162,10 +169,17 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Summon Abilities Tag"));
 
 	GameplayTags.Abilities_Fire_FireBolt = GameplayTagsManager.AddNativeGameplayTag(
-	FName("Abilities.Fire.FireBolt"),
+		FName("Abilities.Fire.FireBolt"),
 FString("FireBolt Abilities Tag"));
-	
-	/*Socket Tags*/
+	/*
+	 * Cooldown Tags
+	*/
+	GameplayTags.Cooldown_Fire_FireBolt = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Cooldown.Fire.FireBolt"),
+		FString("FireBolt Cooldown Tag"));
+	/*
+	 *Socket Tag
+	*/
 	
 	GameplayTags.CombatSocket_Weapon = GameplayTagsManager.AddNativeGameplayTag(
 		FName("CombatSocket.Weapon"),

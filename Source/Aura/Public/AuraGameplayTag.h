@@ -65,9 +65,10 @@ public:
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
 	FGameplayTag Abilities_Fire_FireBolt;
-	TMap<FGameplayTag , FGameplayTag> DamageTypesToResistances;
+	/* Cooldown */
+	FGameplayTag Cooldown_Fire_FireBolt;
 	/* 特效通知 */
-	
+	TMap<FGameplayTag , FGameplayTag> DamageTypesToResistances;
 	//HitReact 為受擊反應
 	FGameplayTag Effects_HitReact;
 	
