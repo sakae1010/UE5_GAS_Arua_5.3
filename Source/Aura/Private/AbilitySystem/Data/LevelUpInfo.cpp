@@ -22,9 +22,6 @@ int32 ULevelUpInfo::FindLevelForXP(int32 InXP) const
 			bSearching = false;
 		}
 	}		
-	
-
-
 	return Level;
 }
 
