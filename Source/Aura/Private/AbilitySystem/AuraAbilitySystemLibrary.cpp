@@ -92,6 +92,17 @@ void UAuraAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContext
 	}
 }
 
+int32 UAuraAbilitySystemLibrary::GetXpRewardForCharacterClassAndLevel(const UObject* WorldContextObject,
+	ECharacterClass CharacterClass, int CharacterLevel)
+{
+	UCharacterClassInfo* CharacterClassInfo = GetCharacterClassInfo(WorldContextObject);
+	if(CharacterClassInfo == nullptr) return 0;
+	const FCharacterClassDefaultInfo& Info = CharacterClassInfo->GetCharacterClassInfo(CharacterClass);
+	const float XPReward = Info.Xp_Reward.GetValueAtLevel(CharacterLevel);
+	return static_cast<int32>(XPReward);
+}
+
+
 UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
 {
 	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
@@ -99,6 +110,7 @@ UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObj
 	return AuraGameModeBase->CharacterClassInfo;
 	
 }
+
 
 bool UAuraAbilitySystemLibrary::IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
@@ -170,4 +182,5 @@ bool UAuraAbilitySystemLibrary::IsNotFriend(const AActor* FirstOwner,const AActo
 	const bool bIsFriend = bBothArePlayer || bBothAreEnemy;
 	return !bIsFriend;
 }
+
 

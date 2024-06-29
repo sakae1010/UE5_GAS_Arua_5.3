@@ -52,4 +52,7 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
 	static bool IsNotFriend	(const AActor* FirstOwner ,const AActor* SecondTarget);
+
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|XpReward")
+	static int32 GetXpRewardForCharacterClassAndLevel(const UObject* WorldContextObject,ECharacterClass CharacterClass , int CharacterLevel);
 };
