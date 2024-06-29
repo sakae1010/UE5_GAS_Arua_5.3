@@ -84,11 +84,13 @@ void UAuraAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContext
 	const FCharacterClassDefaultInfo& DefaultInfo = CharacterClassInfo->GetCharacterClassInfo(CharacterClass);
 	for (TSubclassOf<UGameplayAbility> StartupAbilityClass : DefaultInfo.StartupAbilities)
 	{
-		if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(ASC->GetAvatarActor()))
+		if(ASC->GetAvatarActor()->Implements<UCombatInterface>())
 		{
-			FGameplayAbilitySpec StartupAbilitySpec = FGameplayAbilitySpec(StartupAbilityClass, CombatInterface->GetPlayerLevel());
+			int32 Level = ICombatInterface::Execute_GetPlayerLevel(ASC->GetAvatarActor());
+			FGameplayAbilitySpec StartupAbilitySpec = FGameplayAbilitySpec(StartupAbilityClass, Level);
 			ASC->GiveAbility(StartupAbilitySpec);
 		}
+
 	}
 }
 
@@ -165,7 +167,7 @@ void UAuraAbilitySystemLibrary::GetLivePlayerWithinRadius(
 			// && OverlapResult.GetActor()->ActorHasTag(FName("Player")) 透過BP過濾
 			if (OverlapResult.GetActor()->Implements<UCombatInterface>()&& !ICombatInterface::Execute_IsDead(OverlapResult.GetActor() ))
 			{
-					OutOverLappingActors.AddUnique( ICombatInterface::Execute_GetAvatar(OverlapResult.GetActor()) );
+				OutOverLappingActors.AddUnique( ICombatInterface::Execute_GetAvatar(OverlapResult.GetActor()) );
 			}
 		
 		}

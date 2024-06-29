@@ -167,9 +167,9 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 
 void UAuraAttributeSet::SendXPEvent(const FEffectProperties& Props)
 {
-	if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+	if(Props.TargetAvatarActor!=nullptr && Props.TargetAvatarActor->Implements<UCombatInterface>())
 	{
-		const int32 TargetLevel = CombatInterface->GetPlayerLevel();
+		const int32 TargetLevel = ICombatInterface::Execute_GetPlayerLevel(Props.TargetAvatarActor);
 		const ECharacterClass TargetClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter); 
 		const int32 XPValue = UAuraAbilitySystemLibrary::GetXpRewardForCharacterClassAndLevel(Props.TargetAbilitySystemComponent, TargetClass, TargetLevel);
 		
