@@ -66,6 +66,13 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Secondary.MaxMana"),
 		FString("Maximum amount of Mana obtainable"));
 
+
+	/*   Meta Attributes  */
+	GameplayTags.Attributes_Meta_IncomingXP = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Attributes.Meta.IncomingXP"),
+		FString("Incoming XP Meta Attributes")
+		);
+	
 	/** Input Tags */
 	
 	GameplayTags.InputTag_LMB = GameplayTagsManager.AddNativeGameplayTag(
@@ -140,8 +147,8 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Resistance to Physical  Type")
 		);
 // DamageType Resistances ^^^^^^
+
 	
-	//
 	/*
 	 *map to Damage to Resistance 
 	 */
