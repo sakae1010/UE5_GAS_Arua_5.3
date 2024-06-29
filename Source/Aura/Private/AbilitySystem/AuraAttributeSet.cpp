@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "AuraGameplayTag.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/AuraLogChannels.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
@@ -97,6 +98,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
 	}
+
 	if(Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
 	{
 		const float LocalIncomingDamage = GetIncomingDamage();
@@ -124,6 +126,14 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		const bool bIsCriticalHit = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
 		ShowFloatingText(Props, LocalIncomingDamage , bIsBlockHit , bIsCriticalHit);
 	}
+
+	if (Data.EvaluatedData.Attribute == GetIncomingXPAttribute())
+	{
+		const float LocalIncomingXP = GetIncomingXP();
+		SetIncomingXP(0.f);
+		UE_LOG(LogAura, Warning, TEXT("Incoming XP %f"), LocalIncomingXP);
+	}
+	
 }
 
 void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage , bool bIsBlockHit , bool bIsCriticalHit) const
