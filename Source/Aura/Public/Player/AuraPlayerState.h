@@ -39,7 +39,7 @@ public:
 	void SetXP(int32 InXP);
 	void SetLevel(int32 InLevel);
 	
-	void AddToXP(int32 InXP);
+	void AddXP(int32 InXP);
 	void AddToLevel(int32 InLevel);
 	
 protected:
