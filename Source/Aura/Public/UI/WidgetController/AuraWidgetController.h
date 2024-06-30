@@ -40,6 +40,7 @@ struct FWidgetControllerParams
 
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStateChangedSignature, int, NewValue);
 
 
 /**
@@ -69,5 +70,5 @@ protected:
 	
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
 	TObjectPtr<UAttributeSet> AttributeSet;
-private:
+
 };

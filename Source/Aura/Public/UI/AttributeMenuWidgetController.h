@@ -23,7 +23,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "AttributeMenuWidgetController")
 	FAttributeInfoSingnture AttributeInfoDelegate;
-
+	
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Player|AttributePoints")
+	FOnPlayerStateChangedSignature OnAttributePointsChanged;
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttributeInfo> AttributeInfo;

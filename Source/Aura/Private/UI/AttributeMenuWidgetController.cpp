@@ -2,6 +2,7 @@
 
 
 #include "UI/AttributeMenuWidgetController.h"
+#include "Player/AuraPlayerState.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 
 void UAttributeMenuWidgetController::BroadcastInitValues()
@@ -31,6 +32,14 @@ void UAttributeMenuWidgetController::BindCallBacksToDependencies()
 			BroadcastAttributeInfo(Pair.Key, Pair.Value());
 		});
 	}
+
+
+	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(this->PlayerState);
+	
+	AuraPlayerState->OnAttributePointsChangedDelegate.AddLambda([this](const int32 AttriblePoints)
+	{
+		OnAttributePointsChanged.Broadcast(AttriblePoints);
+	});
 		
 }
 
