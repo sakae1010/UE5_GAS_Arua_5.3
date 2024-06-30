@@ -13,6 +13,8 @@ void UAttributeMenuWidgetController::BroadcastInitValues()
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value());
 	}
+	AAuraPlayerState* AuraPlayerState = CastChecked<AAuraPlayerState>(this->PlayerState);
+	OnAttributePointsChanged.Broadcast(AuraPlayerState->GetAttributePoints());
 		
 	// FAuraAttributeInfo Info = AttributeInfo->FindAttributeInfo(FAuraGameplayTags::Get().AuraAttribute_Primary_Strength);
 	// Info.AttributeValue = AuraAttributeSet->GetStrength();
