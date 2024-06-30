@@ -65,6 +65,7 @@ public:
 	
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
+	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
 	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributeMap;
 
 	/*
@@ -272,5 +273,10 @@ private:
 	void ShowFloatingText( const FEffectProperties& Props , float Damage , bool bIsBlockHit , bool bIsCriticalHit) const;
 
 	void SendXPEvent(const FEffectProperties& Props);
+
+	//bTopOffHealth = true 為 "補滿生命"
+	bool bTopOffHealth = false;
+	//bTopOffMana = true 為 "補滿魔力"
+	bool bTopOffMana = false;
 };
 
