@@ -2,16 +2,26 @@
 
 
 #include "Character/AuraCharacter.h"
-
+#include "NiagaraComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
 #include "UI/HUD/AuraHUD.h"
 
 AAuraCharacter::AAuraCharacter()
 {
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->SetupAttachment(RootComponent);
+	CameraBoom->SetUsingAbsoluteRotation(true);
+	CameraBoom->bDoCollisionTest = false;
 
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	CameraComponent->SetupAttachment(CameraBoom , USpringArmComponent::SocketName);
+	CameraComponent->bUsePawnControlRotation = false;
+	
 	//轉向移動
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	//轉向速率
@@ -24,6 +34,9 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
 
+	LevelUpNiagaraComponent = CreateDefaultSubobject<UNiagaraComponent>(TEXT("LevelUpNiagaraComponent"));
+	LevelUpNiagaraComponent->SetupAttachment(RootComponent);
+	LevelUpNiagaraComponent->bAutoActivate = false;
 	CharacterClass = ECharacterClass::Elementalist;
 }
 
@@ -60,6 +73,20 @@ void AAuraCharacter::AddToXP_Implementation(int32 XP)
 
 void AAuraCharacter::LevelUp_Implementation()
 {
+	// LevelUpNiagaraComponent
+	MulticastLevelUpParticles();
+}
+
+void AAuraCharacter::MulticastLevelUpParticles_Implementation() const
+{
+	if (IsValid(LevelUpNiagaraComponent))
+	{
+		const FVector CameraLocation = CameraComponent->GetComponentLocation();
+		const FVector LevelUpNiagaraLocation = LevelUpNiagaraComponent->GetComponentLocation();
+		const FRotator SpawnRotator = (CameraLocation-LevelUpNiagaraLocation).Rotation();
+		LevelUpNiagaraComponent->SetWorldRotation(SpawnRotator);
+		LevelUpNiagaraComponent->Activate(true);
+	}
 	
 }
 
@@ -132,6 +159,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 	}
 	InitializeDefaultAttributes();
 }
+
 
 
 
