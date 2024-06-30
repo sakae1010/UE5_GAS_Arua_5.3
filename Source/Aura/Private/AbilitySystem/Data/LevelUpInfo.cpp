@@ -5,7 +5,7 @@
 int32 ULevelUpInfo::FindLevelForXP(int32 InXP) const
 {
 	int32 Level = 1;
-	bool bSearching = false;
+	bool bSearching = true;
 	while (bSearching)
 	{
 		if (LevelUpInfos.Num()-1 <= Level)
