@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
-#include "WidgetController/AuraWidgetController.h"
+#include "AuraWidgetController.h"
 #include "AttributeMenuWidgetController.generated.h"
 
 struct FAuraAttributeInfo;
