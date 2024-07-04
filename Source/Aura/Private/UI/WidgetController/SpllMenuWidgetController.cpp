@@ -1,14 +1,14 @@
 ﻿// sakae's gas project
 
 
-#include "UI/WidgetController/SpllMenuWidgetController.h"
+#include "UI/WidgetController/SpellMenuWidgetController.h"
 
-void USpllMenuWidgetController::BroadcastInitValues()
+void USpellMenuWidgetController::BroadcastInitValues()
 {
 
 }
 
-void USpllMenuWidgetController::BindCallBacksToDependencies()
+void USpellMenuWidgetController::BindCallBacksToDependencies()
 {
 
 }

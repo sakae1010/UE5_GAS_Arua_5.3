@@ -7,41 +7,65 @@
 
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Abilities/AuraGameAbility.h"
+#include "Aura/AuraLogChannels.h"
 #include "Game/AuraGameModeBase.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerState.h"
 #include "UI/HUD/AuraHUD.h"
-#include "UI/WidgetController/AuraWidgetController.h"
+bool UAuraAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject,FWidgetControllerParams& OutParams , AAuraHUD*& OutAuraHUD)
+{
+	if( APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	{
+		OutAuraHUD = Cast<AAuraHUD>(PlayerController->GetHUD());
+		if (OutAuraHUD == nullptr)
+		{
+			UE_LOG(LogAura, Error, TEXT("AAuraHUD is not set in the BP_AuraHUD"));
+			return false;
+		}
+		AAuraPlayerState* PlayerState = PlayerController->GetPlayerState<AAuraPlayerState>();
+		UAbilitySystemComponent* AbilitySystemComponent = PlayerState->GetAbilitySystemComponent();
+		UAttributeSet* AttributeSet = PlayerState->GetAttributeSet() ;
+		// OutParams = FWidgetControllerParams(PlayerController, PlayerState, AbilitySystemComponent, AttributeSet);
+		OutParams.PlayerController = PlayerController;
+		OutParams.PlayerState = PlayerState;
+		OutParams.AbilitySystemComponent = AbilitySystemComponent;
+		OutParams.AttributeSet = AttributeSet;
+		return true;	
+	}
+	return false;
+}
+
 
 UOverlayWidgetController* UAuraAbilitySystemLibrary::GetOverlayWidgetController(const UObject* WorldContextObject)
 {
-    if( APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
-    {
-	    if(AAuraHUD* AuraHUD = Cast<AAuraHUD>(PlayerController->GetHUD()))
-	    {
-	    	AAuraPlayerState* PlayerState = PlayerController->GetPlayerState<AAuraPlayerState>();
-	    	UAbilitySystemComponent* AbilitySystemComponent = PlayerState->GetAbilitySystemComponent();
-	    	UAttributeSet* AttributeSet = PlayerState->GetAttributeSet() ;
-	    	const FWidgetControllerParams Params(PlayerController, PlayerState, AbilitySystemComponent, AttributeSet);
-	    	return AuraHUD->GetOverlayWidgetController(Params);
-	    }
-    }
+	FWidgetControllerParams Parms ;
+	AAuraHUD* AuraHUD = nullptr;
+	if(MakeWidgetControllerParams(WorldContextObject , Parms , AuraHUD))
+	{
+		return AuraHUD-> GetOverlayWidgetController(Parms);
+	}
 	return nullptr;
 }
 
 UAttributeMenuWidgetController* UAuraAbilitySystemLibrary::GetAttributeMenuWidgetController(const UObject* WorldContextObject)
 {
-	if( APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
+	FWidgetControllerParams Parms ;
+	AAuraHUD* AuraHUD = nullptr;
+	if(MakeWidgetControllerParams(WorldContextObject , Parms , AuraHUD))
 	{
-	    if(AAuraHUD* AuraHUD = Cast<AAuraHUD>(PlayerController->GetHUD()))
-	    {
-	    	AAuraPlayerState* PlayerState = PlayerController->GetPlayerState<AAuraPlayerState>();
-	    	UAbilitySystemComponent* AbilitySystemComponent = PlayerState->GetAbilitySystemComponent();
-	    	UAttributeSet* AttributeSet = PlayerState->GetAttributeSet() ;
-	    	const FWidgetControllerParams Params(PlayerController, PlayerState, AbilitySystemComponent, AttributeSet);
-	    	return AuraHUD->GetAttributeMenuWidgetController(Params);
-	    }
+		return AuraHUD-> GetAttributeMenuWidgetController(Parms);
+	}
+	return nullptr;
+}
+
+USpellMenuWidgetController* UAuraAbilitySystemLibrary::GetSpellMenuWidgetController(const UObject* WorldContextObject)
+{
+	FWidgetControllerParams Parms ;
+	AAuraHUD* AuraHUD = nullptr;
+	if(MakeWidgetControllerParams(WorldContextObject , Parms , AuraHUD))
+	{
+		return AuraHUD-> GetSpllMenuWidgetController(Parms);
 	}
 	return nullptr;
 }
@@ -103,6 +127,8 @@ int32 UAuraAbilitySystemLibrary::GetXpRewardForCharacterClassAndLevel(const UObj
 	const float XPReward = Info.Xp_Reward.GetValueAtLevel(CharacterLevel);
 	return static_cast<int32>(XPReward);
 }
+
+
 
 
 UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
@@ -184,5 +210,6 @@ bool UAuraAbilitySystemLibrary::IsNotFriend(const AActor* FirstOwner,const AActo
 	const bool bIsFriend = bBothArePlayer || bBothAreEnemy;
 	return !bIsFriend;
 }
+
 
 

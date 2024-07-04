@@ -7,6 +7,7 @@
 #include "UI/Widget/AuraUserWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
+#include "UI/WidgetController/SpellMenuWidgetController.h"
 
 UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
@@ -49,5 +50,16 @@ UAttributeMenuWidgetController* AAuraHUD::GetAttributeMenuWidgetController(const
 		AttributeMenuWidgetController->BindCallBacksToDependencies();
 	}
 	return AttributeMenuWidgetController;
+}
+
+USpellMenuWidgetController* AAuraHUD::GetSpllMenuWidgetController(const FWidgetControllerParams& Params)
+{
+	if(SepllMenuWidgetController == nullptr)
+	{
+		SepllMenuWidgetController = NewObject<USpellMenuWidgetController>(this,SepllMenuWidgetControllerClass);
+		SepllMenuWidgetController->SetWidgetControllerParams(Params);
+		SepllMenuWidgetController->BindCallBacksToDependencies();
+	}
+	return SepllMenuWidgetController;
 }
 

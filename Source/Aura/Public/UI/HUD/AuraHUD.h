@@ -6,6 +6,7 @@
 #include "GameFramework/HUD.h"
 #include "AuraHUD.generated.h"
 
+class USpellMenuWidgetController;
 class UAttributeMenuWidgetController;
 class UAttributeSet;
 class UAbilitySystemComponent;
@@ -31,6 +32,8 @@ public:
 
 	UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const FWidgetControllerParams& Params);
 
+	USpellMenuWidgetController* GetSpllMenuWidgetController(const FWidgetControllerParams& Params);
+
 private:
 	UPROPERTY()
 	TObjectPtr<class UAuraUserWidget> OverlayWidget;
@@ -48,5 +51,12 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "UI")
 	TSubclassOf<UAttributeMenuWidgetController> AttributeMenuWidgetControllerClass;
+
+
+	UPROPERTY()
+	TObjectPtr<USpellMenuWidgetController> SepllMenuWidgetController;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<USpellMenuWidgetController> SepllMenuWidgetControllerClass;
 
 };
