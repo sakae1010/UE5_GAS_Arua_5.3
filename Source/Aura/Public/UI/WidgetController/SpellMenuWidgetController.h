@@ -14,6 +14,7 @@ class AURA_API USpellMenuWidgetController : public UAuraWidgetController
 {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitValues() override ;
 	virtual void BindCallBacksToDependencies() override ;
 };
