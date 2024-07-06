@@ -31,6 +31,7 @@ public:
 	void ForEachAbility(const FForEachAbility& Delegate);
     static FGameplayTag GetAbilityFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+	static FGameplayTag GetStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	void UpgradeAttribute(const FGameplayTag& Tag);
 
 	UFUNCTION(Server,Reliable)

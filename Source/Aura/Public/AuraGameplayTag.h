@@ -67,6 +67,24 @@ public:
 	//攻擊事件tag
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
+	
+	FGameplayTag Abilities_HitReact;
+
+	/*技能狀態*/
+	//locked 鎖定的 have not spell points
+	FGameplayTag Abilities_Status_Locked;
+	//eligible 有資格的 can be unlocked
+	FGameplayTag Abilities_Status_Eligible;
+	//unlocked 已解鎖 can be equipped
+	FGameplayTag Abilities_Status_Unlocked;
+	//equipped 已裝備
+	FGameplayTag Abilities_Status_Equipped;
+	/*技能類型*/
+	FGameplayTag Abilities_Type_Offensive;
+	FGameplayTag Abilities_Type_Passive;
+	FGameplayTag Abilities_Type_None;
+
+	
 	FGameplayTag Abilities_Fire_FireBolt;
 	/* Cooldown */
 	FGameplayTag Cooldown_Fire_FireBolt;

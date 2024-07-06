@@ -21,9 +21,11 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(TArray<TSubclassOf<UGame
 	{
 		if (!Ability)continue;
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(Ability, 1);
+		const FGameplayTag EquipTag = FAuraGameplayTags::Get().Abilities_Status_Equipped;
 		if(const UAuraGameAbility* AuraAbility = Cast<UAuraGameAbility>(AbilitySpec.Ability))
 		{
 			AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->StartInputTag);
+			AbilitySpec.DynamicAbilityTags.AddTag(EquipTag);
 			GiveAbility(AbilitySpec);
 		}		
 	}
@@ -104,6 +106,19 @@ FGameplayTag UAuraAbilitySystemComponent::GetInputTagFromSpec(const FGameplayAbi
 	}
 	UE_LOG(LogAura, Error, TEXT("GetAbilityFromSpec failed [%hs]"), __FUNCTION__ );
 	return FGameplayTag::EmptyTag;
+}
+
+FGameplayTag UAuraAbilitySystemComponent::GetStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	for (const FGameplayTag StatusTag : AbilitySpec.DynamicAbilityTags)
+	{
+		if(StatusTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities.Status"))))
+		{
+			return StatusTag;
+		}
+	}
+	UE_LOG(LogAura, Error, TEXT("GetStatusTagFromSpec failed [%hs]"), __FUNCTION__ );
+	return FGameplayTag();
 }
 
 void UAuraAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& Tag)
