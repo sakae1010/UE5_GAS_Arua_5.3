@@ -133,10 +133,17 @@ int32 UAuraAbilitySystemLibrary::GetXpRewardForCharacterClassAndLevel(const UObj
 
 UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
 {
-	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	const AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 	if(AuraGameModeBase == nullptr) return nullptr;
 	return AuraGameModeBase->CharacterClassInfo;
 	
+}
+
+UAbilityInfo* UAuraAbilitySystemLibrary::GetAbilityInfo(const UObject* WorldContextObject)
+{
+	const AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if(AuraGameModeBase == nullptr) return nullptr;
+	return AuraGameModeBase->AbilityInfo;
 }
 
 

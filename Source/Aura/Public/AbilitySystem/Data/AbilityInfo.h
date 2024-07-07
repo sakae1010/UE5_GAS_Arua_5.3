@@ -7,6 +7,8 @@
 #include "Engine/DataAsset.h"
 #include "AbilityInfo.generated.h"
 
+class UGameplayAbility;
+
 USTRUCT(Blueprintable)
 struct FAuraAbilityInfo
 {
@@ -29,7 +31,12 @@ struct FAuraAbilityInfo
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilityInfo")
 	TObjectPtr<const UMaterialInstance> BackgrounMaterial = nullptr;
-	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilityInfo")
+	int32 LevelRequirement = 1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilityInfo")
+	TSubclassOf<UGameplayAbility> Ability = nullptr;
 	
 };
 

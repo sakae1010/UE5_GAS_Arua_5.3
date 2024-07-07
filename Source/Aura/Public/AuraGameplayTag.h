@@ -15,12 +15,13 @@ public:
      static const FAuraGameplayTags& Get() {return GameplayTags;}
      static void InitializeNativeGameplayTags();
 
+	//主要能力
 	FGameplayTag AuraAttribute_Primary_Strength;
 	FGameplayTag AuraAttribute_Primary_Resilience;
 	FGameplayTag AuraAttribute_Primary_Intelligence;
 	FGameplayTag AuraAttribute_Primary_Vigor;
 	
-	
+	//次要能力
 	FGameplayTag AuraAttribute_Secondary_Armor;
 	FGameplayTag AuraAttribute_Secondary_ArmorPenetration;
 	FGameplayTag AuraAttribute_Secondary_BlockChance;
@@ -86,6 +87,7 @@ public:
 
 	
 	FGameplayTag Abilities_Fire_FireBolt;
+	FGameplayTag Abilities_Lightning_Electrocute;
 	/* Cooldown */
 	FGameplayTag Cooldown_Fire_FireBolt;
 	/* 特效通知 */
