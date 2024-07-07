@@ -5,7 +5,9 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraGameplayTag.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/Abilities/AuraGameAbility.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "Aura/AuraLogChannels.h"
 #include "Interaction/PlayerInterface.h"
 
@@ -13,6 +15,26 @@
 void UAuraAbilitySystemComponent::AbilityActorInfoInit()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::ClientEffectApplied);
+}
+
+
+void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 Level)
+{
+	UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+	if(!IsValid(AbilityInfo) )return;
+	for (const FAuraAbilityInfo& Info : AbilityInfo->AuraAbilityInformations )
+	{
+		if(!Info.AbilityTag.IsValid())continue;
+		if(Level < Info.LevelRequirement) continue;
+		if(GetGameplayAbilitySpec(Info.AbilityTag) == nullptr)
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec (Info.Ability , 1) ;
+			AbilitySpec.DynamicAbilityTags.AddTag(FAuraGameplayTags::Get().Abilities_Status_Eligible);
+			GiveAbility(AbilitySpec);
+			MarkAbilitySpecDirty(AbilitySpec);
+		}
+	}
+	
 }
 
 void UAuraAbilitySystemComponent::AddCharacterAbilities(TArray<TSubclassOf<UGameplayAbility>>& InAbilities)
@@ -119,6 +141,21 @@ FGameplayTag UAuraAbilitySystemComponent::GetStatusTagFromSpec(const FGameplayAb
 	}
 	UE_LOG(LogAura, Error, TEXT("GetStatusTagFromSpec failed [%hs]"), __FUNCTION__ );
 	return FGameplayTag();
+}
+
+FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetGameplayAbilitySpec(const FGameplayTag& AbilityTag)
+{
+	//確保還在跑loop時 不會被修改資料
+	FScopedAbilityListLock AbilityLock(*this);
+
+	for ( FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		for(FGameplayTag Tag : AbilitySpec.Ability.Get()->AbilityTags)
+		{
+			if(Tag.MatchesTag(AbilityTag))return &AbilitySpec;
+		}
+	}
+	return  nullptr;
 }
 
 void UAuraAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& Tag)

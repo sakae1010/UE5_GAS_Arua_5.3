@@ -32,12 +32,17 @@ public:
     static FGameplayTag GetAbilityFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+	//取得已啟動能力
+	FGameplayAbilitySpec* GetGameplayAbilitySpec(const FGameplayTag& AbilityTag);
 	void UpgradeAttribute(const FGameplayTag& Tag);
 
 	UFUNCTION(Server,Reliable)
 	void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);
+	//檢查等級 條件通過就給與技能 尚未啟動狀態
+	void UpdateAbilityStatuses(int32 Level);
 protected:
 	virtual void OnRep_ActivateAbilities() override;	
 	UFUNCTION(Client,Reliable)
 	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent ,  const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle) const;
 };
+

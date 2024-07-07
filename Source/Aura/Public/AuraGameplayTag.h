@@ -74,7 +74,7 @@ public:
 	/*技能狀態*/
 	//locked 鎖定的 have not spell points
 	FGameplayTag Abilities_Status_Locked;
-	//eligible 有資格的 can be unlocked
+	//eligible 可以點了~有資格的 can be unlocked
 	FGameplayTag Abilities_Status_Eligible;
 	//unlocked 已解鎖 can be equipped
 	FGameplayTag Abilities_Status_Unlocked;
