@@ -13,7 +13,7 @@ struct FAuraLevelUpInfo
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level Award")
-	int32 Exp;
+	int32 Exp = 0;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Level Award")
 	int32 AttributePointAward = 1;
