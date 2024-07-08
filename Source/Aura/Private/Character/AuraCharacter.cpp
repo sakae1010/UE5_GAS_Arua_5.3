@@ -3,6 +3,7 @@
 
 #include "Character/AuraCharacter.h"
 #include "NiagaraComponent.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -119,11 +120,16 @@ int32 AAuraCharacter::GetSpellPointsReward_Implementation(int32 InLevel) const
 	return AuraPlayerState->LevelUpInfo->LevelUpInfos[InLevel].SpellPointAward;
 }
 
-void AAuraCharacter::AddToPlayerLevel_Implementation(int32 InPlayerLevel)
+void AAuraCharacter::AddToPlayerLevel_Implementation(int32 InNumPlayerLevel)
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
-	AuraPlayerState->AddToLevel(InPlayerLevel);
+	AuraPlayerState->AddToLevel(InNumPlayerLevel);
+
+	if(UAuraAbilitySystemComponent* AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(GetAbilitySystemComponent()))
+	{
+		AuraAbilitySystemComponent->UpdateAbilityStatuses(AuraPlayerState->GetPlayerLevel());
+	}
 }
 
 void AAuraCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints)
