@@ -17,4 +17,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitValues() override ;
 	virtual void BindCallBacksToDependencies() override ;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Player|AttributePoints")
+	FOnPlayerStateChangedSignature OnSpellPointChanged;
+	
 };
