@@ -183,6 +183,10 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Abilities.Summon"),
 		FString("Summon Abilities Tag"));
 
+	GameplayTags.Abilities_None  = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Abilities.None"),
+		FString("No Ability - like this nullptr for Ability Tags "));
+	
 	GameplayTags.Abilities_Fire_FireBolt = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Abilities.Fire.FireBolt"),
 	FString("FireBolt Abilities Tag"));

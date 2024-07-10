@@ -68,7 +68,7 @@ public:
 	//攻擊事件tag
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
-	
+	FGameplayTag Abilities_None;
 	FGameplayTag Abilities_HitReact;
 
 	/*技能狀態*/
