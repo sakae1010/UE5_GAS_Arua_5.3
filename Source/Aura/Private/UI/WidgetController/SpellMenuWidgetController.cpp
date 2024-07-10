@@ -15,6 +15,13 @@ void USpellMenuWidgetController::BindCallBacksToDependencies()
 {
 	GetAuraAbilitySystemComponent()->AbilityStatusChangedDelegate.AddLambda([this](const FGameplayTag& AbilityTag , const FGameplayTag& StatusTag)
 	{
+		if(SelectAbilty.AbilityTag .MatchesTagExact(AbilityTag))
+		{
+			SelectAbilty.StatusTag = StatusTag;
+			ChangeButtonState(StatusTag,CurrentSpellPoints);
+		}
+	
+		
 		if(AbilityWidgetDataTable)
 		{
 			FAuraAbilityInfo Info = AbilityWidgetDataTable->FindAbilityInfForTag(AbilityTag);
@@ -23,10 +30,11 @@ void USpellMenuWidgetController::BindCallBacksToDependencies()
 		}
 	});
 
-	GetAuraPlayerState()->OnSpellPointsChangedDelegate.AddLambda([this](int InSpellPoints)
+	GetAuraPlayerState()->OnSpellPointsChangedDelegate.AddLambda([this](const int InSpellPoints)
 	{
 		OnSpellPointChanged.Broadcast(InSpellPoints);
-
+		CurrentSpellPoints = InSpellPoints;
+		ChangeButtonState(SelectAbilty.StatusTag , InSpellPoints);
 	});
 }
 
@@ -49,11 +57,14 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	{
 		AbilityStatusTag = GetAuraAbilitySystemComponent()->GetStatusTagFromSpec(*AbilitySpec);
 	}
-	bool bEquipButtonEnable = false;
-	bool bSpendPointsButtonEnable = false;
-	ShouldEnableButtons(AbilityStatusTag , SpellPoints ,bSpendPointsButtonEnable,bEquipButtonEnable);
-	
-	SpellGlobeSelectDelegate.Broadcast(bSpendPointsButtonEnable,bEquipButtonEnable);
+	SelectAbilty.AbilityTag = AbilityTag;
+	SelectAbilty.StatusTag = AbilityStatusTag;
+
+	ChangeButtonState(AbilityStatusTag , SpellPoints);
+	// bool bEquipButtonEnable = false;
+	// bool bSpendPointsButtonEnable = false;
+	// ShouldEnableButtons(AbilityStatusTag , SpellPoints ,bSpendPointsButtonEnable,bEquipButtonEnable);
+	// SpellGlobeSelectDelegate.Broadcast(bSpendPointsButtonEnable,bEquipButtonEnable);
 }
 
 void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& StatusTag,const int32 SpellPoints,	bool& bEnableSpellPointsButton, bool& bEnableEquipButton)
@@ -86,4 +97,12 @@ void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& StatusT
 		}
 	}
 	
+}
+
+void USpellMenuWidgetController::ChangeButtonState(const FGameplayTag StatusTag ,const int32 SpellPoints) const
+{
+	bool bEquipButtonEnable = false;
+	bool bSpendPointsButtonEnable = false;
+	ShouldEnableButtons(StatusTag, SpellPoints ,bSpendPointsButtonEnable,bEquipButtonEnable);
+	SpellGlobeSelectDelegate.Broadcast(bSpendPointsButtonEnable,bEquipButtonEnable);
 }
