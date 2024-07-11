@@ -13,7 +13,6 @@ struct FSelectAbilty
 {
 	FGameplayTag AbilityTag = FGameplayTag();
 	FGameplayTag StatusTag = FGameplayTag();
-	
 };
 
 /**
@@ -36,6 +35,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void SpellGlobeSelected(const FGameplayTag& AbilityTag);
+
+	UFUNCTION(BlueprintCallable)
+	void SpendButtonClick();
 private:
 	static void ShouldEnableButtons(const FGameplayTag& StatusTag ,const int32 SpellPoints ,bool& bEnableSpellPointButton , bool& bEnableEquipButton);
 

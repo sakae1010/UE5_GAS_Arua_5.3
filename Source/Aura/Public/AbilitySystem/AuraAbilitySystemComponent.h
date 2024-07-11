@@ -9,7 +9,7 @@ class UAuraAbilitySystemComponent;
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/);
 DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven /*AbilitySystemComponent*/);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
-DECLARE_MULTICAST_DELEGATE_TwoParams(FAbilityStatusChanged ,const  FGameplayTag& /* Ability Tag*/ ,const FGameplayTag& /* Ability Tag*/ );
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged ,const  FGameplayTag& /* Ability Tag*/ ,const FGameplayTag& /* Ability Tag*/  , int32 /* AbilityLevel*/);
 /**
  * 
  */
@@ -34,19 +34,22 @@ public:
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	//取得已啟動能力
-	FGameplayAbilitySpec* GetGameplayAbilitySpec(const FGameplayTag& AbilityTag);
+	FGameplayAbilitySpec* GetGameplayAbilitySpecFormTag(const FGameplayTag& AbilityTag);
 	void UpgradeAttribute(const FGameplayTag& Tag);
 
 	UFUNCTION(Server,Reliable)
 	void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);
 	//檢查等級 條件通過就給與技能 尚未啟動狀態
 	void UpdateAbilityStatuses(int32 Level);
+
+	UFUNCTION(Server,Reliable)
+	void ServerSpendSpellPoint(const FGameplayTag& AbilityTag);
 protected:
 	virtual void OnRep_ActivateAbilities() override;	
 	UFUNCTION(Client,Reliable)
 	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent ,  const FGameplayEffectSpec& Spec, FActiveGameplayEffectHandle Handle) const;
 	
 	UFUNCTION(Client,Reliable)
-	void ClientUpdateAbilityStatus(const FGameplayTag& AbilityTag , const FGameplayTag& StatusTag);
+	void ClientUpdateAbilityStatus(const FGameplayTag& AbilityTag , const FGameplayTag& StatusTag , int32 AbiltyLevel);
 };
 
