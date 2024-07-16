@@ -7,7 +7,7 @@
 #include "AuraWidgetController.h"
 #include "SpellMenuWidgetController.generated.h"
 struct FAuraGameplayTags;
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSpellGlobeSelectSignature, bool, bSpendPointsButtonEnabled, bool, bEquipButtonEnabled);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FSpellGlobeSelectSignature, bool, bSpendPointsButtonEnabled, bool, bEquipButtonEnabled ,FString, Description, FString, NextLevelDescription);
 
 struct FSelectAbilty
 {
@@ -45,6 +45,6 @@ private:
 	int32 CurrentSpellPoints = 0;
 
 
-	void ChangeButtonState(const FGameplayTag StatusTag ,const int32 SpellPoints) const;
+	void ChangeButtonState(const FGameplayTag AbilityTag ,const FGameplayTag StatusTag ,const int32 SpellPoints );
 	
 };

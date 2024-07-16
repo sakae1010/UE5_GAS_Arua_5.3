@@ -34,7 +34,7 @@ public:
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	//取得已啟動能力
-	FGameplayAbilitySpec* GetGameplayAbilitySpecFormTag(const FGameplayTag& AbilityTag);
+	FGameplayAbilitySpec* GetSpecFormAbilityTag(const FGameplayTag& AbilityTag);
 	void UpgradeAttribute(const FGameplayTag& Tag);
 
 	UFUNCTION(Server,Reliable)
@@ -44,6 +44,9 @@ public:
 
 	UFUNCTION(Server,Reliable)
 	void ServerSpendSpellPoint(const FGameplayTag& AbilityTag);
+
+
+	bool GetDescriptionsByAbilityTag(const FGameplayTag& AbilityTag , FString& OutDescription, FString& OutNextLevelDescription);
 protected:
 	virtual void OnRep_ActivateAbilities() override;	
 	UFUNCTION(Client,Reliable)

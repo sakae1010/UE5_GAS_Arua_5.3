@@ -18,6 +18,7 @@ public:
 	FGameplayTag StartInputTag;
 
 
-
-	
+	virtual FString GetDescription(int32 Level);
+	virtual FString GetNextLevelDescription(int32 Level);
+	static  FString GetLoackedDescription(int32 Level);
 };
