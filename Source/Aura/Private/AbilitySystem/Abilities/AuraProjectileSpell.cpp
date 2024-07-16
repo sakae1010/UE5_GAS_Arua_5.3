@@ -58,8 +58,31 @@ void UAuraProjectileSpell::SpawnProjectile( const FVector& TargetLocation , cons
 	{
 		const float ScaledValue = Pair.Value.GetValueAtLevel(GetAbilityLevel());
 		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,Pair.Key, ScaledValue);
-			
 	}
 	Projectile->DamageEffectSpecHandle = SpecHandle;
 	Projectile->FinishSpawning(SpawnTransform);
+}
+
+
+
+
+FString UAuraProjectileSpell::GetDescription(int32 Level)
+{
+	const float TotalDamage = DamageTypes[FAuraGameplayTags::Get().Damage_Fire].GetValueAtLevel(Level);
+	return GetDefaultDesc(FString("FIRE BOLT"), Level , TotalDamage);
+}
+
+FString UAuraProjectileSpell::GetNextLevelDescription(int32 Level)
+{
+	const float TotalDamage = DamageTypes[FAuraGameplayTags::Get().Damage_Fire].GetValueAtLevel(Level);
+	return GetDefaultDesc(FString("NEXT LEVEL"), Level , TotalDamage);
+}
+
+FString UAuraProjectileSpell::GetDefaultDesc(const FString& Title, const int Level , const float DamageValue ) const
+{
+	if (Level == 1)
+	{
+		return FString::Printf(TEXT("<Title>%s</> \n\n <Default>Lanunches a Bolt of fire , Exploding on impact and delling : </> <Damage> %.2f </> fire damage with a chance to burn \n\n <Small>Level : </> <Level>%d</>"),*Title,DamageValue , Level);	
+	}
+	return FString::Printf(TEXT("<Title>%s</> \n\n <Default>Lanunches %d Bolts of fire , Exploding on impact and delling : </> <Damage> %.2f </> fire damage with a chance to burn\n\n  <Small>Level : </> <Level>%d</>"),*Title,FMath::Min(Level,NewProjectiles),DamageValue , Level);
 }
