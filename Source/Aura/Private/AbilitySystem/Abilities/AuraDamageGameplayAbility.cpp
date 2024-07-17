@@ -27,3 +27,9 @@ FTaggedMontage UAuraDamageGameplayAbility::GetRandomAttackMontageForArray(const 
 	}
 	return FTaggedMontage();
 }
+
+float UAuraDamageGameplayAbility::GetDamageByDamageType(int InLevel, const FGameplayTag& Tag) const
+{
+	checkf(DamageTypes.Contains(Tag), TEXT("GameplayAbilit [%s] does not contain DamageType [%s]"), *GetNameSafe(this), *Tag.ToString());
+	return DamageTypes[Tag].GetValueAtLevel(InLevel);
+}
