@@ -77,6 +77,14 @@ void USpellMenuWidgetController::SpendButtonClick()
 	}
 }
 
+void USpellMenuWidgetController::GlobeDeselect()
+{
+	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	SelectAbilty.AbilityTag = GameplayTags.Abilities_Type_None;
+	SelectAbilty.StatusTag = GameplayTags.Abilities_Status_Locked;
+	SpellGlobeSelectDelegate.Broadcast(false,false,FString(),FString());
+}
+
 void USpellMenuWidgetController::ShouldEnableButtons(const FGameplayTag& StatusTag,const int32 SpellPoints,	bool& bEnableSpellPointsButton, bool& bEnableEquipButton)
 {
 	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();

@@ -148,7 +148,7 @@ FGameplayTag UAuraAbilitySystemComponent::GetAbilityFromSpec(const FGameplayAbil
 		
 		}
 	}
-	UE_LOG(LogAura, Error, TEXT("GetAbilityFromSpec failed [%hs]"), __FUNCTION__ );
+	UE_LOG(LogAura, Warning, TEXT("GetAbilityFromSpec failed [%hs]"), __FUNCTION__ );
 	return FGameplayTag::EmptyTag;
 }
 
@@ -226,12 +226,17 @@ bool UAuraAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag
 			OutDescription = AuraGameAbility->GetDescription(AbilitySpec->Level);
 			OutNextLevelDescription = AuraGameAbility->GetNextLevelDescription(AbilitySpec->Level + 1 );
 		}
-		
-		
 		return true;
 	}
-	const UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
-	OutDescription = UAuraGameAbility::GetLoackedDescription(AbilityInfo->FindAbilityInfForTag(AbilityTag).LevelRequirement);
+	if(!AbilityTag.IsValid() || AbilityTag == FAuraGameplayTags::Get().Abilities_Type_None)
+	{
+		OutDescription = FString();
+	}else
+	{
+		const UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+		OutDescription = UAuraGameAbility::GetLoackedDescription(AbilityInfo->FindAbilityInfForTag(AbilityTag).LevelRequirement);
+	}
+
 	OutNextLevelDescription = FString();
 	return false;
 }
