@@ -26,6 +26,10 @@ struct FAuraAbilityInfo
 	UPROPERTY(EditDefaultsOnly ,BlueprintReadOnly, Category = "AbilityInfo")
 	FGameplayTag CooldownTag = FGameplayTag::EmptyTag;
 	
+
+	UPROPERTY(EditDefaultsOnly ,BlueprintReadOnly, Category = "AbilityInfo")
+	FGameplayTag AbilityType = FGameplayTag::EmptyTag;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilityInfo")
 	TObjectPtr<const UTexture2D> Icon = nullptr;
 
@@ -52,5 +56,5 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilityInfo")
 	TArray<FAuraAbilityInfo> AuraAbilityInformations;
 
-	FAuraAbilityInfo FindAbilityInfForTag(const FGameplayTag InAbilityTag, bool bLogNotFund = false) const;
+	FAuraAbilityInfo FindAbilityInfoForTag(const FGameplayTag InAbilityTag, bool bLogNotFund = false) const;
 };

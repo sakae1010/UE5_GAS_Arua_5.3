@@ -234,7 +234,7 @@ bool UAuraAbilitySystemComponent::GetDescriptionsByAbilityTag(const FGameplayTag
 	}else
 	{
 		const UAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
-		OutDescription = UAuraGameAbility::GetLoackedDescription(AbilityInfo->FindAbilityInfForTag(AbilityTag).LevelRequirement);
+		OutDescription = UAuraGameAbility::GetLoackedDescription(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
 	}
 
 	OutNextLevelDescription = FString();
