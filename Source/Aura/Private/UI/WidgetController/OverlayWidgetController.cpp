@@ -3,6 +3,7 @@
 
 #include "UI/WidgetController/OverlayWidgetController.h"
 
+#include "AuraGameplayTag.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
@@ -57,6 +58,10 @@ void UOverlayWidgetController::BindCallBacksToDependencies()
 		});
 	if(UAuraAbilitySystemComponent* AuraASC  = GetAuraAbilitySystemComponent())
 	{
+		
+		AuraASC->AbilityEquipedDelegate.AddUObject(this,&UOverlayWidgetController::OnAbilityEquiped);
+
+		
 		if (AuraASC->bStartupAbilitiesGiven)
 		{
 			BroadcastAbilityInfo();
@@ -107,5 +112,22 @@ void UOverlayWidgetController::OnXPChanged(int32 NewXP)
 	{
 		OnXPPercentChanged.Broadcast(1.0f);
 	}
+}
+
+void UOverlayWidgetController::OnAbilityEquiped(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag,const FGameplayTag& Slot, const FGameplayTag& PreviousSlot) const
+{
+	const FAuraGameplayTags AuraGameplayTag = FAuraGameplayTags::Get();
+
+	FAuraAbilityInfo LastSlotInfo;
+	LastSlotInfo.StatusTag = AuraGameplayTag.Abilities_Status_Unlocked;
+	LastSlotInfo.InputTag = PreviousSlot;
+	LastSlotInfo.AbilityTag  = AuraGameplayTag.Abilities_None;
+	// 只通知 已裝備的Ability
+	AbilityInfoDelegate.Broadcast(LastSlotInfo);
+	
+	FAuraAbilityInfo Info = AbilityWidgetDataTable->FindAbilityInfoForTag(AbilityTag);
+	Info.StatusTag = StatusTag;
+	Info.InputTag = Slot;
+	AbilityInfoDelegate.Broadcast(Info);
 }
 
