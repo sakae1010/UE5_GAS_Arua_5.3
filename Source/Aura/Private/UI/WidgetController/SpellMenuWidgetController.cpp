@@ -1,5 +1,4 @@
-﻿// sakae's gas project
-#include "AbilitySystem/AuraAbilitySystemComponent.h"
+﻿#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
 #include "UI/WidgetController/SpellMenuWidgetController.h"
 #include "AuraGameplayTag.h"

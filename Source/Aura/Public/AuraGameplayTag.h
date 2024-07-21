@@ -32,10 +32,7 @@ public:
 	FGameplayTag AuraAttribute_Secondary_ManaRegeneration;
 	FGameplayTag AuraAttribute_Secondary_MaxHealth;
 	FGameplayTag AuraAttribute_Secondary_MaxMana;
-	FGameplayTag Attributes_Resistance_Fire;
-	FGameplayTag Attributes_Resistance_Lighting;
-	FGameplayTag Attributes_Resistance_Arcane;
-	FGameplayTag Attributes_Resistance_Physical;
+
 
 	FGameplayTag Attributes_Meta_IncomingXP;
 	
@@ -47,11 +44,26 @@ public:
 	FGameplayTag InputTag_4;
 	FGameplayTag InputTag_Passive_1;
 	FGameplayTag InputTag_Passive_2;
+	//傷害類型
 	FGameplayTag Damage;
 	FGameplayTag Damage_Fire;
-	FGameplayTag Damage_Lighting;
+	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
+	//抵抗傷害類型
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Arcane;
+	FGameplayTag Attributes_Resistance_Physical;
+
+	//火焰機率造成 燃燒
+	FGameplayTag Debuff_Burn;
+	//閃電傷害會造成機率 暈眩
+	FGameplayTag Debuff_Stun;
+	FGameplayTag Debuff_Arcane;
+	FGameplayTag Debuff_Physical;
+	
+	
 	//武器插槽的對應
 	FGameplayTag CombatSocket_Weapon;
 	FGameplayTag CombatSocket_RightHand;
@@ -92,6 +104,9 @@ public:
 	FGameplayTag Cooldown_Fire_FireBolt;
 	/* 特效通知 */
 	TMap<FGameplayTag , FGameplayTag> DamageTypesToResistances;
+
+	TMap<FGameplayTag , FGameplayTag> DamageTypesToDebuffs;
+	
 	//HitReact 為受擊反應
 	FGameplayTag Effects_HitReact;
 	

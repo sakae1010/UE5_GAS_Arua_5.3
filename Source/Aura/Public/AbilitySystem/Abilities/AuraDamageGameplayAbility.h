@@ -22,10 +22,10 @@ protected:
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 	
 	UPROPERTY(EditDefaultsOnly ,Category="Combat")
-	TMap<FGameplayTag , FScalableFloat> DamageTypes;
-
+	FGameplayTag DamageType;
+	UPROPERTY(EditDefaultsOnly ,Category="Combat")
+	FScalableFloat Damage;
+	
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetRandomAttackMontageForArray(const TArray<FTaggedMontage>& TaggedMontages );
-
-	float GetDamageByDamageType(int InLevel , const FGameplayTag& Tag) const;
 };

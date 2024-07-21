@@ -53,7 +53,7 @@ struct AuraDamageStatics
 		TagsToCaptureDefs.Add(AuraGameplayTags.AuraAttribute_Secondary_CriticalHitResistance, CriticalHitResistanceDef);
 		
 		TagsToCaptureDefs.Add(AuraGameplayTags.Attributes_Resistance_Fire, FireResistanceDef);
-		TagsToCaptureDefs.Add(AuraGameplayTags.Attributes_Resistance_Lighting, LightingResistanceDef);
+		TagsToCaptureDefs.Add(AuraGameplayTags.Attributes_Resistance_Lightning, LightingResistanceDef);
 		TagsToCaptureDefs.Add(AuraGameplayTags.Attributes_Resistance_Arcane, ArcaneResistanceDef);
 		TagsToCaptureDefs.Add(AuraGameplayTags.Attributes_Resistance_Physical, PhysicalResistanceDef);
 		

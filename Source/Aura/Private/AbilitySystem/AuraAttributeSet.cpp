@@ -32,7 +32,7 @@ UAuraAttributeSet::UAuraAttributeSet()
 	/* 屬性抵抗 */
 	TagsToAttributeMap.Add(AuraTags.Attributes_Resistance_Arcane, GetArcaneResistanceAttribute);
 	TagsToAttributeMap.Add(AuraTags.Attributes_Resistance_Fire, GetFireResistanceAttribute);
-	TagsToAttributeMap.Add(AuraTags.Attributes_Resistance_Lighting, GetLightingResistanceAttribute);
+	TagsToAttributeMap.Add(AuraTags.Attributes_Resistance_Lightning, GetLightingResistanceAttribute);
 	TagsToAttributeMap.Add(AuraTags.Attributes_Resistance_Physical, GetPhysicalResistanceAttribute);
 	
 }
