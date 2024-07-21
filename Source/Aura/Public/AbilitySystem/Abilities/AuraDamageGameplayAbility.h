@@ -14,18 +14,29 @@ UCLASS()
 class AURA_API UAuraDamageGameplayAbility : public UAuraGameAbility
 {
 	GENERATED_BODY()
+
 public:
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION( BlueprintCallable )
 	void CauseDamage(AActor* TargetActor);
+
 protected:
-	UPROPERTY(EditDefaultsOnly , BlueprintReadOnly)
+	UPROPERTY( EditDefaultsOnly , BlueprintReadOnly )
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
-	
-	UPROPERTY(EditDefaultsOnly ,Category="Combat")
+
+	UPROPERTY( EditDefaultsOnly , Category="Combat" )
 	FGameplayTag DamageType;
-	UPROPERTY(EditDefaultsOnly ,Category="Combat")
+	UPROPERTY( EditDefaultsOnly , Category="Combat" )
 	FScalableFloat Damage;
-	
-	UFUNCTION(BlueprintPure)
-	FTaggedMontage GetRandomAttackMontageForArray(const TArray<FTaggedMontage>& TaggedMontages );
+
+	UPROPERTY( EditDefaultsOnly , Category="Combat" )
+	float DebuffChance = 20.f;	//觸發機率
+	UPROPERTY( EditDefaultsOnly , Category="Combat" )
+	float DebuffDamage = 5.f;
+	UPROPERTY( EditDefaultsOnly , Category="Combat" )
+	float DebuffFrequency = 1.f;//每秒
+	UPROPERTY( EditDefaultsOnly , Category="Combat" )
+	float DebuffDuration = 5.f;	//持續時間
+
+	UFUNCTION( BlueprintPure )
+	FTaggedMontage GetRandomAttackMontageForArray(const TArray<FTaggedMontage>& TaggedMontages);
 };

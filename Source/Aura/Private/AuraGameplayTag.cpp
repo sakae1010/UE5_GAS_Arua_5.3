@@ -176,7 +176,23 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Debuff.Physical"),
 		FString("Debuff to Physical  Type")
 		);
-	
+
+	GameplayTags.Debuff_Chance = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Debuff.Chance"),
+		FString("Debuff Chance")
+		);
+	GameplayTags.Debuff_Damage = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Debuff.Damage"),
+		FString("Debuff Damage")
+		);
+	GameplayTags.Debuff_Frequency = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Debuff.Frequency"),
+		FString("Debuff Frequency")
+		);
+	GameplayTags.Debuff_Duration = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Debuff.Duration"),
+		FString("Debuff Duration")
+		);
 	/*
 	 *map to Damage to Resistance 
 	 */
