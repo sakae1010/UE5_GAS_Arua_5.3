@@ -5,6 +5,8 @@
 
 #include <AuraAbilityTypes.h>
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AuraGameplayTag.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Abilities/AuraGameAbility.h"
 #include "Aura/AuraLogChannels.h"
@@ -13,6 +15,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerState.h"
 #include "UI/HUD/AuraHUD.h"
+
 bool UAuraAbilitySystemLibrary::MakeWidgetControllerParams(const UObject* WorldContextObject,FWidgetControllerParams& OutParams , AAuraHUD*& OutAuraHUD)
 {
 	if( APlayerController* PlayerController = UGameplayStatics::GetPlayerController(WorldContextObject, 0))
@@ -130,7 +133,6 @@ int32 UAuraAbilitySystemLibrary::GetXpRewardForCharacterClassAndLevel(const UObj
 
 
 
-
 UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
 {
 	const AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
@@ -216,6 +218,24 @@ bool UAuraAbilitySystemLibrary::IsNotFriend(const AActor* FirstOwner,const AActo
 	const bool bBothAreEnemy = FirstOwner->ActorHasTag(EnemyTag)  &&  SecondTarget->ActorHasTag(EnemyTag);
 	const bool bIsFriend = bBothArePlayer || bBothAreEnemy;
 	return !bIsFriend;
+}
+
+FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffectParams(const FDamageEffectParams& DamageEffectParams)
+{
+	const FAuraGameplayTags AuraGameplayTags = FAuraGameplayTags::Get();
+	const AActor* SourceActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+	FGameplayEffectContextHandle ContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
+	ContextHandle.AddSourceObject(SourceActor);
+	FGameplayEffectSpecHandle DamageSpecHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(DamageEffectParams.DamageEffectClass, DamageEffectParams.AbilityLevel, ContextHandle);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( DamageSpecHandle, DamageEffectParams.DamageType, DamageEffectParams.BaseDamage);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( DamageSpecHandle, AuraGameplayTags.Debuff_Chance, DamageEffectParams.DebuffChance);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( DamageSpecHandle, AuraGameplayTags.Debuff_Damage, DamageEffectParams.DebuffDamage);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( DamageSpecHandle, AuraGameplayTags.Debuff_Duration, DamageEffectParams.DebuffDuration);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( DamageSpecHandle, AuraGameplayTags.Debuff_Frequency, DamageEffectParams.DebuffFrequency);
+	
+	DamageEffectParams.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*DamageSpecHandle.Data);
+	//可能不需要使用
+	return ContextHandle;
 }
 
 
