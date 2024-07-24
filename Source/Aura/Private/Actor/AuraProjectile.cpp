@@ -47,24 +47,29 @@ void AAuraProjectile::BeginPlay()
 	}
 }
 
+void AAuraProjectile::OnHit()
+{
+	if(ImpactEffect)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+	}
+	if(ImpactSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(),FRotator::ZeroRotator);
+		if(LoppingSoundComponent)
+		{
+			LoppingSoundComponent->Stop();
+		}
+	}
+	bHit = true;
+}
+
 void AAuraProjectile::Destroyed()
 {
 	
 	if(!bHit && !HasAuthority())
 	{
-		if(ImpactEffect)
-		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-		}
-		if(ImpactSound)
-		{
-			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(),FRotator::ZeroRotator);
-			if(LoppingSoundComponent)
-			{
-				LoppingSoundComponent->Stop();
-			}
-		}
-		bHit = true;
+		OnHit();
 	}
 	Super::Destroyed();
 }
@@ -72,12 +77,13 @@ void AAuraProjectile::Destroyed()
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(!DamageEffectSpecHandle.Data.IsValid() || DamageEffectSpecHandle.Data->GetContext().GetEffectCauser() == OtherActor)
+	const AActor* SourceActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+	if(SourceActor == OtherActor)
 	{
 		return;
 	}
 
-	if(!UAuraAbilitySystemLibrary::IsNotFriend(DamageEffectSpecHandle.Data->GetContext().GetEffectCauser() ,OtherActor))
+	if(!UAuraAbilitySystemLibrary::IsNotFriend(SourceActor ,OtherActor))
 	{
 		return;
 	}
@@ -85,26 +91,14 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 	
 	if (!bHit)
 	{
-		if(ImpactEffect)
-		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-		}
-		if(ImpactSound)
-		{
-			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(),FRotator::ZeroRotator);
-			if(LoppingSoundComponent)
-			{
-				LoppingSoundComponent->Stop();
-			}
-		}
-		bHit = true;
+		OnHit();
 	}
 	if(HasAuthority())
 	{
-		if(UAbilitySystemComponent* TargetAbilitySystemComponent =
-			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		if(UAbilitySystemComponent* TargetAbilitySystemComponent = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
-			TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+			DamageEffectParams.TargetAbilitySystemComponent = TargetAbilitySystemComponent;
+			UAuraAbilitySystemLibrary::ApplyDamageEffectParams(DamageEffectParams);
 		}
 		Destroy();
 	}else
