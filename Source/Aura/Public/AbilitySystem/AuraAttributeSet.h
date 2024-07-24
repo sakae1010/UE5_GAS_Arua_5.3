@@ -161,9 +161,9 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, FireResistance)
 
 
-	UPROPERTY(ReplicatedUsing = OnRep_LightingResistance, BlueprintReadOnly, Category = "Resistance Attributes")
-	FGameplayAttributeData LightingResistance;
-	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, LightingResistance)
+	UPROPERTY(ReplicatedUsing = OnRep_LightningResistance, BlueprintReadOnly, Category = "Resistance Attributes")
+	FGameplayAttributeData LightningResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, LightningResistance)
 
 	UPROPERTY(ReplicatedUsing = OnRep_ArcaneResistance, BlueprintReadOnly, Category = "Resistance Attributes")
 	FGameplayAttributeData ArcaneResistance;
@@ -258,7 +258,7 @@ public:
 	void OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance) const;
 
 	UFUNCTION()
-	void OnRep_LightingResistance(const FGameplayAttributeData& OldLightingResistance) const;
+	void OnRep_LightningResistance(const FGameplayAttributeData& OldLightningResistance) const;
 
 	UFUNCTION()
 	void OnRep_ArcaneResistance(const FGameplayAttributeData& OldArcaneResistance) const;

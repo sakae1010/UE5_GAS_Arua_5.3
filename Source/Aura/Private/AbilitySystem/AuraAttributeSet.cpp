@@ -32,7 +32,7 @@ UAuraAttributeSet::UAuraAttributeSet()
 	/* 屬性抵抗 */
 	TagsToAttributeMap.Add(AuraTags.Attributes_Resistance_Arcane, GetArcaneResistanceAttribute);
 	TagsToAttributeMap.Add(AuraTags.Attributes_Resistance_Fire, GetFireResistanceAttribute);
-	TagsToAttributeMap.Add(AuraTags.Attributes_Resistance_Lightning, GetLightingResistanceAttribute);
+	TagsToAttributeMap.Add(AuraTags.Attributes_Resistance_Lightning, GetLightningResistanceAttribute);
 	TagsToAttributeMap.Add(AuraTags.Attributes_Resistance_Physical, GetPhysicalResistanceAttribute);
 	
 }
@@ -54,7 +54,7 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	/* 屬性抵抗 */
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, FireResistance, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, ArcaneResistance, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, LightingResistance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, LightningResistance, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, PhysicalResistance, COND_None, REPNOTIFY_Always);
 
 	// primary attributes
@@ -276,9 +276,9 @@ void UAuraAttributeSet::OnRep_FireResistance(const FGameplayAttributeData& OldFi
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, FireResistance, OldFireResistance);
 }
 
-void UAuraAttributeSet::OnRep_LightingResistance(const FGameplayAttributeData& OldLightingResistance) const
+void UAuraAttributeSet::OnRep_LightningResistance(const FGameplayAttributeData& OldLightningResistance) const
 {
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, LightingResistance, OldLightingResistance);
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, LightningResistance, OldLightningResistance);
 }
 
 void UAuraAttributeSet::OnRep_ArcaneResistance(const FGameplayAttributeData& OldArcaneResistance) const
