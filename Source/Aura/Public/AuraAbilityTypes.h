@@ -44,7 +44,9 @@ struct FDamageEffectParams
 
 	UPROPERTY()
 	float DebuffFrequency = 0.f;//每秒
-		
+
+	UPROPERTY()
+	float DeathImpulseMagnitude = 0.f; //死亡時的衝量
 };
 
 USTRUCT(BlueprintType)
