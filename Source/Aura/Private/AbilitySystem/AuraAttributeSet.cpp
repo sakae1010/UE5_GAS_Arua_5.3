@@ -170,6 +170,8 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 	const float bFatal = NewHealth <= 0.f;
 	if (bFatal)
 	{
+		//TODO 使用死亡衝擊!
+		
 		if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
 		{
 			CombatInterface->Die();
@@ -190,7 +192,6 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 	if (UAuraAbilitySystemLibrary::IsSuccessfulDebuff(Props.EffectContextHandle ))
 	{
 		Debuff( Props );
-			
 	}
 }
 
