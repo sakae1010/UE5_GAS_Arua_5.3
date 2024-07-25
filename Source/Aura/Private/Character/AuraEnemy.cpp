@@ -79,7 +79,7 @@ void AAuraEnemy::BeginPlay()
 				&AAuraEnemy::HitReactTagChanged
 				);
 
-		UE_LOG(LogTemp, Warning, TEXT("Registered HitReactTagChanged for tag: %s"), *FAuraGameplayTags::Get().Effects_HitReact.ToString());
+		// UE_LOG(LogTemp, Warning, TEXT("Registered HitReactTagChanged for tag: %s"), *FAuraGameplayTags::Get().Effects_HitReact.ToString());
 		
 		OnHealthChanged.Broadcast(AuraAttributeSet->GetHealth());
 		OnMaxHealthChanged.Broadcast(AuraAttributeSet->GetMaxHealth());
@@ -95,7 +95,7 @@ void AAuraEnemy::InitAbilityActorInfo()
 	{
 		InitializeDefaultAttributes();
 	}
-	
+	OnAscRegisteredDelegate.Broadcast(AbilitySystemComponent );
 }
 void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallBackTag, int32 NewCount)
 {

@@ -130,7 +130,7 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	Effect->DurationPolicy = EGameplayEffectDurationType::HasDuration;
 	Effect->Period = DebuffFrequency;
 	Effect->DurationMagnitude = FScalableFloat( DebuffDuration );
-	//TODO for UE5.3
+	// 5.3已經捨去的方法
 	// Effect->InheritableOwnedTagsContainer.AddTag( GameplayTags.DamageTypesToDebuffs[DamageType] );
 	// 另一種做法
 	// Effect->CachedGrantedTags.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);

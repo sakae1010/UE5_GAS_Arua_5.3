@@ -12,7 +12,8 @@ class UNiagaraSystem;
 struct FGameplayTag;
 class UAnimMontage;
 
-
+DECLARE_MULTICAST_DELEGATE_OneParam( FOnASCRegistered , class UAbilitySystemComponent* );
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature , AActor* , DeadActor ); 
 //對應 Tag  與 動畫檔案
 USTRUCT(Blueprintable)
 struct FTaggedMontage
@@ -49,6 +50,7 @@ class AURA_API ICombatInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+
 	
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	int32 GetPlayerLevel();
@@ -87,4 +89,8 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent , BlueprintCallable)
 	ECharacterClass GetCharacterClass() const;
+
+
+	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() = 0;
+	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
 };
