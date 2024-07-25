@@ -99,7 +99,7 @@ void AAuraEnemy::InitAbilityActorInfo()
 }
 void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallBackTag, int32 NewCount)
 {
-	UE_LOG(LogTemp, Warning, TEXT("HitReactTagChanged called for tag: %s, new count: %d"), *CallBackTag.ToString(), NewCount);
+	// UE_LOG(LogTemp, Warning, TEXT("HitReactTagChanged called for tag: %s, new count: %d"), *CallBackTag.ToString(), NewCount);
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f: BaseWalkSpeed;
 	if (AuraAIController!= nullptr && AuraAIController->GetBlackboardComponent())
