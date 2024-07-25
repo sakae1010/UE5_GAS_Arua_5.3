@@ -57,9 +57,26 @@ public:
 	
 	bool IsBlockedHit() const { return bIsBlockedHit; }
 
+	bool IsSuccessfulDebuff() const { return bSuccessfulDebuff; }
+
+	float GetDebuffDamage() const { return DebuffDamage; }
+	float GetDebuffDuration() const { return DebuffDuration; }
+	float GetDebuffFrequency() const { return DebuffFrequency; }
+	TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
+
 	void SetCriticalHit(bool bInIsCriticalHit ) { bIsCriticalHit = bInIsCriticalHit; }
 	
 	void SetBlockedHit(bool bInIsBlockedHit ) { bIsBlockedHit = bInIsBlockedHit; }
+
+	void SetSuccessfulDebuff(bool bInSuccessfulDebuff) { bSuccessfulDebuff = bInSuccessfulDebuff; }
+
+	void SetDebuffDamage(float InDebuffDamage) { DebuffDamage = InDebuffDamage; }
+	
+	void SetDebuffDuration(float InDebuffDuration) { DebuffDuration = InDebuffDuration; }
+	
+	void SetDebuffFrequency(float InDebuffFrequency) { DebuffFrequency = InDebuffFrequency; }
+	
+	void SetDamageType(FGameplayTag InDamageType) { DamageType = TSharedPtr<FGameplayTag>(new FGameplayTag(InDamageType)); }
 	
 	virtual UScriptStruct* GetScriptStruct() const override
 	{
@@ -87,6 +104,20 @@ protected:
 	
 	UPROPERTY()
 	bool bIsBlockedHit = false;
+
+	UPROPERTY()
+	bool bSuccessfulDebuff = false;
+	
+	UPROPERTY()
+	float DebuffDamage = 0.f; //傷害
+
+	UPROPERTY()
+	float DebuffDuration = 0.f;	//持續時間
+	
+	UPROPERTY()
+	float DebuffFrequency = 0.f;	//每秒
+
+	TSharedPtr<FGameplayTag> DamageType;
 };
 
 template<>

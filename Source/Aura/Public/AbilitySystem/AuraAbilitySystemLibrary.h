@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "AuraAbilityTypes.h"
 #include "Data/CharacterClassInfo.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "UI/WidgetController/AuraWidgetController.h"
@@ -51,6 +52,21 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
 	static bool IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
+	static bool IsSuccessfulDebuff(const FGameplayEffectContextHandle& EffectContextHandle);
+	
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
+	static float GetDebuffDamage(const FGameplayEffectContextHandle& EffectContextHandle)  ;
+	
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
+	static float GetDebuffDuration(const FGameplayEffectContextHandle& EffectContextHandle) ;
+	
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
+	static float GetDebuffFrequency(const FGameplayEffectContextHandle& EffectContextHandle) ;
+	
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
+	static FGameplayTag GetDamageType(const FGameplayEffectContextHandle& EffectContextHandle) ;
 	
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|EffectContext")
 	static void SetBlockedHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle , bool bInBlockedHit);
