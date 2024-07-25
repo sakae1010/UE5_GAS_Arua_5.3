@@ -67,12 +67,28 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
 	static FGameplayTag GetDamageType(const FGameplayEffectContextHandle& EffectContextHandle) ;
-	
-	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|EffectContext")
-	static void SetBlockedHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle , bool bInBlockedHit);
 
-	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|EffectContext")
-	static void SetCriticalHit(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle , bool bInCriticalHit);
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetBlockedHit(UPARAM( ref ) FGameplayEffectContextHandle& EffectContextHandle, bool bInBlockedHit);
+
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetCriticalHit(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, bool bInCriticalHit);
+
+
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetSuccessfulDebuff(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle,bool bInSuccessfulDebuff);
+
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetDebuffDamage(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, float InDebuffDamage);
+	
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetDebuffDuration(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle,float InDebuffDuration);
+
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetDebuffFrequency(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, float InDebuffFrequency);
+
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetDamageType(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FGameplayTag& InDamageType);
 
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
 	static void GetLivePlayerWithinRadius(const UObject* WorldContextObject,TArray<AActor*>& OutOverLappingActors, const TArray<AActor*>& ActorsToIgnore , float Radius, const FVector& SphereOrigin);
