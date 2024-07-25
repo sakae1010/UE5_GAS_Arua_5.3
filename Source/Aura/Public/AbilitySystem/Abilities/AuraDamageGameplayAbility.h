@@ -39,6 +39,10 @@ protected:
 	UPROPERTY( EditDefaultsOnly , Category="Combat" )
 	float DebuffDuration = 5.f;	//持續時間
 
+	UPROPERTY( EditDefaultsOnly , Category="Combat" )
+	float DeathImpulseMagnitude = 60.f; //死亡時的衝量
+	
+
 	UFUNCTION( BlueprintPure )
 	FTaggedMontage GetRandomAttackMontageForArray(const TArray<FTaggedMontage>& TaggedMontages);
 };
