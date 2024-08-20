@@ -218,6 +218,15 @@ FVector UAuraAbilitySystemLibrary::GetDeathImpulse(const FGameplayEffectContextH
 	return FVector::ZeroVector;
 }
 
+FVector UAuraAbilitySystemLibrary::GetKnokbackForce(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if(const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return AuraEffectContext->GetKnokbackForce();
+	}
+	return FVector::ZeroVector;
+}
+
 void UAuraAbilitySystemLibrary::SetBlockedHit(FGameplayEffectContextHandle& EffectContextHandle, bool bInBlockedHit)
 {
 	if(FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
@@ -283,6 +292,15 @@ void UAuraAbilitySystemLibrary::SetDeathImpulse(FGameplayEffectContextHandle& Ef
 	}
 }
 
+void UAuraAbilitySystemLibrary::SetKnokbackForce(FGameplayEffectContextHandle& EffectContextHandle,
+	const FVector& InKnokbackForce)
+{
+	if(FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		AuraEffectContext->SetKnokbackForce(InKnokbackForce);
+	}
+}
+
 
 void UAuraAbilitySystemLibrary::GetLivePlayerWithinRadius(
 	const UObject* WorldContextObject,
@@ -327,8 +345,8 @@ FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffectParams(
 	const AActor* SourceActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
 	FGameplayEffectContextHandle ContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
 	ContextHandle.AddSourceObject(SourceActor);
-	SetDeathImpulse( ContextHandle, DamageEffectParams.DeathImpulseVector);
-	
+	SetDeathImpulse( ContextHandle, DamageEffectParams.DeathImpulseVector );
+	SetKnokbackForce( ContextHandle, DamageEffectParams.KnokbackForce );
 	FGameplayEffectSpecHandle DamageSpecHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(DamageEffectParams.DamageEffectClass, DamageEffectParams.AbilityLevel, ContextHandle);
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( DamageSpecHandle, DamageEffectParams.DamageType, DamageEffectParams.BaseDamage);
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude( DamageSpecHandle, AuraGameplayTags.Debuff_Chance, DamageEffectParams.DebuffChance);

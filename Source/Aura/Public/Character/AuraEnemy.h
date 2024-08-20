@@ -34,7 +34,7 @@ public:
 
 	/** CombatInterface */
 	virtual int32 GetPlayerLevel_Implementation() override;
-	virtual void Die() override;
+	virtual void Die(const FVector& Impulse) override;
 	/** End CombatInterface */
 
 	UPROPERTY(BlueprintAssignable)

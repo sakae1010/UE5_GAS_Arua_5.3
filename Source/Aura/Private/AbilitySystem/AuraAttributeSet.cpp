@@ -170,11 +170,10 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 	const float bFatal = NewHealth <= 0.f;
 	if (bFatal)
 	{
-		//TODO 使用死亡衝擊!
-		
 		if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
 		{
-			CombatInterface->Die();
+			FVector DeadthImpuse = UAuraAbilitySystemLibrary::GetDeathImpulse( Props.EffectContextHandle );
+			CombatInterface->Die(DeadthImpuse);
 		}
 		SendXPEvent(Props);
 	}
@@ -183,6 +182,11 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 		FGameplayTagContainer HitReactTagContainer;
 		HitReactTagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
 		Props.TargetAbilitySystemComponent->TryActivateAbilitiesByTag(HitReactTagContainer);
+		const FVector& KnokbackForce = UAuraAbilitySystemLibrary::GetKnokbackForce( Props.EffectContextHandle );
+		if(!KnokbackForce.IsNearlyZero(1.f))
+		{
+			Props.TargetCharacter->LaunchCharacter( KnokbackForce , true , true );
+		}
 	}
 
 	const bool bIsBlockHit = UAuraAbilitySystemLibrary::IsBlockedHit(Props.EffectContextHandle);

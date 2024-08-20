@@ -74,7 +74,7 @@ public:
 	UFUNCTION(BlueprintNativeEvent , BlueprintCallable)
 	TArray<FTaggedMontage> GetAttackMontages();
 	
-	virtual void Die() = 0;
+	virtual void Die(const FVector& Impulse) = 0;
 
 	UFUNCTION(BlueprintNativeEvent , BlueprintCallable)
 	UNiagaraSystem* GetBloodEffect();
@@ -93,4 +93,5 @@ public:
 
 	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() = 0;
 	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
+
 };
