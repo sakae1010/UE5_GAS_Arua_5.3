@@ -15,6 +15,7 @@ class UInputAction;
 class IEnemyInterface;
 class UAuraAbilitySystemComponent;
 class USplineComponent;
+class UNiagaraSystem;
 /**
  * 
  */
@@ -75,7 +76,9 @@ private:
 	float AutoRunAcceptanceRadius = 50.0f;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> SplineComponent;
-
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraSystem> ClickEffect;
 	void AutoRun();
 
 	UPROPERTY(EditAnywhere,Category="UI")
