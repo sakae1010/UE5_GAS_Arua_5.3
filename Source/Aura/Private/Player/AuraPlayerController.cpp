@@ -10,11 +10,10 @@
 #include "NiagaraFunctionLibrary.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/SplineComponent.h"
+#include "GameFramework/Character.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 #include "UI/Widget/DamageTextComponent.h"
-#include "GameFramework/Character.h"
-#include "Kismet/GameplayStatics.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -95,6 +94,11 @@ void AAuraPlayerController::SetupInputComponent()
 
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 {
+	if(GetAuraAbilitySystemComponent() &&
+		GetAuraAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputPressed))
+	{
+		return;
+	}
 	const FVector2D InputAxisVector = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotation(0,Rotation.Yaw,0);
@@ -111,6 +115,21 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AAuraPlayerController::CursorTrace()
 {
+	if(GetAuraAbilitySystemComponent() &&
+		GetAuraAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_CursorTrace))
+	{
+		if (LastActor)
+		{
+			LastActor->UnHighlightActor();
+		}
+		if (ThisActor)
+		{
+			ThisActor->UnHighlightActor();
+		}
+		ThisActor = nullptr;
+		LastActor = nullptr;
+		return;
+	}
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if (!CursorHit.bBlockingHit)return;
 	LastActor = ThisActor;
@@ -131,6 +150,11 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::InputTagPressed(const FGameplayTag InputTag)
 {
+	if(GetAuraAbilitySystemComponent() &&
+		GetAuraAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputPressed))
+	{
+		return;
+	}
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		bTargeting = ThisActor ? true : false;
@@ -144,6 +168,11 @@ void AAuraPlayerController::InputTagPressed(const FGameplayTag InputTag)
 
 void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 {
+	if(GetAuraAbilitySystemComponent() &&
+		GetAuraAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputReleased))
+	{
+		return;
+	}
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		if(GetAuraAbilitySystemComponent() )
@@ -172,8 +201,8 @@ void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 					bAutoRunning = true;
 				}
 			}
-
-			if(ClickEffect)
+			
+			if(ClickEffect && ( GetAuraAbilitySystemComponent() && !GetAuraAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputPressed)))
 			{
 				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ClickEffect, CachedDestination);
 			}
@@ -186,20 +215,26 @@ void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 
 void AAuraPlayerController::InputTagHeld(const FGameplayTag InputTag)
 {
+	UAuraAbilitySystemComponent* AbilitySystemComponent = GetAuraAbilitySystemComponent();
+	if(AbilitySystemComponent &&
+		AbilitySystemComponent->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputHeld))
+	{
+		return;
+	}
 	if(!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		if(GetAuraAbilitySystemComponent() )
+		if(AbilitySystemComponent)
 		{
-			GetAuraAbilitySystemComponent()->AbilityInputHeld(InputTag);
+			AbilitySystemComponent->AbilityInputHeld(InputTag);
 		}
 		return;
 	}
 
 	if(bTargeting || bShiftKeyDown)
 	{
-		if(GetAuraAbilitySystemComponent() )
+		if(AbilitySystemComponent )
 		{
-			GetAuraAbilitySystemComponent()->AbilityInputHeld(InputTag);
+			AbilitySystemComponent->AbilityInputHeld(InputTag);
 		}
 	}else
 	{
@@ -222,7 +257,7 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetAuraAbilitySystemComponen
 {
 	if(AuraAbilitySystemComponent == nullptr)
 	{
-		AuraAbilitySystemComponent =  Cast<UAuraAbilitySystemComponent>( UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+		AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>( UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
 	}
 	return AuraAbilitySystemComponent;
 }

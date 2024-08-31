@@ -114,6 +114,11 @@ public:
 	//HitReact 為受擊反應
 	FGameplayTag Effects_HitReact;
 
+	//禁止狀態
+	FGameplayTag Player_Block_InputPressed;
+	FGameplayTag Player_Block_InputReleased;
+	FGameplayTag Player_Block_InputHeld;
+	FGameplayTag Player_Block_CursorTrace;
 private :
 	static FAuraGameplayTags GameplayTags;
 };
