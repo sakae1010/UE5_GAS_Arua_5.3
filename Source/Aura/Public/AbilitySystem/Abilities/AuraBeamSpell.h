@@ -14,9 +14,11 @@ class AURA_API UAuraBeamSpell : public UAuraDamageGameplayAbility
 {
 	GENERATED_BODY()
 public:
-	
+	UFUNCTION(BlueprintCallable, Category = "Beam")
 	void StoreMouseDataInfo(const FHitResult& HitResult);
-	
+
+	UFUNCTION(BlueprintCallable, Category = "Beam")
+	void SetOwnerPlayerController();
 protected:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
@@ -24,4 +26,7 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
 	TObjectPtr<AActor> MouseHitActor;
+	
+	UPROPERTY(BlueprintReadWrite, Category = "Beam")
+	TObjectPtr<APlayerController> OwnerPlayerController;
 };
