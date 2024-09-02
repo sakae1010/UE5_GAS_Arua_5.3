@@ -329,6 +329,45 @@ void UAuraAbilitySystemLibrary::GetLivePlayerWithinRadius(
 	
 }
 
+void UAuraAbilitySystemLibrary::GetClosestTargets(int32 MaxNumTargets, const TArray<AActor*>& Actors,TArray<AActor*>& OutOverlappingActors, const FVector& Origin)
+{
+
+	if (MaxNumTargets >= Actors.Num())
+	{
+		OutOverlappingActors = Actors;
+		return;
+	}
+	TArray<AActor*> ActorToCheck = Actors;
+	int32 NumTargets = 0;
+	while(NumTargets<MaxNumTargets)
+	{
+		if(ActorToCheck.Num() == 0) break;	
+		AActor* ClosestActor = nullptr;
+		float MinDistance = TNumericLimits<double>::Max();
+		for (AActor* Actor : ActorToCheck)
+		{
+			const double Distance = (Actor->GetActorLocation() - Origin).Length();
+			if(Distance < MinDistance)
+			{
+				MinDistance = Distance;
+				ClosestActor = Actor;
+			}
+		}
+		if(ClosestActor)
+		{
+			OutOverlappingActors.AddUnique(ClosestActor);
+			ActorToCheck.Remove(ClosestActor);
+			NumTargets++;
+		}else
+		{
+			break;
+		}
+	}
+	
+	
+	
+}
+
 bool UAuraAbilitySystemLibrary::IsNotFriend(const AActor* FirstOwner,const AActor* SecondTarget)
 {
 	const FName PlayerTag = FName("Player");
