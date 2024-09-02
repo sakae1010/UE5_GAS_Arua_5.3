@@ -106,6 +106,7 @@ public:
 	FGameplayTag Abilities_Lightning_Electrocute;
 	/* Cooldown */
 	FGameplayTag Cooldown_Fire_FireBolt;
+	FGameplayTag Cooldown_Lightning_Electrocute;
 	/* 特效通知 */
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 
