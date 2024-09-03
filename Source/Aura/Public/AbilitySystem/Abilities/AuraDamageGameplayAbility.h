@@ -22,6 +22,9 @@ public:
 
 	UFUNCTION( BlueprintPure )
 	FDamageEffectParams MakeDamageEffectParams(AActor* TargetActor = nullptr) const;
+	
+	UFUNCTION( BlueprintPure )
+	float GetDamageAtLevel() const;
 protected:
 	UPROPERTY( EditDefaultsOnly , BlueprintReadOnly )
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
@@ -51,4 +54,6 @@ protected:
 	
 	UFUNCTION( BlueprintPure )
 	FTaggedMontage GetRandomAttackMontageForArray(const TArray<FTaggedMontage>& TaggedMontages);
+
+	
 };
