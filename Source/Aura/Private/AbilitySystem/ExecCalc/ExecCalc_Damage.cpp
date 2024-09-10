@@ -145,7 +145,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	AActor* SourceActor = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
 	AActor* TargetActor = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
-
+	if ( !SourceActor || !TargetActor ) return;
 	int32 SourcePlayerLevel = 1;
 	if ( SourceActor->Implements<UCombatInterface>() )
 	{

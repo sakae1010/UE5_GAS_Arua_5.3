@@ -119,7 +119,7 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 {
 	FGameplayEffectContextHandle EffectContext = Props.SourceAbilitySystemComponent->MakeEffectContext();
 	EffectContext.AddSourceObject(Props.SourceAvatarActor);
-	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 	const FGameplayTag DamageType = UAuraAbilitySystemLibrary::GetDamageType( Props.EffectContextHandle );
 	const float DebuffDuration = UAuraAbilitySystemLibrary::GetDebuffDuration( Props.EffectContextHandle );
 	const float DebuffFrequency = UAuraAbilitySystemLibrary::GetDebuffFrequency( Props.EffectContextHandle );
@@ -137,7 +137,15 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	// 以下這個做法會比安全
 	UTargetTagsGameplayEffectComponent& AssetTagsComponent =  Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
 	FInheritedTagContainer InheritedTagContainer;
-	InheritedTagContainer.Added.AddTag(GameplayTags.DamageTypesToDebuffs[DamageType]);
+	const FGameplayTag DebuffTag = GameplayTags.DamageTypesToDebuffs [ DamageType ];
+	InheritedTagContainer.Added.AddTag(DebuffTag);
+	if(DebuffTag.MatchesTag( GameplayTags.Debuff_Stun ))
+	{
+		InheritedTagContainer.Added.AddTag(  GameplayTags.Player_Block_InputHeld );
+		InheritedTagContainer.Added.AddTag(  GameplayTags.Player_Block_InputReleased );
+		InheritedTagContainer.Added.AddTag(  GameplayTags.Player_Block_InputPressed );
+		InheritedTagContainer.Added.AddTag(  GameplayTags.Player_Block_CursorTrace );
+	}
 	AssetTagsComponent.SetAndApplyTargetTagChanges(InheritedTagContainer);
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;
 	Effect->StackLimitCount = 1;
@@ -155,7 +163,10 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 		FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(MutableSpec->GetContext().Get());
 		TSharedRef<FGameplayTag> DebuffGameplayTag = MakeShareable<FGameplayTag>(new FGameplayTag(DamageType) );
 		AuraContext->SetDamageType( DebuffGameplayTag );
-		Props.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*MutableSpec);
+		if(Props.TargetAbilitySystemComponent != nullptr)
+		{
+			Props.TargetAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*MutableSpec);
+		}
 	}
 }
 

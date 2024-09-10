@@ -82,6 +82,7 @@ void AAuraProjectile::Destroyed()
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if(!IsValid(DamageEffectParams.SourceAbilitySystemComponent)) return; // 如果沒有設定SourceAbilitySystemComponent就不做任何事
 	const AActor* SourceActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
 	if(SourceActor == OtherActor)
 	{
