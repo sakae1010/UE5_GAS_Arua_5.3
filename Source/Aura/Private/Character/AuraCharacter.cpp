@@ -7,6 +7,7 @@
 #include "NiagaraComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
+#include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -73,12 +74,30 @@ void AAuraCharacter::OnRep_Stunned()
 		if(bIsStunned)
 		{
 			ASC->AddLooseGameplayTags(BlockedTags);
+			StunDebuffNiagaraComponent->Activate();
 		}
 		else
 		{
 			ASC->RemoveLooseGameplayTags(BlockedTags);
+			StunDebuffNiagaraComponent->Deactivate();
 		}
+
+
 		
+	}
+}
+
+void AAuraCharacter::OnRep_Burned()
+{
+	if(bIsBurned)
+	{
+		// ASC->AddLooseGameplayTags(BlockedTags);
+		BurnDebuffNiagaraComponent->Activate();
+	}
+	else
+	{
+		// ASC->RemoveLooseGameplayTags(BlockedTags);
+		BurnDebuffNiagaraComponent->Deactivate();
 	}
 }
 

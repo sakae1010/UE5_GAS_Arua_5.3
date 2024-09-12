@@ -23,6 +23,11 @@ void UDebuffNiagaraComponent::BeginPlay()
 		{
 			InASC->RegisterGameplayTagEvent(DebuffTag, EGameplayTagEventType::NewOrRemoved).AddUObject( this, &UDebuffNiagaraComponent::DebuffTagChanged );
 		});
+		CombatInterface->GetOnASCRegisteredDelegate().AddWeakLambda( this, [this](UAbilitySystemComponent* InASC)
+		{
+			InASC->RegisterGameplayTagEvent(DebuffTag, EGameplayTagEventType::NewOrRemoved).AddUObject( this, &UDebuffNiagaraComponent::DebuffTagChanged );
+		});
+		
 	}
 	if ( CombatInterface )
 	{
