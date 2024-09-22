@@ -239,6 +239,22 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Abilities.Lightning.Electrocute"),
 		FString("Electrocute Abilities Tag"));
 
+	/* Passive Spell */
+	
+	GameplayTags.Abilities_Passive_HaloOfProtection = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Abilities.Passive.HaloOfProtection"),
+		FString("HaloOfProtection Passive Abilities Tag"));
+
+	GameplayTags.Abilities_Passive_LifeSiphon = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Abilities.Passive.LifeSiphon"),
+		FString("LifeSiphon Passive Abilities Tag"));
+
+	GameplayTags.Abilities_Passive_ManaSiphon = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Abilities.Passive.ManaSiphon"),
+		FString("ManaSiphon Passive Abilities Tag"));
+
+	/* HitReact */
+
 	GameplayTags.Abilities_HitReact = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Abilities.HitReact"),
 		FString("HitReact Abilities"));
