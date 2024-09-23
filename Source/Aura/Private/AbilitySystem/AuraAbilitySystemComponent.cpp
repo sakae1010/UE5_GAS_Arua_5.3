@@ -278,8 +278,9 @@ void UAuraAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FG
 	}
 }
 
-void UAuraAbilitySystemComponent::ClientEquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag,
-	const FGameplayTag& Slot, const FGameplayTag& PreviousSlot)
+
+void UAuraAbilitySystemComponent::ClientEquipAbility_Implementation(const FGameplayTag& AbilityTag,
+	const FGameplayTag& StatusTag, const FGameplayTag& Slot, const FGameplayTag& PreviousSlot)
 {
 	AbilityEquipedDelegate.Broadcast(AbilityTag , StatusTag , Slot , PreviousSlot);
 }
