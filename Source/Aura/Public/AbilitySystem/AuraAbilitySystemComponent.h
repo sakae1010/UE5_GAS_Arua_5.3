@@ -38,11 +38,15 @@ public:
 	void AbilityInputHeld(const FGameplayTag& InputTag);
 	void AbilityInputReleased(const FGameplayTag& InputTag);
 	void ForEachAbility(const FForEachAbility& Delegate);
-    static FGameplayTag GetAbilityFromSpec(const FGameplayAbilitySpec& AbilitySpec);
+    static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetStatusTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	FGameplayTag GetStatusTagFromAbilityTag(const FGameplayTag& AbilityTag);
-	FGameplayTag GetInputTagFromAbilityTag(const FGameplayTag& AbilityTag);
+	FGameplayTag GetSlotFromAbilityTag(const FGameplayTag& AbilityTag);
+	bool SlotIsEmpty(const FGameplayTag& Slot);
+	FGameplayAbilitySpec* GetAbilitySpecFromSlot(const FGameplayTag& Slot);
+	bool IsPassiveAbility(const FGameplayAbilitySpec* AbilitySpec);
+	
 	//取得已啟動能力
 	FGameplayAbilitySpec* GetSpecFormAbilityTag(const FGameplayTag& AbilityTag);
 	void UpgradeAttribute(const FGameplayTag& Tag);
@@ -62,11 +66,13 @@ public:
 	void ClientEquipAbility(const FGameplayTag& AbilityTag ,const FGameplayTag& StatusTag ,const FGameplayTag& Slot , const FGameplayTag& PreviousSlot);
 	bool GetDescriptionsByAbilityTag(const FGameplayTag& AbilityTag , FString& OutDescription, FString& OutNextLevelDescription);
 
-	void ClearSlot(FGameplayAbilitySpec* AbilitySpec);
+
 	void ClearAbilityOfSlot(const FGameplayTag& Slot);
 	
-
-	static bool AbilityHasSlot(FGameplayAbilitySpec* AbilitySpec ,const FGameplayTag& Slot);
+	static void ClearSlot(FGameplayAbilitySpec* AbilitySpec);
+	static bool AbilityHasSlot(const FGameplayAbilitySpec& AbilitySpec ,const FGameplayTag& Slot);
+	static bool AbilityHasAnySlot(const FGameplayAbilitySpec& AbilitySpec);
+	static void AssignSlotToAbility(FGameplayAbilitySpec& AbilitySpec, const FGameplayTag& Slot);
 protected:
 	virtual void OnRep_ActivateAbilities() override;	
 	UFUNCTION(Client,Reliable)
@@ -74,5 +80,7 @@ protected:
 	
 	UFUNCTION(Client,Reliable)
 	void ClientUpdateAbilityStatus(const FGameplayTag& AbilityTag , const FGameplayTag& StatusTag , int32 AbiltyLevel);
+
+	
 };
 

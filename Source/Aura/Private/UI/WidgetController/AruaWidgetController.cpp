@@ -32,7 +32,7 @@ void UAuraWidgetController::BroadcastAbilityInfo()
 	FForEachAbility Delegate;
 	Delegate.BindLambda([this](const FGameplayAbilitySpec& AbilitySpec)->void
 	{
-		FAuraAbilityInfo AbilityInfo = AbilityWidgetDataTable->FindAbilityInfoForTag(GetAuraAbilitySystemComponent()->GetAbilityFromSpec(AbilitySpec));
+		FAuraAbilityInfo AbilityInfo = AbilityWidgetDataTable->FindAbilityInfoForTag(GetAuraAbilitySystemComponent()->GetAbilityTagFromSpec(AbilitySpec));
 		AbilityInfo.InputTag = GetAuraAbilitySystemComponent()->GetInputTagFromSpec(AbilitySpec);
 		AbilityInfo.StatusTag = GetAuraAbilitySystemComponent()->GetStatusTagFromSpec(AbilitySpec);
 		AbilityInfoDelegate.Broadcast(AbilityInfo);

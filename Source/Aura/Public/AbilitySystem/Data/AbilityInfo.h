@@ -26,7 +26,6 @@ struct FAuraAbilityInfo
 	UPROPERTY(EditDefaultsOnly ,BlueprintReadOnly, Category = "AbilityInfo")
 	FGameplayTag CooldownTag = FGameplayTag::EmptyTag;
 	
-
 	UPROPERTY(EditDefaultsOnly ,BlueprintReadOnly, Category = "AbilityInfo")
 	FGameplayTag AbilityType = FGameplayTag::EmptyTag;
 
