@@ -37,6 +37,7 @@ void UAuraAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
 				FGameplayAbilitySpec* AbilitySpec = GetAbilitySpecFromSlot( Slot );
 				if (AbilitySpec)
 				{
+					const FGameplayTag SlotAbilityTag = GetAbilityTagFromSpec( *AbilitySpec );
 					//如果有相同的技能
 					if (AbilityTag.MatchesTagExact( GetAbilityTagFromSpec(*AbilitySpec) ))
 					{
@@ -47,8 +48,9 @@ void UAuraAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
 					// 如果是被動技能
 					if (IsPassiveAbility(AbilitySpec))
 					{
+						MulticastActivatePassiveEffect(SlotAbilityTag,false);
 						//取消被動技能
-						DeactivePassiveAbilityDelegate.Broadcast(GetAbilityTagFromSpec(*AbilitySpec));
+						DeactivePassiveAbilityDelegate.Broadcast(SlotAbilityTag);
 					}
 					ClearSlot( AbilitySpec );
 				}
@@ -60,6 +62,7 @@ void UAuraAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
 				if(IsPassiveAbility(Spec))
 				{
 					TryActivateAbility( Spec->Handle );
+					MulticastActivatePassiveEffect(AbilityTag,true);
 				}
 			}
 			AssignSlotToAbility(*Spec,Slot);
@@ -302,6 +305,12 @@ bool UAuraAbilitySystemComponent::IsPassiveAbility(const FGameplayAbilitySpec* A
 	const FGameplayTag AbilityTag = GetAbilityTagFromSpec( *AbilitySpec );
 	const FAuraAbilityInfo AuraAbilityInfo = AbilityInfo->FindAbilityInfoForTag( AbilityTag );
 	return AuraAbilityInfo.AbilityType.MatchesTagExact(FAuraGameplayTags::Get().Abilities_Type_Passive);
+}
+
+void UAuraAbilitySystemComponent::MulticastActivatePassiveEffect_Implementation(const FGameplayTag& AbilityTag,
+	bool bActiveate)
+{
+	ActivePassiveEffectDelegate.Broadcast(AbilityTag,bActiveate);
 }
 
 void UAuraAbilitySystemComponent::AssignSlotToAbility(FGameplayAbilitySpec& AbilitySpec, const FGameplayTag& Slot)

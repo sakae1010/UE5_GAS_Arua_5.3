@@ -12,7 +12,7 @@ DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged ,const  FGameplayTag& /* Ability Tag*/ ,const FGameplayTag& /* Ability Tag*/  , int32 /* AbilityLevel*/);
 DECLARE_MULTICAST_DELEGATE_FourParams(FAbilityEquiped ,const  FGameplayTag& /* Ability Tag*/ ,const FGameplayTag& /* Status Tag*/  ,const FGameplayTag& /* Slot Tag*/  ,const FGameplayTag& /* PreSlot Tag*/);
 DECLARE_MULTICAST_DELEGATE_OneParam( FDeactivePassiveAbility , const FGameplayTag& /*AbilityTag*/);
-
+DECLARE_MULTICAST_DELEGATE_TwoParams( FActivePassiveEffect , const FGameplayTag& /*AbilityTag*/,bool /*bActiveate*/);
 /**
  * 
  */
@@ -28,6 +28,7 @@ public:
 	FAbilityStatusChanged AbilityStatusChangedDelegate;
 	FAbilityEquiped AbilityEquipedDelegate;
 	FDeactivePassiveAbility DeactivePassiveAbilityDelegate;
+	FActivePassiveEffect ActivePassiveEffectDelegate;
 	
 	bool bStartupAbilitiesGiven = false;
 	
@@ -46,6 +47,9 @@ public:
 	bool SlotIsEmpty(const FGameplayTag& Slot);
 	FGameplayAbilitySpec* GetAbilitySpecFromSlot(const FGameplayTag& Slot);
 	bool IsPassiveAbility(const FGameplayAbilitySpec* AbilitySpec);
+
+	UFUNCTION(NetMulticast,Reliable)
+	void MulticastActivatePassiveEffect(const FGameplayTag& AbilityTag , bool bActiveate);
 	
 	//取得已啟動能力
 	FGameplayAbilitySpec* GetSpecFormAbilityTag(const FGameplayTag& AbilityTag);
