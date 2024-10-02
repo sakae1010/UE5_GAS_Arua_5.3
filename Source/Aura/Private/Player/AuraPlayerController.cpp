@@ -9,6 +9,7 @@
 #include "NavigationSystem.h"
 #include "NiagaraFunctionLibrary.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Actor/MagicCircle.h"
 #include "Components/SplineComponent.h"
 #include "GameFramework/Character.h"
 #include "Input/AuraInputComponent.h"
@@ -26,6 +27,29 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 	CursorTrace();
 	AutoRun();
+	UpdateMagicCircleLocation();
+}
+
+void AAuraPlayerController::ShowMagicCircle()
+{
+	if(!MagicCircleClass) return;
+	if(!IsValid(MagicCircle))
+	{
+		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
+		if(MagicCircle)
+		{
+			MagicCircle->SetActorLocation(GetPawn()->GetActorLocation());
+		}
+	}
+}
+
+void AAuraPlayerController::HideMagicCircle()
+{
+	if(IsValid(MagicCircle))
+	{
+		MagicCircle->Destroy();
+		MagicCircle = nullptr;
+	}
 }
 
 void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter,  bool bIsBlockHit , bool bIsCriticalHit )
@@ -58,6 +82,14 @@ void AAuraPlayerController::AutoRun()
     		bAutoRunning = false;
     	}
     }
+}
+
+void AAuraPlayerController::UpdateMagicCircleLocation()
+{
+	if(IsValid(MagicCircle))
+	{
+		MagicCircle->SetActorLocation(CursorHit.ImpactPoint);
+	}
 }
 
 void AAuraPlayerController::BeginPlay()
