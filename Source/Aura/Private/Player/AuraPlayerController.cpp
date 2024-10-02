@@ -10,6 +10,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Actor/MagicCircle.h"
+#include "Components/DecalComponent.h"
 #include "Components/SplineComponent.h"
 #include "GameFramework/Character.h"
 #include "Input/AuraInputComponent.h"
@@ -30,15 +31,15 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	UpdateMagicCircleLocation();
 }
 
-void AAuraPlayerController::ShowMagicCircle()
+void AAuraPlayerController::ShowMagicCircle(UMaterialInterface* MagicCircleMaterial)
 {
 	if(!MagicCircleClass) return;
 	if(!IsValid(MagicCircle))
 	{
 		MagicCircle = GetWorld()->SpawnActor<AMagicCircle>(MagicCircleClass);
-		if(MagicCircle)
+		if(MagicCircleMaterial != nullptr)
 		{
-			MagicCircle->SetActorLocation(GetPawn()->GetActorLocation());
+			MagicCircle->MagicCircleDecal->SetMaterial(0,MagicCircleMaterial);
 		}
 	}
 }
