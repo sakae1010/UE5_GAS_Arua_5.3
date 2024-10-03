@@ -15,7 +15,7 @@ class AURA_API UTargetUnderMouse : public UAbilityTask
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "Ability|Tasks", meta = (DispayName = "TargetUnderMouse", HidePin = "OwningAbility", DefaultToSelf = "OwningAbility", BlueprintInternalUseOnly = "TRUE"))
+	UFUNCTION(BlueprintCallable, Category = "Ability|Tasks", meta = (DispayName = "TargetDataUnderMouse", HidePin = "OwningAbility", DefaultToSelf = "OwningAbility", BlueprintInternalUseOnly = "TRUE"))
 	static UTargetUnderMouse* CreateTargetUnderMouse(UGameplayAbility* OwningAbility);//, FName TaskInstanceName, FGameplayTagContainer TargetTag, FGameplayTagContainer SourceTag, bool bRequireLineOfSight, bool bShowDebug);
 
 	UPROPERTY(BlueprintAssignable)
