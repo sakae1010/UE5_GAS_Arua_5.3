@@ -230,15 +230,23 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.Abilities_None  = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Abilities.None"),
 		FString("No Ability - like this nullptr for Ability Tags "));
+
+	/*
+	 * Offensive Spell
+	 */
 	
 	GameplayTags.Abilities_Fire_FireBolt = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Abilities.Fire.FireBolt"),
-	FString("FireBolt Abilities Tag"));
+	FString("FireBolt Ability Tag"));
 
 	GameplayTags.Abilities_Lightning_Electrocute = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Abilities.Lightning.Electrocute"),
-		FString("Electrocute Abilities Tag"));
+		FString("Electrocute Ability Tag"));
 
+	GameplayTags.Abilities_Arcane_ArcaneShards = GameplayTagsManager.AddNativeGameplayTag(
+		FName("Abilities.Arcane.ArcaneShards"),
+		FString("ArcaneShards Ability Tag"));
+	
 	/* Passive Spell */
 	
 	GameplayTags.Abilities_Passive_HaloOfProtection = GameplayTagsManager.AddNativeGameplayTag(

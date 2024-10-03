@@ -104,6 +104,8 @@ public:
 
 	FGameplayTag Abilities_Fire_FireBolt;
 	FGameplayTag Abilities_Lightning_Electrocute;
+	FGameplayTag Abilities_Arcane_ArcaneShards;
+	
 	/* passive */
 	// 被動技能
 	//	HaloOfProtection 保護光環
