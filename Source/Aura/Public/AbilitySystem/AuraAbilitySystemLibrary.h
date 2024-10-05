@@ -24,6 +24,11 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 public:
+
+	/*
+	 *  UI元件使用
+	 */
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|Ability")
 	static bool MakeWidgetControllerParams(const UObject* WorldContextObject , FWidgetControllerParams& OutParams , AAuraHUD*& OutAuraHUD);
 	
 	UFUNCTION(BlueprintPure, Category="AuraAbilitySystemLibrary|WidgetController" , meta = (DefaultToSelf = "WorldContextObject"))
@@ -34,6 +39,10 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|WidgetController" , meta = (DefaultToSelf = "WorldContextObject"))
 	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);
+
+	/*
+	 *  能力系統 class default
+	 */
 	
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClass")
 	static void InitializeDefaultAttributes (const UObject* WorldContextObject, ECharacterClass CharacterClass , float Level , UAbilitySystemComponent* ASC);
@@ -46,7 +55,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClassInfo")
 	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject); 
-	
+
+
+	/*
+	 *  Effect Context  Getter
+	 */
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
 	static bool IsBlockedHit(const FGameplayEffectContextHandle& EffectContextHandle); 
 
@@ -73,6 +86,21 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
 	static FVector GetKnokbackForce(const FGameplayEffectContextHandle& EffectContextHandle) ;
+
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
+	static bool IsRadialDamage(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
+	static float GetRadialDamageInnerRadius(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
+	static float GetRadialDamageOuterRadius(const FGameplayEffectContextHandle& EffectContextHandle);
+
+	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|EffectContext")
+	static FVector GetRadialDamageOrigin(const FGameplayEffectContextHandle& EffectContextHandle);
+	/*
+	 * Effect Context Setter
+	 */
 	
 	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
 	static void SetBlockedHit(UPARAM( ref ) FGameplayEffectContextHandle& EffectContextHandle, bool bInBlockedHit);
@@ -98,9 +126,27 @@ public:
 
 	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
 	static void SetDeathImpulse(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FVector& InDeathImpulse);
+	
 	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
 	static void SetKnokbackForce(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FVector& InKnokbackForce);
 
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetRadialDamage(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, bool bInRadialDamage);
+
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetRadialDamageInnerRadius(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, float InRadialDamageInnerRadius);
+
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetRadialDamageOuterRadius(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, float InRadialDamageOuterRadius);
+
+	UFUNCTION( BlueprintCallable , Category = "AuraAbilitySystemLibrary|EffectContext" )
+	static void SetRadialDamageOrigin(UPARAM( ref )FGameplayEffectContextHandle& EffectContextHandle, const FVector& InRadialDamageOrigin);
+
+	
+	/*
+	 * Gameplay Mechanics 遊戲機制
+	 */
+	
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
 	static void GetLivePlayerWithinRadius(const UObject* WorldContextObject,TArray<AActor*>& OutOverLappingActors, const TArray<AActor*>& ActorsToIgnore , float Radius, const FVector& SphereOrigin);
 
@@ -109,7 +155,7 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
 	static bool IsNotFriend	(const AActor* FirstOwner ,const AActor* SecondTarget);
-	
+
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffectParams")
 	static FGameplayEffectContextHandle ApplyDamageEffectParams(const FDamageEffectParams& DamageEffectParams);
 
