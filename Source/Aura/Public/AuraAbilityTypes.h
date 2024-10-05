@@ -60,6 +60,22 @@ struct FDamageEffectParams
 	UPROPERTY(BlueprintReadWrite)
 	FVector KnokbackForce = FVector::ZeroVector;
 
+	// 使用範圍傷害
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsRadialDamage = false;
+
+	// 範圍傷害半徑
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageRadius = 0.f;
+	// 內圈傷害半徑
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageInnerRadius = 0.f;
+	// 外圈傷害半徑
+	UPROPERTY(BlueprintReadWrite)
+	float RadialDamageOuterRadius = 0.f;
+	// 範圍傷害中心
+	UPROPERTY(BlueprintReadWrite)
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };
 
 USTRUCT(BlueprintType)
@@ -80,6 +96,10 @@ public:
 	TSharedPtr<FGameplayTag> GetDamageType() const { return DamageType; }
 	FVector GetDeathImpulse() const { return DeathImpulse; }
 	FVector GetKnokbackForce() const { return KnokbackForce; }
+	bool GetIsRadialDamage() const { return bIsRadialDamage; }
+	float GetRadialDamageInnerRadius() const { return RadialDamageInnerRadius; }
+	float GetRadialDamageOuterRadius() const { return RadialDamageOuterRadius; }
+	FVector GetRadialDamageOrigin() const { return RadialDamageOrigin; }
 	
 	void SetCriticalHit(bool bInIsCriticalHit ) { bIsCriticalHit = bInIsCriticalHit; }
 	void SetBlockedHit(bool bInIsBlockedHit );
@@ -89,8 +109,12 @@ public:
 	void SetDebuffFrequency(float InDebuffFrequency) { DebuffFrequency = InDebuffFrequency; }
 	void SetDamageType(const TSharedPtr<FGameplayTag>& InDamageType) { DamageType = InDamageType; }
 	void SetDeathImpulse(const FVector& InDeathImpulse) { DeathImpulse = InDeathImpulse; }
-	
 	void SetKnokbackForce(const FVector& InKnokbackForce) { KnokbackForce = InKnokbackForce; }
+	// 範圍傷害
+	void SetIsRadialDamage(const bool bInIsRadialDamage) { bIsRadialDamage = bInIsRadialDamage; }
+	void SetRadialDamageInnerRadius(const float InRadialDamageInnerRadius) { RadialDamageInnerRadius = InRadialDamageInnerRadius; }
+	void SetRadialDamageOuterRadius(const float InRadialDamageOuterRadius) { RadialDamageOuterRadius = InRadialDamageOuterRadius; }
+	void SetRadialDamageOrigin(const FVector& InRadialDamageOrigin) { RadialDamageOrigin = InRadialDamageOrigin; }
 	
 	virtual UScriptStruct* GetScriptStruct() const override
 	{
@@ -138,6 +162,21 @@ protected:
 	
 	UPROPERTY()
 	FVector KnokbackForce = FVector::ZeroVector;
+
+
+	// 使用範圍傷害
+	UPROPERTY()
+	bool bIsRadialDamage = false;
+	
+	// 內圈傷害半徑
+	UPROPERTY()
+	float RadialDamageInnerRadius = 0.f;
+	// 外圈傷害半徑
+	UPROPERTY()
+	float RadialDamageOuterRadius = 0.f;
+	// 範圍傷害中心
+	UPROPERTY()
+	FVector RadialDamageOrigin = FVector::ZeroVector;
 };
 
 template<>
