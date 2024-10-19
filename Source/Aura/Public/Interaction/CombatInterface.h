@@ -13,7 +13,9 @@ struct FGameplayTag;
 class UAnimMontage;
 
 DECLARE_MULTICAST_DELEGATE_OneParam( FOnASCRegistered , class UAbilitySystemComponent* );
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature , AActor* , DeadActor ); 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature , AActor* , DeadActor );
+DECLARE_MULTICAST_DELEGATE_OneParam( FOnDamageSignature , float /*DamageAmount*/);
+
 //對應 Tag  與 動畫檔案
 USTRUCT(Blueprintable)
 struct FTaggedMontage
@@ -76,6 +78,8 @@ public:
 	
 	virtual void Die(const FVector& Impulse) = 0;
 	virtual FOnDeathSignature& GetOnDeathDelegate() = 0;
+
+	virtual FOnDamageSignature& GetOnDamageSignature() = 0;
 
 	UFUNCTION(BlueprintNativeEvent , BlueprintCallable)
 	UNiagaraSystem* GetBloodEffect();

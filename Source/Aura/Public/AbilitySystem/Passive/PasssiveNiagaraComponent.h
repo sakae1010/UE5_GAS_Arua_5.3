@@ -11,12 +11,12 @@
  * 
  */
 UCLASS()
-class AURA_API UPasssiveNiagaraComponent : public UNiagaraComponent
+class AURA_API UPassiveNiagaraComponent : public UNiagaraComponent
 {
 	GENERATED_BODY()
 
 public:
-	UPasssiveNiagaraComponent();
+	UPassiveNiagaraComponent();
 
 	UPROPERTY(EditDefaultsOnly)
 	FGameplayTag PassiveSpellTag;

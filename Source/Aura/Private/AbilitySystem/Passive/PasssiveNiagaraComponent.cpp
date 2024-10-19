@@ -7,18 +7,18 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Interaction/CombatInterface.h"
 
-UPasssiveNiagaraComponent::UPasssiveNiagaraComponent()
+UPassiveNiagaraComponent::UPassiveNiagaraComponent()
 {
 	bAutoActivate = false;
 }
 
-void UPasssiveNiagaraComponent::BeginPlay()
+void UPassiveNiagaraComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	// ;
 	if ( UAuraAbilitySystemComponent* ASC = Cast<UAuraAbilitySystemComponent> (UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent( GetOwner() ) ) ; ASC != nullptr )
 	{
-		ASC->ActivePassiveEffectDelegate.AddUObject( this, &UPasssiveNiagaraComponent::OnPassiveActiveate );
+		ASC->ActivePassiveEffectDelegate.AddUObject( this, &UPassiveNiagaraComponent::OnPassiveActiveate );
 	}
 	else if(ICombatInterface* CombatInterface = Cast<ICombatInterface>( GetOwner() ); CombatInterface != nullptr )
 	{
@@ -26,7 +26,7 @@ void UPasssiveNiagaraComponent::BeginPlay()
 		{
 			if ( UAuraAbilitySystemComponent* ASC = Cast<UAuraAbilitySystemComponent>(InASC) ; ASC != nullptr )
 			{
-				ASC->ActivePassiveEffectDelegate.AddUObject( this, &UPasssiveNiagaraComponent::OnPassiveActiveate );
+				ASC->ActivePassiveEffectDelegate.AddUObject( this, &UPassiveNiagaraComponent::OnPassiveActiveate );
 			}
 		});
 	}
@@ -35,7 +35,7 @@ void UPasssiveNiagaraComponent::BeginPlay()
 	}
 }
 
-void UPasssiveNiagaraComponent::OnPassiveActiveate(const FGameplayTag& GameplayTag, bool bActiveate)
+void UPassiveNiagaraComponent::OnPassiveActiveate(const FGameplayTag& GameplayTag, bool bActiveate)
 {
 	if ( GameplayTag.MatchesTagExact( PassiveSpellTag ) )
 	{
