@@ -170,7 +170,6 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	DetermineDebuff( ExecutionParams  , Spec , EvaluationParameters  , TagsToCaptureDefs);
 
-
 	// 取得 傷害計算的數值
 	float Damage = 0.f;// Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
 	for ( const TTuple<FGameplayTag, FGameplayTag>& Pair : FAuraGameplayTags::Get().DamageTypesToResistances )
@@ -178,9 +177,9 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		const FGameplayTag DamageType = Pair.Key;
 		const FGameplayTag ResistanceTag = Pair.Value;
 		float DamageTypeValue = Spec.GetSetByCallerMagnitude( DamageType , false );
-		if ( DamageTypeValue == 0 ) continue;
+		if ( DamageTypeValue <= 0 ) continue;
 		checkf( TagsToCaptureDefs.Contains(ResistanceTag) ,
-		        TEXT("TagsToCaptureDefs ddoesn't contain Tag [%s] ExecCalc_Damages ") , *ResistanceTag.ToString() );
+		        TEXT("TagsToCaptureDefs doesn't contain Tag [%s] ExecCalc_Damages ") , *ResistanceTag.ToString() );
 
 		FGameplayEffectAttributeCaptureDefinition CaptureDef = TagsToCaptureDefs [ ResistanceTag ];
 
@@ -199,6 +198,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 			//   On the Target ,which will then broadcast the damage on the OnDamageDelegate *
 			//5. In Lambda, set DamageTypeValue to the damage received from the broadcast *
 
+			//1. 覆寫 TakeDamage *
+			//2. 創建委派 OnDamageDelegate，在 TakeDamage 中廣播接收到的傷害*
+			//3. 在目標上綁定 OnDamageDelegate*
+			//4. 調用 UGameplayStatics::ApplyRadialDamageWithFalloff 來造成傷害（這將導致在目標上調用 TakeDamage，然後在 OnDamageDelegate 上廣播傷害）*
+			//5. 在 Lambda 中，將 DamageTypeValue 設置為從廣播中接收到的傷害*
+
 			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(TargetActor))
 			{
 				CombatInterface->GetOnDamageSignature().AddLambda([&](float DamageAmount)
@@ -207,24 +212,20 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 				});
 		
 			}
-			UGameplayStatics::ApplyRadialDamageWithFalloff( TargetActor ,
-												DamageTypeValue ,
-												0 ,
-												UAuraAbilitySystemLibrary::GetRadialDamageOrigin( EffectContextHandle ) ,
-			                                                UAuraAbilitySystemLibrary::GetRadialDamageInnerRadius( EffectContextHandle ) ,
-			                                                UAuraAbilitySystemLibrary::GetRadialDamageOuterRadius( EffectContextHandle ) ,
-			                                                1.f,
-			                                                UDamageType::StaticClass(),
-			                                                TArray<AActor*>() ,
-			                                                SourceActor ,
-			                                                nullptr);
-			                                                
-			                                                
-			                                                
-			                                            
-			
+			//造成傷害
+			UGameplayStatics::ApplyRadialDamageWithFalloff(
+				TargetActor ,
+				DamageTypeValue ,
+				0 ,
+				UAuraAbilitySystemLibrary::GetRadialDamageOrigin( EffectContextHandle ) ,
+			    UAuraAbilitySystemLibrary::GetRadialDamageInnerRadius( EffectContextHandle ) ,
+			    UAuraAbilitySystemLibrary::GetRadialDamageOuterRadius( EffectContextHandle ) ,
+			    1.f,
+			    UDamageType::StaticClass(),
+			    TArray<AActor*>() ,
+			    SourceActor ,
+			    nullptr);
 		}
-		
 		Damage += DamageTypeValue;
 	}
 

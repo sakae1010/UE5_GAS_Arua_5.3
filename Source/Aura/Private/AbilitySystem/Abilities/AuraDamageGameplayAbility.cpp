@@ -16,7 +16,7 @@ void UAuraDamageGameplayAbility::CauseDamage(AActor* TargetActor)
 	
 }
 
-FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParams(AActor* TargetActor) const
+FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParams(AActor* TargetActor , FVector InRadialDamageOrigin) const
 {
 	FDamageEffectParams DamageEffectParams;
 	DamageEffectParams.WorldContextObject = GetAvatarActorFromActorInfo();
@@ -31,7 +31,7 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParams(AActor* T
 	DamageEffectParams.DebuffDuration = DebuffDuration;
 	DamageEffectParams.DebuffFrequency = DebuffFrequency;
 	DamageEffectParams.DeathImpulseMagnitude = DeathImpulseMagnitude;
-	DamageEffectParams.KnokbackForceMagnitude = KnokbackForecMagnitude;
+	DamageEffectParams.KnokbackForceMagnitude = KnokbackForceMagnitude;
 	DamageEffectParams.KnokbackChance = KnokbackChance;
 	if(IsValid( TargetActor ))
 	{
@@ -39,11 +39,12 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParams(AActor* T
 		Rotation.Pitch = 45.f;
 		const FVector ToTarget = Rotation.Vector();
 		DamageEffectParams.DeathImpulseVector = ToTarget * DeathImpulseMagnitude;
-		DamageEffectParams.KnokbackForce = ToTarget * KnokbackForecMagnitude;
+		DamageEffectParams.KnokbackForce = ToTarget * KnokbackForceMagnitude;
 	}
 	if(bIsRadialDamage)
 	{
 		DamageEffectParams.bIsRadialDamage = bIsRadialDamage;
+		DamageEffectParams.RadialDamageOrigin = InRadialDamageOrigin;
 		DamageEffectParams.RadialDamageInnerRadius = RadialDamageInnerRadius;
 		DamageEffectParams.RadialDamageOuterRadius = RadialDamageOuterRadius;
 	}

@@ -21,7 +21,7 @@ public:
 	void CauseDamage(AActor* TargetActor);
 
 	UFUNCTION( BlueprintPure )
-	FDamageEffectParams MakeDamageEffectParams(AActor* TargetActor = nullptr) const;
+	FDamageEffectParams MakeDamageEffectParams(AActor* TargetActor = nullptr ,FVector InRadialDamageOrigin = FVector::ZeroVector) const;
 	
 	UFUNCTION( BlueprintPure )
 	float GetDamageAtLevel() const;
@@ -36,6 +36,9 @@ protected:
 
 	UPROPERTY( EditDefaultsOnly , Category="Damage" )
 	float DebuffChance = 20.f;	//觸發機率
+
+
+	
 	UPROPERTY( EditDefaultsOnly , Category="Damage" )
 	float DebuffDamage = 5.f;
 	UPROPERTY( EditDefaultsOnly , Category="Damage" )
@@ -47,7 +50,7 @@ protected:
 	float DeathImpulseMagnitude = 1000.f; //死亡時的衝量
 
 	UPROPERTY( EditDefaultsOnly , Category="Damage" )
-	float KnokbackForecMagnitude = 1000.f; //擊退力
+	float KnokbackForceMagnitude = 1000.f; //擊退力
 	
 	UPROPERTY( EditDefaultsOnly , Category="Damage" )
 	float KnokbackChance = 0.f;
@@ -55,14 +58,11 @@ protected:
 	UPROPERTY( EditDefaultsOnly , Category="Damage.Radial" )
 	bool bIsRadialDamage = false;
 	// 內圈傷害半徑
-	UPROPERTY( EditDefaultsOnly , Category="Damage.Radial" )
+	UPROPERTY( EditDefaultsOnly  ,BlueprintReadOnly , Category="Damage.Radial" )
 	float RadialDamageInnerRadius = 0.f;
 	// 外圈傷害半徑
-	UPROPERTY( EditDefaultsOnly , Category="Damage.Radial" )
+	UPROPERTY( EditDefaultsOnly , BlueprintReadOnly ,Category="Damage.Radial" )
 	float RadialDamageOuterRadius = 0.f;
-	// 範圍傷害中心
-	UPROPERTY( EditDefaultsOnly , Category="Damage.Radial" )
-	FVector RadialDamageOrigin = FVector::ZeroVector;
 	
 	UFUNCTION( BlueprintPure )
 	FTaggedMontage GetRandomAttackMontageForArray(const TArray<FTaggedMontage>& TaggedMontages);
