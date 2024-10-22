@@ -453,7 +453,7 @@ FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffectParams(
 	FGameplayEffectContextHandle ContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
 	ContextHandle.AddSourceObject(SourceActor);
 	SetDeathImpulse( ContextHandle, DamageEffectParams.DeathImpulseVector );
-	SetKnokbackForce( ContextHandle, DamageEffectParams.KnokbackForce );
+	SetKnokbackForce( ContextHandle, DamageEffectParams.KnockbackForce );
 	//範圍傷害應用
 	SetRadialDamage( ContextHandle, DamageEffectParams.bIsRadialDamage );
 	SetRadialDamageInnerRadius( ContextHandle, DamageEffectParams.RadialDamageInnerRadius );

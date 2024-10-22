@@ -21,7 +21,15 @@ public:
 	void CauseDamage(AActor* TargetActor);
 
 	UFUNCTION( BlueprintPure )
-	FDamageEffectParams MakeDamageEffectParams(AActor* TargetActor = nullptr ,FVector InRadialDamageOrigin = FVector::ZeroVector) const;
+	FDamageEffectParams MakeDamageEffectParams(
+		AActor* TargetActor = nullptr ,
+		FVector InRadialDamageOrigin = FVector::ZeroVector,
+		bool bOverrideKnockbackDirection = false	,
+		FVector KnockbackDirectionOverride = FVector::ZeroVector,
+		bool bOverrideDeathImpulse = false,
+		FVector DeathImpulseDirection = FVector::ZeroVector,
+		bool bOverridePitch = false,
+		float PitchOverride = 0.f) const;
 	
 	UFUNCTION( BlueprintPure )
 	float GetDamageAtLevel() const;
@@ -36,8 +44,6 @@ protected:
 
 	UPROPERTY( EditDefaultsOnly , Category="Damage" )
 	float DebuffChance = 20.f;	//觸發機率
-
-
 	
 	UPROPERTY( EditDefaultsOnly , Category="Damage" )
 	float DebuffDamage = 5.f;
@@ -50,10 +56,10 @@ protected:
 	float DeathImpulseMagnitude = 1000.f; //死亡時的衝量
 
 	UPROPERTY( EditDefaultsOnly , Category="Damage" )
-	float KnokbackForceMagnitude = 1000.f; //擊退力
+	float KnockbackForceMagnitude = 1000.f; //擊退力
 	
 	UPROPERTY( EditDefaultsOnly , Category="Damage" )
-	float KnokbackChance = 0.f;
+	float KnockbackChance = 0.f;
 
 	UPROPERTY( EditDefaultsOnly , Category="Damage.Radial" )
 	bool bIsRadialDamage = false;

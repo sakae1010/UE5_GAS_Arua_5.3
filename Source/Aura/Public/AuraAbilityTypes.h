@@ -52,13 +52,13 @@ struct FDamageEffectParams
 	FVector DeathImpulseVector = FVector::ZeroVector;
 
 	UPROPERTY(BlueprintReadWrite)
-	float KnokbackChance = 0.f;	//擊退機率
+	float KnockbackChance = 0.f;	//擊退機率
 
 	UPROPERTY(BlueprintReadWrite)
-	float KnokbackForceMagnitude = 0.f; //擊退力
+	float KnockbackForceMagnitude = 0.f; //擊退力
 	
 	UPROPERTY(BlueprintReadWrite)
-	FVector KnokbackForce = FVector::ZeroVector;
+	FVector KnockbackForce = FVector::ZeroVector;
 
 	// 使用範圍傷害
 	UPROPERTY(BlueprintReadWrite)
