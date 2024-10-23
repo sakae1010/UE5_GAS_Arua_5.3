@@ -7,12 +7,12 @@
 
 FString UAuraGameAbility::GetDescription(int32 Level)
 {
-	return FString::Printf(TEXT("<Default>%s, </><Level>%d </>"),L"Default Ability Name - Looreamipsum Looreamipsum Looreamipsum Looreamipsum Looreamipsum Looreamipsum ",Level);
+	return GetDefaultDesc("Default Description", Level);
 }
 
 FString UAuraGameAbility::GetNextLevelDescription(int32 Level)
 {
-	return FString::Printf(TEXT("<Default>Next Level : </><Level>%d </> \n<Default>Causes much more damage : </> "),Level);
+	return GetDefaultDesc("Default Description", Level);
 }
 
 FString UAuraGameAbility::GetLoackedDescription(int32 Level)
@@ -49,4 +49,26 @@ float UAuraGameAbility::GetCooldown(float InLevel) const
 		}
 	}
 	return OutCooldown;
+}
+
+FString UAuraGameAbility::GetDefaultDesc(const FString& Title, const int Level) const
+{
+	const float ManaCost = FMath::Abs(GetManaCost(Level));
+	const float Cooldown = GetCooldown(Level);
+	return FString::Printf(TEXT(
+		// Title
+		"<Title>%s</>\n\n"
+		// Level
+		"<Small>Level: </><Level>%d</>\n"
+		// ManaCost
+		"<Small>ManaCost: </><ManaCost>%.1f</>\n"
+		// Cooldown
+		"<Small>Cooldown: </><Cooldown>%.1f</>\n\n"
+		// Default
+		"<Default>Default Description</>"),
+		// Values
+		*Title,
+		Level,
+		ManaCost,
+		Cooldown);
 }

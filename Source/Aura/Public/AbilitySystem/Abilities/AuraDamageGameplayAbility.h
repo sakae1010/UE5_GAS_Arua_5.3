@@ -20,7 +20,7 @@ public:
 	UFUNCTION( BlueprintCallable )
 	void CauseDamage(AActor* TargetActor);
 
-	UFUNCTION( BlueprintPure )
+	UFUNCTION( BlueprintPure , meta = (AdvancedDisplay = 1) )
 	FDamageEffectParams MakeDamageEffectParams(
 		AActor* TargetActor = nullptr ,
 		FVector InRadialDamageOrigin = FVector::ZeroVector,
