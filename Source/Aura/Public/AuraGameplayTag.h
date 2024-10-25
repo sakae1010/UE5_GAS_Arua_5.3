@@ -118,6 +118,7 @@ public:
 	/* Cooldown */
 	FGameplayTag Cooldown_Fire_FireBolt;
 	FGameplayTag Cooldown_Lightning_Electrocute;
+	FGameplayTag Cooldown_Arcane_ArcaneShards;
 	/* 特效通知 */
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 
