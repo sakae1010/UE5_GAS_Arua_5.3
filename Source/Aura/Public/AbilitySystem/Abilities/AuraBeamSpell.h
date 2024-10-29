@@ -28,15 +28,14 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Beam")
 	void StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets);
-
-
+	
 	UFUNCTION(BlueprintImplementableEvent, Category = "Beam")
 	void PrimaryTargetDied(AActor* DeadActor);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Beam")
 	void AdditionalTargetDied(AActor* DeadActor);
 protected:
-	virtual FString GetDefaultDesc(const FString& Title, int Level) const;
+	virtual FString GetDefaultDesc(const FString& Title, int Level)  const override;
 	
 	UPROPERTY(BlueprintReadWrite, Category = "Beam")
 	FVector MouseHitLocation;

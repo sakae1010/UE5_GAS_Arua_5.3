@@ -44,3 +44,7 @@ FString UAuraFireBlast::GetDefaultDesc(const FString& Title, const int Level) co
 			NewFireBalls,
 			ScaledDamageValue );	
 }
+TArray<AAuraFireBall*> UAuraFireBlast::SpawnFireBalls()
+{
+	return TArray<AAuraFireBall*>();
+}
