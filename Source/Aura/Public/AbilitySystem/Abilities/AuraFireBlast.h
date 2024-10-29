@@ -24,7 +24,7 @@ protected:
 	virtual FString GetDefaultDesc(const FString& Title, const int Level) const override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "FireBlast")
-	int32 NewFireBalls = 12;
+	int32 NumFireBalls = 12;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "FireBlast")

@@ -3,6 +3,9 @@
 
 #include "AbilitySystem/Abilities/AuraFireBlast.h"
 
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Actor/AuraFireBall.h"
+
 FString UAuraFireBlast::GetDescription(int32 Level)
 {
 	return GetDefaultDesc( FString("FIRE BLAST"), Level );
@@ -41,10 +44,46 @@ FString UAuraFireBlast::GetDefaultDesc(const FString& Title, const int Level) co
 			Level,
 			ManaCost,
 			Cooldown,
-			NewFireBalls,
+			NumFireBalls,
 			ScaledDamageValue );	
 }
 TArray<AAuraFireBall*> UAuraFireBlast::SpawnFireBalls()
 {
+	const FVector Forward = GetAvatarActorFromActorInfo()->GetActorForwardVector();
+	const FVector Location = GetAvatarActorFromActorInfo()->GetActorLocation();
+	TArray<FRotator> Rotators = UAuraAbilitySystemLibrary::EvenlySpacedRotators(Forward , FVector::UpVector , 360.f , NumFireBalls );
+	if (FireBallClass)
+	{
+		TArray<AAuraFireBall*> FireBalls;
+		for (const FRotator& Rotator : Rotators)
+		{
+			FTransform SpwanTransform;
+			SpwanTransform.SetLocation(Location);
+			SpwanTransform.SetRotation(Rotator.Quaternion());
+			// FActorSpawnParameters SpawnParams;
+			// SpawnParams.Owner = GetOwningActorFromActorInfo();
+			// SpawnParams.Instigator = CurrentActorInfo->PlayerController->GetPawn();
+			// SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			// AAuraFireBall* FireBall = GetWorld()->SpawnActor<AAuraFireBall>(FireBallClass, SpwanTransform, SpawnParams);
+			
+			AAuraFireBall* FireBall = GetWorld()->SpawnActorDeferred<AAuraFireBall>(
+				FireBallClass,
+				SpwanTransform,
+				GetOwningActorFromActorInfo(),
+				CurrentActorInfo->PlayerController->GetPawn(),
+				ESpawnActorCollisionHandlingMethod::AlwaysSpawn
+				);
+			FireBall->DamageEffectParams = MakeDamageEffectParams();
+			
+			FireBalls.Add(FireBall);
+			FireBall->FinishSpawning(SpwanTransform);
+			
+		}
+		return FireBalls;
+	}
+	
+	
+	
+	
 	return TArray<AAuraFireBall*>();
 }
