@@ -84,18 +84,10 @@ void AAuraProjectile::Destroyed()
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(!IsValid(DamageEffectParams.SourceAbilitySystemComponent)) return; // 如果沒有設定SourceAbilitySystemComponent就不做任何事
-	const AActor* SourceActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
-	if(SourceActor == OtherActor)
+	if(!IsValidOverlap(OtherActor))
 	{
 		return;
 	}
-
-	if(!UAuraAbilitySystemLibrary::IsNotFriend(SourceActor ,OtherActor))
-	{
-		return;
-	}
-
 	
 	if (!bHit)
 	{
@@ -130,6 +122,22 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 
 	
 	// UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, GetActorLocation());
+}
+
+bool AAuraProjectile::IsValidOverlap(const AActor* OtherActor)
+{
+	if(!IsValid(DamageEffectParams.SourceAbilitySystemComponent)) return false; // 如果沒有設定SourceAbilitySystemComponent就不做任何事
+	const AActor* SourceActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+	if(SourceActor == OtherActor)
+	{
+		return false;
+	}
+
+	if(!UAuraAbilitySystemLibrary::IsNotFriend(SourceActor ,OtherActor))
+	{
+		return false;
+	}
+	return true;
 }
 
 

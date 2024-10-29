@@ -38,13 +38,15 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	TObjectPtr<USphereComponent> Sphere;
+
+	bool IsValidOverlap(const AActor* OtherActor);
+
+	bool bHit = false;
 private:
 
 	UPROPERTY(EditAnywhere)
 	float LifeSpan = 10.f;
 	
-	bool bHit = false;
-
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundBase> LoopingSound;
 	
