@@ -127,6 +127,38 @@ int32 UAuraAbilitySystemLibrary::GetXpRewardForCharacterClassAndLevel(const UObj
 	return static_cast<int32>(XPReward);
 }
 
+void UAuraAbilitySystemLibrary::SetIsRadialDamageEffectParams(FDamageEffectParams& DamageEffectParams,	bool bInIsRadialDamage, float InnerRadius, float OuterRadius, const FVector& DamageOrigin)
+{
+	DamageEffectParams.bIsRadialDamage = bInIsRadialDamage;
+	DamageEffectParams.RadialDamageInnerRadius = InnerRadius;
+	DamageEffectParams.RadialDamageOuterRadius = OuterRadius;
+	DamageEffectParams.RadialDamageOrigin = DamageOrigin;
+}
+
+void UAuraAbilitySystemLibrary::SetKnockbackDirection(FDamageEffectParams& DamageEffectParams, FVector InKnockbackDirection , float Magnitude)
+{
+	InKnockbackDirection.Normalize();
+	if (Magnitude == 0.f)
+	{
+		Magnitude = DamageEffectParams.KnockbackForceMagnitude;
+	}
+	DamageEffectParams.KnockbackForce = Magnitude * InKnockbackDirection;
+}
+
+void UAuraAbilitySystemLibrary::SetDeathImpulseDirection(FDamageEffectParams& DamageEffectParams,FVector InDeathImpulseDirection , float Magnitude)
+{
+	InDeathImpulseDirection.Normalize();
+	if (Magnitude == 0.f)
+	{
+		Magnitude = DamageEffectParams.DeathImpulseMagnitude;
+	}
+	DamageEffectParams.DeathImpulseVector = InDeathImpulseDirection * Magnitude;
+}
+
+void UAuraAbilitySystemLibrary::SetEffectParmsTargetASC(FDamageEffectParams& DamageEffectParams,	UAbilitySystemComponent* InTargetASC)
+{
+	DamageEffectParams.TargetAbilitySystemComponent = InTargetASC;
+}
 
 
 UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
@@ -383,11 +415,11 @@ void UAuraAbilitySystemLibrary::GetLivePlayerWithinRadius(
 	TArray<FOverlapResult> Overlaps;
 	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
 	{
-		World->OverlapMultiByObjectType(Overlaps, SphereOrigin, FQuat::Identity, FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllDynamicObjects), FCollisionShape::MakeSphere(Radius), SphereParams);
+		World->OverlapMultiByObjectType(Overlaps,SphereOrigin, FQuat::Identity,FCollisionObjectQueryParams(FCollisionObjectQueryParams::InitType::AllDynamicObjects),FCollisionShape::MakeSphere(Radius),SphereParams);
 		for (FOverlapResult& OverlapResult : Overlaps)
 		{
 			// && OverlapResult.GetActor()->ActorHasTag(FName("Player")) 透過BP過濾
-			if (OverlapResult.GetActor()->Implements<UCombatInterface>()&& !ICombatInterface::Execute_IsDead(OverlapResult.GetActor() ))
+			if (OverlapResult.GetActor()->Implements<UCombatInterface>() && !ICombatInterface::Execute_IsDead(OverlapResult.GetActor() ))
 			{
 				OutOverLappingActors.AddUnique( ICombatInterface::Execute_GetAvatar(OverlapResult.GetActor()) );
 			}
