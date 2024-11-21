@@ -5,8 +5,8 @@
 
 void UMVVM_LoadSlot::InitializeSlot()
 {
-	//TODO Check Slot Status base on loaded data
-	SetWidgetSwitchIndex.Broadcast(2);
+	const int32 SlotStatusIndex = SlotStatus.GetValue();
+	SetWidgetSwitchIndex.Broadcast(SlotStatusIndex);
 
 	
 }

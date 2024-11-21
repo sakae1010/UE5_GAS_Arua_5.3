@@ -6,6 +6,16 @@
 #include "GameFramework/SaveGame.h"
 #include "LoadScreenSaveGame.generated.h"
 
+
+UENUM(Blueprintable)
+enum ESaveSlotStatus
+{
+	Vacant,
+	EnterName,
+	Taken
+};
+
+
 /**
  * 
  */
@@ -22,4 +32,7 @@ public:
 
 	UPROPERTY()
 	FString PlayerName = FString();
+
+	UPROPERTY()
+	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
 };
