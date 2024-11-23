@@ -17,8 +17,9 @@ void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 	ULoadScreenSaveGame* SaveGameObject = Cast<ULoadScreenSaveGame>(UGameplayStatics::CreateSaveGameObject(LoadScreenSaveGameClass) );
 	SaveGameObject->SlotName = LoadSlot->GetLoadSlotName();
 	SaveGameObject->SlotIndex = SlotIndex;
-	SaveGameObject->PlayerName = LoadSlot->PlayerName;
+	SaveGameObject->PlayerName = LoadSlot->GetPlayerName();
 	SaveGameObject->SaveSlotStatus = LoadSlot->SlotStatus;
+	
 	UGameplayStatics::SaveGameToSlot(SaveGameObject, SaveGameObject->SlotName, SaveGameObject->SlotIndex);
 }
 
@@ -42,5 +43,11 @@ void AAuraGameModeBase::DeleteSlotData(const FString& LoadSlotName, const int32 
 	{
 		UGameplayStatics::DeleteGameInSlot(LoadSlotName, SlotIndex);
 	}
+}
+
+void AAuraGameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+	Maps.Add(DefaultMapName, DefaultMap);
 }
 
