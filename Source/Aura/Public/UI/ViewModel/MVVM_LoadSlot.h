@@ -31,7 +31,7 @@ public:
 
 
 	UPROPERTY()
-	FString SlotIndex;
+	int32 SlotIndex;
 
 	/*Feild FieldNotifies*/
 

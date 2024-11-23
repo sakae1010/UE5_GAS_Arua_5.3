@@ -11,12 +11,15 @@ void UMVVM_LoadScreen::InitializeLoadSlots()
 {
 	LoadSlot_0 = NewObject<UMVVM_LoadSlot>(this, LoadSlotViewModelClass);
 	LoadSlot_0->SetLoadSlotName(FString("LoadSlot_0"));
+	LoadSlot_0->SlotIndex = 0;
 	LoadSlots.Add(0, LoadSlot_0);
 	LoadSlot_1 = NewObject<UMVVM_LoadSlot>(this, LoadSlotViewModelClass);
 	LoadSlot_1->SetLoadSlotName(FString("LoadSlot_1"));
+	LoadSlot_1->SlotIndex = 1;
 	LoadSlots.Add(1, LoadSlot_1);
 	LoadSlot_2 = NewObject<UMVVM_LoadSlot>(this, LoadSlotViewModelClass);
 	LoadSlot_2->SetLoadSlotName(FString("LoadSlot_2"));
+	LoadSlot_2->SlotIndex = 2;
 	LoadSlots.Add(2, LoadSlot_2);
 
 	SetNumLoadSlots( LoadSlots.Num() );
@@ -31,7 +34,7 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(int32 SlotIndex, const FString& Ente
 {
 	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)  ) ;
 	LoadSlots[SlotIndex]->SetPlayerName( EnterName );
-	LoadSlots[SlotIndex]->SlotStatus = ESaveSlotStatus::Taken;
+	LoadSlots[SlotIndex]->SlotStatus = Taken;
 	AuraGameModeBase->SaveSlotData(LoadSlots[SlotIndex], SlotIndex);
 	LoadSlots[SlotIndex]->InitializeSlot();
 	
@@ -39,7 +42,7 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(int32 SlotIndex, const FString& Ente
 
 void UMVVM_LoadScreen::NewGameButtonPressed(int32 SlotIndex)
 {
-	LoadSlots[SlotIndex]->SetPlayerName( FString("Player Name") );
+	LoadSlots[SlotIndex]->SetPlayerName( FString() );
 	LoadSlots[SlotIndex]->SetWidgetSwitchIndex.Broadcast(1);
 }
 
@@ -50,6 +53,21 @@ void UMVVM_LoadScreen::SelectSlotButtonPressed(int32 SlotIndex)
 		LoadSlot.Value->EnableSelectSlotButton.Broadcast(LoadSlot.Key != SlotIndex);
 	}
 	SlotSelected.Broadcast();
+	SelectedSlot = LoadSlots[SlotIndex];
+}
+
+void UMVVM_LoadScreen::DeleteSlotButtonPressed()
+{
+	if(IsValid(SelectedSlot))
+	{
+		AAuraGameModeBase::DeleteSlotData(SelectedSlot->GetLoadSlotName() ,SelectedSlot->SlotIndex);
+		SelectedSlot->SetPlayerName(FString());
+		SelectedSlot->SlotStatus = Vacant;
+		SelectedSlot->InitializeSlot();
+		SelectedSlot->EnableSelectSlotButton.Broadcast(true	);
+		SelectedSlot = nullptr;
+		
+	}
 }
 
 
