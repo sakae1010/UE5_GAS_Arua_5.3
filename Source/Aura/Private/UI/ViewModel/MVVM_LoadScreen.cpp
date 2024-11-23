@@ -32,6 +32,7 @@ void UMVVM_LoadScreen::NewSlotButtonPressed(int32 SlotIndex, const FString& Ente
 	LoadSlots[SlotIndex]->SlotStatus = ESaveSlotStatus::Taken;
 	AuraGameModeBase->SaveSlotData(LoadSlots[SlotIndex], SlotIndex);
 	LoadSlots[SlotIndex]->InitializeSlot();
+	
 }
 
 void UMVVM_LoadScreen::NewGameButtonPressed(int32 SlotIndex)
@@ -42,6 +43,10 @@ void UMVVM_LoadScreen::NewGameButtonPressed(int32 SlotIndex)
 
 void UMVVM_LoadScreen::SelectSlotButtonPressed(int32 SlotIndex)
 {
+	for ( TTuple<int, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
+	{
+		LoadSlot.Value->EnableSelectSlotButton.Broadcast(LoadSlot.Key != SlotIndex);
+	}
 }
 
 void UMVVM_LoadScreen::LoadData()

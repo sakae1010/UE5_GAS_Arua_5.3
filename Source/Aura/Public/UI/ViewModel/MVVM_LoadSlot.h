@@ -8,7 +8,7 @@
 #include "MVVM_LoadSlot.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FSetWidgetSwitchIndex , int32 , WidgetSwitchIndex );
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam( FEnableSelectSlotButton , bool , bEnable);
 
 /**
  * 
@@ -22,6 +22,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FSetWidgetSwitchIndex SetWidgetSwitchIndex;
 
+	UPROPERTY(BlueprintAssignable)
+	FEnableSelectSlotButton EnableSelectSlotButton;
 	void InitializeSlot();
 	
 	UPROPERTY()
