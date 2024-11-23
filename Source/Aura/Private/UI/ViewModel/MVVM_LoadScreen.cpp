@@ -71,10 +71,24 @@ void UMVVM_LoadScreen::DeleteSlotButtonPressed()
 	}
 }
 
+void UMVVM_LoadScreen::PlayButtonPressed()
+{
+	if(!IsValid(  SelectedSlot ))
+	{
+		return;
+	}
+	if (SelectedSlot->SlotStatus != Taken)
+	{
+		return;
+	}
+	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)) ;
+	AuraGameModeBase->TravelingToMap(SelectedSlot);
+}
+
 
 void UMVVM_LoadScreen::LoadData()
 {
-	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)  ) ;
+	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)) ;
 	for ( TTuple<int, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
 	{
 		ULoadScreenSaveGame* SaveObject = AuraGameModeBase->GetSlotData(LoadSlot.Value->GetLoadSlotName() , LoadSlot.Key );

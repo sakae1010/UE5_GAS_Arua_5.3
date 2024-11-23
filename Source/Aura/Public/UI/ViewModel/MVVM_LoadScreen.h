@@ -36,6 +36,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void DeleteSlotButtonPressed();
+
+	UFUNCTION(BlueprintCallable)
+	void PlayButtonPressed();
 	
 	void LoadData();
 
