@@ -32,7 +32,10 @@ public:
 
 	UPROPERTY()
 	int32 SlotIndex;
-
+	
+	UPROPERTY()
+	FName PlayerStartTag = FName();
+	
 	/*Feild FieldNotifies*/
 
 	void SetLoadSlotName(FString InLoadSlotName);
@@ -53,6 +56,8 @@ private:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,FieldNotify,Setter,Getter , meta = (AllowPrivateAccess = "true"))
 	FString MapName;
+
+
 
 	
 };

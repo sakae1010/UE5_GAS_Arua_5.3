@@ -34,16 +34,18 @@ UMVVM_LoadSlot* UMVVM_LoadScreen::GetLoadSlotViewModelByIndex(int32 Index) const
 void UMVVM_LoadScreen::NewSlotButtonPressed(int32 SlotIndex, const FString& EnterName)
 {
 	AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)  ) ;
+	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>( AuraGameMode->GetGameInstance() );
 	LoadSlots[SlotIndex]->SetPlayerName( EnterName );
 	LoadSlots[SlotIndex]->SlotStatus = Taken;
 	LoadSlots[SlotIndex]->SetMapName(AuraGameMode->DefaultMapName);
+	LoadSlots[SlotIndex]->PlayerStartTag = FName( AuraGameMode->DefaultPlayerStartTag);
+	
 	AuraGameMode->SaveSlotData(LoadSlots[SlotIndex], SlotIndex);
 	LoadSlots[SlotIndex]->InitializeSlot();
 
-	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>( AuraGameMode->GetGameInstance() );
 	AuraGameInstance->SlotIndex = SlotIndex;
 	AuraGameInstance->LoadSlotString = LoadSlots[SlotIndex]->GetLoadSlotName();
-	AuraGameInstance->PlayerStartTag = AuraGameMode->DefaultPlayerStartTag;
+	AuraGameInstance->PlayerStartTag =  AuraGameMode->DefaultPlayerStartTag;
 	
 }
 
@@ -88,6 +90,10 @@ void UMVVM_LoadScreen::PlayButtonPressed()
 		return;
 	}
 	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)) ;
+	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>( AuraGameModeBase->GetGameInstance() );
+	AuraGameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
+	AuraGameInstance->LoadSlotString = SelectedSlot->GetLoadSlotName();
+	AuraGameInstance->SlotIndex = SelectedSlot->SlotIndex;
 	AuraGameModeBase->TravelingToMap(SelectedSlot);
 }
 
@@ -103,6 +109,7 @@ void UMVVM_LoadScreen::LoadData()
 		LoadSlot.Value->SetPlayerName(PlayerName);
 		LoadSlot.Value->SlotStatus = SaveSlotStatus;
 		LoadSlot.Value->SetMapName(SaveObject->MapName);
+		LoadSlot.Value->PlayerStartTag = SaveObject->PlayerStartTag;
 		LoadSlot.Value->InitializeSlot();
 		
 	}

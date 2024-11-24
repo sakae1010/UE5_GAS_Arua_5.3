@@ -15,7 +15,7 @@ class AURA_API UAuraGameInstance : public UGameInstance
 
 public:
 	UPROPERTY()
-	FString PlayerStartTag = FString();
+	FName  PlayerStartTag = FName ();
 	
 	UPROPERTY()
 	FString LoadSlotString = FString();
