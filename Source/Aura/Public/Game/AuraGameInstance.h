@@ -18,7 +18,7 @@ public:
 	FName  PlayerStartTag = FName ();
 	
 	UPROPERTY()
-	FString LoadSlotString = FString();
+	FString LoadSlotName = FString();
 
 	UPROPERTY()
 	int32 SlotIndex = 0;
