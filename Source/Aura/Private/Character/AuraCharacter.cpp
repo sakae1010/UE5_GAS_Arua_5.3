@@ -6,6 +6,7 @@
 #include "AuraGameplayTag.h"
 #include "NiagaraComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
@@ -223,10 +224,24 @@ void AAuraCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 	AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>( UGameplayStatics::GetGameMode( GetWorld() ) );
 	if(AuraGameMode)
 	{
-		ULoadScreenSaveGame* LoadSaveGame = AuraGameMode->RetrieveInGameSaveData();
-		if(LoadSaveGame == nullptr) return;
-		LoadSaveGame->PlayerStartTag = CheckpointTag;
-		AuraGameMode->SaveIngamePrrogressData(LoadSaveGame);
+		ULoadScreenSaveGame* SaveData = AuraGameMode->RetrieveInGameSaveData();
+		if(SaveData == nullptr) return;
+		SaveData->PlayerStartTag = CheckpointTag;
+		
+		if( AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>( GetPlayerState() ) )
+		{
+			SaveData->PlayerLevel = AuraPlayerState->GetPlayerLevel();
+			SaveData->XP = AuraPlayerState->GetXP();
+			SaveData->AttributePoints = AuraPlayerState->GetAttributePoints();
+			SaveData->SpellPoints = AuraPlayerState->GetSpellPoints();
+		}
+
+		SaveData->Strength = UAuraAttributeSet::GetStrengthAttribute().GetNumericValue( GetAttributeSet() );
+		SaveData->Intelligence = UAuraAttributeSet::GetIntelligenceAttribute().GetNumericValue( GetAttributeSet() );
+		SaveData->Resilience = UAuraAttributeSet::GetResilienceAttribute().GetNumericValue( GetAttributeSet() );
+		SaveData->Vigor = UAuraAttributeSet::GetVigorAttribute().GetNumericValue( GetAttributeSet() );
+		
+		AuraGameMode->SaveIngamePrrogressData(SaveData);
 	}
 	
 }
