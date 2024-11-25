@@ -46,6 +46,9 @@ public:
 	/** End Player Interface */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Effects")
 	TObjectPtr<UNiagaraComponent> LevelUpNiagaraComponent;
+
+	void LoadProgress();
+	
 	
 private:
 
