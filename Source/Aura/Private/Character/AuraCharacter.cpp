@@ -16,7 +16,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
-#include "Game/AuraGameInstance.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "UI/HUD/AuraHUD.h"
 
