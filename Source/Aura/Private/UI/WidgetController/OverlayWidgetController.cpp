@@ -23,9 +23,9 @@ void UOverlayWidgetController::BindCallBacksToDependencies()
 {
 	//bind to health
 	GetAuraPlayerState()->OnXPChangedDelegate.AddUObject(this, &UOverlayWidgetController::OnXPChanged);
-	GetAuraPlayerState()->OnLevelChangedDelegate.AddLambda([this](const int32 Level)
+	GetAuraPlayerState()->OnLevelChangedDelegate.AddLambda([this](const int32 Level , bool bIsLevelUp)->void
 	{
-		OnLevelChanged.Broadcast(Level);
+		OnLevelChanged.Broadcast(Level ,bIsLevelUp);
 	});
 	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(

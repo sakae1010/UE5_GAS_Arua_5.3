@@ -11,6 +11,7 @@
 #include "AuraAbilitySystemLibrary.generated.h"
 
 
+class ULoadScreenSaveGame;
 struct FDamageEffectParams;
 class AAuraHUD;
 class USpellMenuWidgetController;
@@ -41,11 +42,14 @@ public:
 	static USpellMenuWidgetController* GetSpellMenuWidgetController(const UObject* WorldContextObject);
 
 	/*
-	 *  能力系統 class default
+	 *  能力系統 ability system class default
 	 */
 	
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClass")
 	static void InitializeDefaultAttributes (const UObject* WorldContextObject, ECharacterClass CharacterClass , float Level , UAbilitySystemComponent* ASC);
+	
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClass")
+	static void InitializeDefaultAttributesFormSaveData (const UObject* WorldContextObject, UAbilitySystemComponent* ASC ,ULoadScreenSaveGame* LoadData);
 
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|CharacterClass")
 	static void GiveStartupAbilities (const UObject* WorldContextObject, UAbilitySystemComponent* ASC ,ECharacterClass CharacterClass );

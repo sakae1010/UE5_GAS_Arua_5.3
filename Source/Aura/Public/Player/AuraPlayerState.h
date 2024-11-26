@@ -13,8 +13,7 @@ class UAttributeSet;
 
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStateChanged, int32 /* STatValue */);
-
-
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnLevelDelegate, int32 /*Level*/ , bool  /*bIsLevelUp*/);
 /**
  * 
  */
@@ -32,7 +31,7 @@ public:
 	TObjectPtr<ULevelUpInfo> LevelUpInfo;
 	
 	FOnPlayerStateChanged OnXPChangedDelegate;
-	FOnPlayerStateChanged OnLevelChangedDelegate;
+	FOnLevelDelegate OnLevelChangedDelegate;
 	FOnPlayerStateChanged OnAttributePointsChangedDelegate;
 	FOnPlayerStateChanged OnSpellPointsChangedDelegate;
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; }
@@ -41,7 +40,7 @@ public:
 	FORCEINLINE int32 GetSpellPoints() const { return SpellPoints; }
 	
 	void SetXP(int32 InXP);
-	void SetLevel(int32 InLevel);
+	void SetLevel(int32 InLevel , bool bIsLevelUp = false);
 	void SetAttriblePoints(int32 InAttriblePoints);
 	void SetSpellPoints(int32 InSpellPoints);
 	

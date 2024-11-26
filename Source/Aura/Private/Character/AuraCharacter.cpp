@@ -56,10 +56,6 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	// Init ability info for the Server
 	InitAbilityActorInfo();
 	LoadProgress();
-	
-	//TODO : Load in Abilities from disk
-	AddCharacterAbilities();
-	
 }
 
 void AAuraCharacter::LoadProgress()
@@ -71,27 +67,26 @@ void AAuraCharacter::LoadProgress()
 		//Get save data
 		ULoadScreenSaveGame* SaveData = AuraGameMode->RetrieveInGameSaveData();
 		if(SaveData == nullptr) return;
-		if(AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>( GetPlayerState() ) )
-		{
-			AuraPlayerState->SetLevel(SaveData->PlayerLevel);
-			AuraPlayerState->SetXP(SaveData->XP);
-			AuraPlayerState->SetAttriblePoints(SaveData->AttributePoints);
-			AuraPlayerState->SetSpellPoints(SaveData->SpellPoints);
-		}
+
 		if (SaveData->bFirstTimeLoadInGame)
 		{
 			InitializeDefaultAttributes();
 			AddCharacterAbilities();
 		}
-		else
+		else //處理讀取存檔
 		{
-			
-			
-		}
+			//TODO : Load in Abilities from disk
 		
+			if(AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>( GetPlayerState() ) )
+			{
+				AuraPlayerState->SetLevel(SaveData->PlayerLevel , false);
+				AuraPlayerState->SetXP(SaveData->XP);
+				AuraPlayerState->SetAttriblePoints(SaveData->AttributePoints);
+				AuraPlayerState->SetSpellPoints(SaveData->SpellPoints);
+			}
+			UAuraAbilitySystemLibrary::InitializeDefaultAttributesFormSaveData(this, AbilitySystemComponent, SaveData);
+		}
 	}
-	
-	
 }
 
 
