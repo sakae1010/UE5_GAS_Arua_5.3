@@ -76,7 +76,12 @@ void AAuraCharacter::LoadProgress()
 		else //處理讀取存檔
 		{
 			//TODO : Load in Abilities from disk
-		
+			
+			if(UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>( AbilitySystemComponent ))
+			{
+				AuraASC->AddCharacterAbilitiesFormSaveData(SaveData);
+			}
+			
 			if(AAuraPlayerState* AuraPlayerState = Cast<AAuraPlayerState>( GetPlayerState() ) )
 			{
 				AuraPlayerState->SetLevel(SaveData->PlayerLevel , false);
@@ -273,6 +278,7 @@ void AAuraCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 
 		FForEachAbility SaveAbilityDelegate;
 		UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent);
+		SaveData->SaveAbilityList.Empty();
 		SaveAbilityDelegate.BindLambda([this, SaveData , AuraASC](const FGameplayAbilitySpec& AbilitySpec)
 		{
 		
@@ -285,11 +291,11 @@ void AAuraCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 			SaveAbility.GameplayAbility = Info.Ability;
 			SaveAbility.AbilityTag = AbilityTag;
 			SaveAbility.AbilityLevel = AbilitySpec.Level;
-			SaveAbility.AbilityStatus =AuraASC->GetStatusTagFromAbilityTag( AbilityTag );
+			SaveAbility.AbilityStatus = AuraASC->GetStatusTagFromAbilityTag( AbilityTag );
 			SaveAbility.AbilitySlot = AuraASC->GetSlotFromAbilityTag( AbilityTag );
 			SaveAbility.AbilityType = Info.AbilityType;
 			SaveAbility.AbilityInputTag = AuraASC->GetInputTagFromSpec( AbilitySpec );
-			SaveData->SaveAbilityList.Add(SaveAbility);
+			SaveData->SaveAbilityList.AddUnique(SaveAbility);
 		});
 		AuraASC->ForEachAbility(SaveAbilityDelegate);
 		AuraGameMode->SaveIngamePrrogressData(SaveData);

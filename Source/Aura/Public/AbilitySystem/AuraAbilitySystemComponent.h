@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AuraAbilitySystemComponent.generated.h"
+class ULoadScreenSaveGame;
 class UAuraAbilitySystemComponent;
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/);
 DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven /*AbilitySystemComponent*/);
@@ -31,7 +32,7 @@ public:
 	FActivePassiveEffect ActivePassiveEffectDelegate;
 	
 	bool bStartupAbilitiesGiven = false;
-	
+	void AddCharacterAbilitiesFormSaveData(ULoadScreenSaveGame *SaveData);
 	void AddCharacterAbilities(TArray<TSubclassOf<UGameplayAbility>>& InAbilities);
 	void AddCharacterPassvieAbilities(TArray<TSubclassOf<UGameplayAbility>>& InPassvieAbilities);
 

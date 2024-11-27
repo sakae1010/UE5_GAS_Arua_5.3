@@ -8,6 +8,8 @@
 #include "LoadScreenSaveGame.generated.h"
 
 
+class UGameplayAbility;
+
 UENUM(Blueprintable)
 enum ESaveSlotStatus
 {
@@ -43,6 +45,11 @@ struct FSaveAbility
 	int AbilityLevel = 1;
 	
 };
+
+inline bool operator==(const FSaveAbility& LHS, const FSaveAbility& RHS)
+{
+	return LHS.AbilityTag.MatchesTagExact( RHS.AbilityTag );
+}
 
 /**
  * 
