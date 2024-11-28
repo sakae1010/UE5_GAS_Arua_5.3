@@ -3,10 +3,13 @@
 
 #include "Game/AuraGameModeBase.h"
 
+#include "EngineUtils.h"
 #include "Game/AuraGameInstance.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/PlayerStart.h"
+#include "Interaction/SaveInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
 
 void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
@@ -56,13 +59,70 @@ ULoadScreenSaveGame* AAuraGameModeBase::RetrieveInGameSaveData()
 	return GetSlotData(InGameSlotName, InGameSlotIndex);
 }
 
-void AAuraGameModeBase::SaveIngamePrrogressData(ULoadScreenSaveGame* SaveObject)
+void AAuraGameModeBase::SaveIngameProgressData(ULoadScreenSaveGame* SaveObject)
 {
 	const FString InGameSlotName = SaveObject->SlotName;
 	const int32 InGameSlotIndex = SaveObject->SlotIndex;
 	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>( GetGameInstance());
 	AuraGameInstance->LoadSlotName = InGameSlotName;
 	UGameplayStatics::SaveGameToSlot(SaveObject,InGameSlotName,InGameSlotIndex);
+}
+
+void AAuraGameModeBase::SaveWorldState(UWorld* World)
+{
+	if(!World)
+	{
+		return;
+	}
+	auto WorldName = World->GetMapName();
+	WorldName.RemoveFromStart( World->StreamingLevelsPrefix );
+	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(GetGameInstance());
+	check( AuraGameInstance );
+	const FString InGameSlotName = AuraGameInstance->LoadSlotName;
+	const int32 InGameSlotIndex = AuraGameInstance->SlotIndex;
+
+	if (ULoadScreenSaveGame* SaveGame = GetSlotData(InGameSlotName, InGameSlotIndex))
+	{
+		if (!SaveGame->HasMap( WorldName ))
+		{
+			FSaveMap SaveMap;
+			SaveMap.MapName = WorldName;
+			SaveGame->SaveMaps.Add(SaveMap);
+		}
+
+		FSaveMap SaveMap = SaveGame->GetSaveMapWithMapName( WorldName );
+		SaveMap.SaveActors.Empty();
+		for (TActorIterator<AActor> ActorItr(World); ActorItr; ++ActorItr)
+		{
+			AActor* Actor = *ActorItr;
+			if (!IsValid(Actor) || !Actor->Implements<USaveInterface>()) continue;
+			
+			FSaveActor SaveActor;
+			SaveActor.ActorName = Actor->GetFName();
+			SaveActor.ActorTransform = Actor->GetActorTransform();
+
+			// 記憶體寫入
+			FMemoryWriter MemoryWriter(SaveActor.Bytes);
+			// 進行序列化
+			FObjectAndNameAsStringProxyArchive Archive(MemoryWriter, true);
+			// 設定為儲存遊戲
+			Archive.ArIsSaveGame = true;
+			// 序列化actor
+			Actor->Serialize(Archive);
+			
+			SaveMap.SaveActors.Add(SaveActor);
+		}
+
+		for(FSaveMap& SavedMap : SaveGame->SaveMaps)
+		{
+			if (SavedMap.MapName == WorldName)
+			{
+				SavedMap = SaveMap;
+				break;
+			}
+		}
+		UGameplayStatics::SaveGameToSlot(SaveGame, InGameSlotName, InGameSlotIndex);
+	}
 }
 
 void AAuraGameModeBase::TravelingToMap(UMVVM_LoadSlot* LoadSlot)
@@ -104,4 +164,5 @@ void AAuraGameModeBase::BeginPlay()
 	Super::BeginPlay();
 	Maps.Add(DefaultMapName, DefaultMap);
 }
+
 

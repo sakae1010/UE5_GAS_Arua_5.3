@@ -298,7 +298,7 @@ void AAuraCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
 			SaveData->SaveAbilityList.AddUnique(SaveAbility);
 		});
 		AuraASC->ForEachAbility(SaveAbilityDelegate);
-		AuraGameMode->SaveIngamePrrogressData(SaveData);
+		AuraGameMode->SaveIngameProgressData(SaveData);
 	}
 	
 }

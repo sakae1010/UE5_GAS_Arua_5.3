@@ -24,10 +24,10 @@ struct FSaveActor
 	GENERATED_BODY()
 	
 	UPROPERTY()
-	FString ActorName = FString();
+	FName ActorName = FName();
 
-	UPROPERTY()
-	FString ActorClass = FString();
+	// UPROPERTY()
+	// FName ActorClass = FName();
 
 	UPROPERTY()
 	FTransform ActorTransform = FTransform();
