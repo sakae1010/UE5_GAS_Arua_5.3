@@ -4,6 +4,7 @@
 #include "Game/AuraGameModeBase.h"
 
 #include "EngineUtils.h"
+#include "Aura/AuraLogChannels.h"
 #include "Game/AuraGameInstance.h"
 #include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/PlayerStart.h"
@@ -68,13 +69,13 @@ void AAuraGameModeBase::SaveIngameProgressData(ULoadScreenSaveGame* SaveObject)
 	UGameplayStatics::SaveGameToSlot(SaveObject,InGameSlotName,InGameSlotIndex);
 }
 
-void AAuraGameModeBase::SaveWorldState(UWorld* World)
+void AAuraGameModeBase::SaveWorldState(UWorld* World) const
 {
 	if(!World)
 	{
 		return;
 	}
-	auto WorldName = World->GetMapName();
+	FString WorldName = World->GetMapName();
 	WorldName.RemoveFromStart( World->StreamingLevelsPrefix );
 	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(GetGameInstance());
 	check( AuraGameInstance );
@@ -109,7 +110,6 @@ void AAuraGameModeBase::SaveWorldState(UWorld* World)
 			Archive.ArIsSaveGame = true;
 			// 序列化actor
 			Actor->Serialize(Archive);
-			
 			SaveMap.SaveActors.Add(SaveActor);
 		}
 
@@ -122,6 +122,65 @@ void AAuraGameModeBase::SaveWorldState(UWorld* World)
 			}
 		}
 		UGameplayStatics::SaveGameToSlot(SaveGame, InGameSlotName, InGameSlotIndex);
+	}
+}
+
+void AAuraGameModeBase::LoadWorldState(UWorld* World) const
+{
+	if(!World)
+	{
+		return;
+	}
+	FString WorldName = World->GetMapName();
+	WorldName.RemoveFromStart( World->StreamingLevelsPrefix );
+	UAuraGameInstance* AuraGameInstance = Cast<UAuraGameInstance>(GetGameInstance());
+	check( AuraGameInstance );
+
+	const FString InGameSlotName = AuraGameInstance->LoadSlotName;
+	const int32 InGameSlotIndex = AuraGameInstance->SlotIndex;
+
+	if (UGameplayStatics::DoesSaveGameExist( InGameSlotName , InGameSlotIndex))
+	{
+		ULoadScreenSaveGame* SaveGame = Cast<ULoadScreenSaveGame>(UGameplayStatics::LoadGameFromSlot( InGameSlotName , InGameSlotIndex ) );
+		if (!SaveGame)
+		{
+			UE_LOG(LogAura, Error, TEXT("Faild to load save game from slot %s"), *InGameSlotName);
+			return;
+		}
+		if (!SaveGame->HasMap( WorldName ))
+		{
+			UE_LOG(LogAura, Error, TEXT("Save game does not have map %s"), *WorldName);
+			return;
+		}
+		FSaveMap SaveMap = SaveGame->GetSaveMapWithMapName( WorldName );
+		
+		for (TActorIterator<AActor> ActorItr(World); ActorItr; ++ActorItr)
+		{
+			AActor* Actor = *ActorItr;
+			if (!IsValid(Actor) || !Actor->Implements<USaveInterface>()) continue;
+			for (FSaveActor& SaveActor : SaveMap.SaveActors)
+			{
+				if (Actor->GetFName() == SaveActor.ActorName)
+				{
+					if (ISaveInterface::Execute_ShouldLoadTransform( Actor ))
+					{
+						Actor->SetActorTransform(SaveActor.ActorTransform);
+					}
+					
+					// 記憶體讀取
+					FMemoryReader MemoryReader(SaveActor.Bytes);
+					// 進行反序列化
+					FObjectAndNameAsStringProxyArchive Archive(MemoryReader, true);
+					// 設定為讀取遊戲
+					Archive.ArIsSaveGame = true;
+					// 反序列化actor
+					Actor->Serialize(Archive);
+
+					ISaveInterface::Execute_LoadActor( Actor );
+					break;
+				}
+			}
+		}
 	}
 }
 

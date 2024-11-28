@@ -17,9 +17,16 @@ class AURA_API ACheckpoint : public APlayerStart , public ISaveInterface
 public:
 	// Sets default values for this actor's properties
 	ACheckpoint(const FObjectInitializer& ObjectInitializer);
-
+	
+	/* SaveInterface */
+	virtual bool ShouldLoadTransform_Implementation() override {return false;}
+	virtual void LoadActor_Implementation() override;
+	/* SaveInterface */
+	
 	UPROPERTY(BlueprintReadOnly , SaveGame)
 	bool bReached = false;
+
+
 	
 protected:
 	

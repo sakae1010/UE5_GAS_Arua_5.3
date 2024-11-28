@@ -12,12 +12,12 @@
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Game/AuraGameModeBase.h"
+#include "Game/LoadScreenSaveGame.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
-#include "Game/LoadScreenSaveGame.h"
 #include "UI/HUD/AuraHUD.h"
 
 AAuraCharacter::AAuraCharacter()
@@ -56,6 +56,10 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	// Init ability info for the Server
 	InitAbilityActorInfo();
 	LoadProgress();
+	if( const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>( UGameplayStatics::GetGameMode( GetWorld() ) ))
+	{
+		AuraGameMode->LoadWorldState(GetWorld());
+	}
 }
 
 void AAuraCharacter::LoadProgress()
@@ -75,8 +79,7 @@ void AAuraCharacter::LoadProgress()
 		}
 		else //處理讀取存檔
 		{
-			//TODO : Load in Abilities from disk
-			
+		
 			if(UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>( AbilitySystemComponent ))
 			{
 				AuraASC->AddCharacterAbilitiesFormSaveData(SaveData);
