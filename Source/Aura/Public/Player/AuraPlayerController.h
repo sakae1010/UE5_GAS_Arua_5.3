@@ -7,13 +7,13 @@
 #include "GameplayTagContainer.h"
 #include "AuraPlayerController.generated.h"
 
+class IHightlightInterface;
 class AMagicCircle;
 class UDamageTextComponent;
 class UAuraInputConfig;
 struct FInputActionValue;
 class UInputMappingContext;
 class UInputAction;
-class IEnemyInterface;
 class UAuraAbilitySystemComponent;
 class USplineComponent;
 class UNiagaraSystem;
@@ -50,8 +50,8 @@ private:
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();
-	IEnemyInterface* LastActor;
-	IEnemyInterface* ThisActor;
+	IHightlightInterface* LastActor;
+	IHightlightInterface* ThisActor;
 	FHitResult CursorHit;
 
 	void InputTagPressed(const FGameplayTag InputTag);
