@@ -45,6 +45,21 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), CharacterClass!= ECharacterClass::Warrior);
 }
 
+void AAuraEnemy::HighlightActor_Implementation()
+{
+	GetMesh()->SetRenderCustomDepth(true);
+	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+	Weapon->SetRenderCustomDepth(true);
+	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
+}
+
+void AAuraEnemy::UnHighlightActor_Implementation()
+{
+	GetMesh()->SetRenderCustomDepth(false);
+	Weapon->SetRenderCustomDepth(false);
+}
+
+
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
@@ -125,19 +140,6 @@ void AAuraEnemy::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 	}
 }
 
-void AAuraEnemy::HighlightActor()
-{
-	GetMesh()->SetRenderCustomDepth(true);
-	GetMesh()->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
-	Weapon->SetRenderCustomDepth(true);
-	Weapon->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
-}
-
-void AAuraEnemy::UnHighlightActor()
-{
-	GetMesh()->SetRenderCustomDepth(false);
-	Weapon->SetRenderCustomDepth(false);
-}
 
 void AAuraEnemy::SetCombatTarget_Implementation(AActor* InCombatTarget)
 {
