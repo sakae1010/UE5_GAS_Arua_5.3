@@ -2,7 +2,6 @@
 
 
 #include "CheckPoint/Checkpoint.h"
-
 #include "Components/SphereComponent.h"
 #include "Game/AuraGameModeBase.h"
 #include "Interaction/PlayerInterface.h"
@@ -17,6 +16,10 @@ ACheckpoint::ACheckpoint(const FObjectInitializer& ObjectInitializer):Super(Obje
 	CheckpointMesh = CreateDefaultSubobject<UStaticMeshComponent>("CheckpointMesh");
 	CheckpointMesh->SetupAttachment( GetRootComponent() );
 	CheckpointMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
+	CheckpointMesh->SetCustomDepthStencilValue( CustomDepthStencilOverride  );
+	// CheckpointMesh->SetRenderCustomDepth( false );
+	CheckpointMesh->MarkRenderStateDirty();
 	
 	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
 	Sphere->SetCollisionResponseToChannels(ECR_Block);
@@ -24,7 +27,9 @@ ACheckpoint::ACheckpoint(const FObjectInitializer& ObjectInitializer):Super(Obje
 	Sphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	Sphere->SetCollisionResponseToChannels(ECR_Ignore);
 	Sphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
-	
+
+	MoveToComponent = CreateDefaultSubobject<USceneComponent>("MoveToComponent");
+	MoveToComponent->SetupAttachment( GetRootComponent() );
 }
 
 void ACheckpoint::LoadActor_Implementation()
@@ -33,6 +38,23 @@ void ACheckpoint::LoadActor_Implementation()
 	{
 		HandleGlowEffect();
 	}
+}
+
+void ACheckpoint::HighlightActor_Implementation()
+{
+	CheckpointMesh->SetRenderCustomDepth( true );
+	
+}
+
+void ACheckpoint::UnHighlightActor_Implementation()
+{
+	CheckpointMesh->SetRenderCustomDepth( false );
+}
+
+void ACheckpoint::MoveToLocation_Implementation(FVector& OutLocation)
+{
+	OutLocation =MoveToComponent->GetComponentLocation();
+	
 }
 
 void ACheckpoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

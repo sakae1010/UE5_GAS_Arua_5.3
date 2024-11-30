@@ -29,6 +29,7 @@ public:
 	/* IHightlightInterface */
 	virtual void HighlightActor_Implementation() override;
 	virtual void UnHighlightActor_Implementation() override;
+	virtual void MoveToLocation_Implementation(FVector& OutLocation) override;
 	/* End IHightlightInterface */
 	
 	/* IEnemyInterface */

@@ -241,6 +241,17 @@ void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 	{
 		if(const APawn* ControllerPawn = GetPawn<APawn>(); FollowTime<= ShortPressThreshold && ControllerPawn)
 		{
+			if(IsValid( ThisActor ) && ThisActor->Implements<UHightlightInterface>())
+			{
+				FVector OutLocation = FVector::ZeroVector;
+				IHightlightInterface::Execute_MoveToLocation(ThisActor,OutLocation);
+				CachedDestination = OutLocation;
+			}
+			else if(ClickEffect && ( GetAuraAbilitySystemComponent() && !GetAuraAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputPressed)))
+			{
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ClickEffect, CachedDestination);
+			}
+			
 			if(const UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(
 				this, ControllerPawn->GetActorLocation(), CachedDestination))
 			{
@@ -257,10 +268,7 @@ void AAuraPlayerController::InputTagReleased(const FGameplayTag InputTag)
 				}
 			}
 			
-			if(ClickEffect && ( GetAuraAbilitySystemComponent() && !GetAuraAbilitySystemComponent()->HasMatchingGameplayTag( FAuraGameplayTags::Get().Player_Block_InputPressed)))
-			{
-				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ClickEffect, CachedDestination);
-			}
+
 		}
 	}
 	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("FollowTime: %f"), FollowTime));
