@@ -42,8 +42,8 @@ void ACheckpoint::LoadActor_Implementation()
 
 void ACheckpoint::HighlightActor_Implementation()
 {
+	if(bReached)return;
 	CheckpointMesh->SetRenderCustomDepth( true );
-	
 }
 
 void ACheckpoint::UnHighlightActor_Implementation()
@@ -74,7 +74,10 @@ void ACheckpoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 void ACheckpoint::BeginPlay()
 {
 	Super::BeginPlay();
-	Sphere->OnComponentBeginOverlap.AddDynamic(this, &ACheckpoint::OnSphereOverlap);
+	if(bBindOverlapCallBack)
+	{
+		Sphere->OnComponentBeginOverlap.AddDynamic(this, &ACheckpoint::OnSphereOverlap);
+	}		
 }
 
 void ACheckpoint::HandleGlowEffect()
