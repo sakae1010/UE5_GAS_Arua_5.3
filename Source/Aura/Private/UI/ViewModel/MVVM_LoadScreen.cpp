@@ -102,6 +102,10 @@ void UMVVM_LoadScreen::PlayButtonPressed()
 void UMVVM_LoadScreen::LoadData()
 {
 	AAuraGameModeBase* AuraGameModeBase = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(this)) ;
+	if(!IsValid( AuraGameModeBase ) )
+	{
+		return;
+	}
 	for ( TTuple<int, UMVVM_LoadSlot*> LoadSlot : LoadSlots)
 	{
 		ULoadScreenSaveGame* SaveObject = AuraGameModeBase->GetSlotData(LoadSlot.Value->GetLoadSlotName() , LoadSlot.Key );
