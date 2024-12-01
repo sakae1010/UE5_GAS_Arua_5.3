@@ -69,7 +69,7 @@ void AAuraGameModeBase::SaveIngameProgressData(ULoadScreenSaveGame* SaveObject)
 	UGameplayStatics::SaveGameToSlot(SaveObject,InGameSlotName,InGameSlotIndex);
 }
 
-void AAuraGameModeBase::SaveWorldState(UWorld* World) const
+void AAuraGameModeBase::SaveWorldState(UWorld* World ,  const FString& DestinationMapAssetName) const
 {
 	if(!World)
 	{
@@ -84,6 +84,12 @@ void AAuraGameModeBase::SaveWorldState(UWorld* World) const
 
 	if (ULoadScreenSaveGame* SaveGame = GetSlotData(InGameSlotName, InGameSlotIndex))
 	{
+		if (DestinationMapAssetName != FString(""))
+		{
+			SaveGame->MapAssetName = DestinationMapAssetName;
+			SaveGame->MapName = GetMapManeFromMapAssetName(DestinationMapAssetName);
+		}
+		
 		if (!SaveGame->HasMap( WorldName ))
 		{
 			FSaveMap SaveMap;
@@ -216,6 +222,18 @@ AActor* AAuraGameModeBase::ChoosePlayerStart_Implementation(AController* Player)
 		return SelectActor;
 	}
 	return nullptr;
+}
+
+FString AAuraGameModeBase::GetMapManeFromMapAssetName(const FString& MapAssetName) const
+{
+	for (const TPair<FString, TSoftObjectPtr<UWorld>>& Pair : Maps)
+	{
+		if (Pair.Value.ToSoftObjectPath().GetAssetFName() == MapAssetName)
+		{
+			return Pair.Key;
+		}
+	}
+	return FString();
 }
 
 void AAuraGameModeBase::BeginPlay()

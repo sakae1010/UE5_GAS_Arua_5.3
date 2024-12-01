@@ -33,9 +33,9 @@ public:
 	ULoadScreenSaveGame* RetrieveInGameSaveData();
 	void SaveIngameProgressData(ULoadScreenSaveGame* SaveObject);
 
-	UFUNCTION()
-	void SaveWorldState(UWorld* World) const;
-	UFUNCTION()
+	// UFUNCTION()
+	void SaveWorldState(UWorld* World , const FString& DestinationMapAssetName = FString("")) const;
+	//UFUNCTION()
 	void LoadWorldState(UWorld* World) const;
 	
 	void TravelingToMap(UMVVM_LoadSlot* LoadSlot);
@@ -57,6 +57,8 @@ public:
 
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
+	FString GetMapManeFromMapAssetName(const FString& MapAssetName) const;
+	
 protected:
 	virtual void BeginPlay() override;
 };
