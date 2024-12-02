@@ -58,6 +58,8 @@ public:
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
 
 	FString GetMapManeFromMapAssetName(const FString& MapAssetName) const;
+
+	void PlayerDie(ACharacter* DeadCharacter);
 	
 protected:
 	virtual void BeginPlay() override;

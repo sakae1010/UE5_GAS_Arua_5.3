@@ -7,11 +7,13 @@
 #include "Aura/AuraLogChannels.h"
 #include "Game/AuraGameInstance.h"
 #include "Game/LoadScreenSaveGame.h"
+#include "GameFramework/Character.h"
 #include "GameFramework/PlayerStart.h"
 #include "Interaction/SaveInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 #include "UI/ViewModel/MVVM_LoadSlot.h"
+#include "GameFramework/Character.h"
 
 void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 {
@@ -26,6 +28,7 @@ void AAuraGameModeBase::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 	SaveGameObject->SaveSlotStatus = LoadSlot->SlotStatus;
 	SaveGameObject->MapName = LoadSlot->GetMapName();
 	SaveGameObject->PlayerStartTag = LoadSlot->PlayerStartTag;
+	SaveGameObject->MapAssetName = LoadSlot->MapAssetName;
 	
 	UGameplayStatics::SaveGameToSlot(SaveGameObject, SaveGameObject->SlotName, SaveGameObject->SlotIndex);
 }
@@ -71,7 +74,7 @@ void AAuraGameModeBase::SaveIngameProgressData(ULoadScreenSaveGame* SaveObject)
 
 void AAuraGameModeBase::SaveWorldState(UWorld* World ,  const FString& DestinationMapAssetName) const
 {
-	if(!World)
+	if(!IsValid( World ))
 	{
 		return;
 	}
@@ -236,10 +239,18 @@ FString AAuraGameModeBase::GetMapManeFromMapAssetName(const FString& MapAssetNam
 	return FString();
 }
 
+
+
 void AAuraGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	Maps.Add(DefaultMapName, DefaultMap);
 }
 
+void AAuraGameModeBase::PlayerDie(ACharacter* DeadCharacter)
+{
+	ULoadScreenSaveGame* SaveGame = RetrieveInGameSaveData();
+	if (!IsValid(SaveGame)) return;
 
+	UGameplayStatics::OpenLevel(DeadCharacter, FName(SaveGame->MapAssetName));
+}
