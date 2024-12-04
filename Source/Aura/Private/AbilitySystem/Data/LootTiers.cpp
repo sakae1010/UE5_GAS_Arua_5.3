@@ -20,6 +20,5 @@ TArray<FLootItem> ULootTiers::GetLootItems()
 			}
 		}
 	}
-	
-	return LootItems;
+	return ReturnLootItems;
 }

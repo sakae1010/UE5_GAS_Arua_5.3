@@ -36,10 +36,10 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Pickup Movement")
+	UPROPERTY(BlueprintReadWrite, Category = "Pickup Movement")
 	FVector CalculatedLocation ;
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Pickup Movement")
+	UPROPERTY(BlueprintReadWrite, Category = "Pickup Movement")
 	FRotator CalculatedRotation;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Pickup Movement")
